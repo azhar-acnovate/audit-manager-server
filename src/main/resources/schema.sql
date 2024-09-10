@@ -56,6 +56,71 @@ VALUES ('admin', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6',
         '2024-04-18 13:46:12', 
         '2024-04-18 13:46:12', 
         1, NULL);
+		
+INSERT INTO `audit_manager_db`.`audit_object_change_tracker` (`ref_object_id`, `event_type`, `event_occurence`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) VALUES ('0001', 'colorway-create', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');				
+INSERT INTO `audit_manager_db`.`audit_object_change_tracker` (`ref_object_id`, `event_type`, `event_occurence`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) VALUES ('0001', 'colorway-update', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
+
+INSERT INTO `audit_manager_db`.`audit_object_change_tracker` (`ref_object_id`, `event_type`, `event_occurence`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) VALUES ('0001', 'colorway-update', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
+
+
+
+INSERT INTO `audit_manager_db`.`audit_object_change_tracker` (`ref_object_id`, `event_type`, `event_occurence`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) VALUES ('0002', 'product-create', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'); 
+
+INSERT INTO `audit_manager_db`.`audit_object_change_tracker` (`ref_object_id`, `event_type`, `event_occurence`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) VALUES ('0002', 'product-update', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
+
+INSERT INTO `audit_manager_db`.`audit_object_change_tracker` (`ref_object_id`, `event_type`, `event_occurence`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) VALUES ('0002', 'product-update', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
+
+INSERT INTO `audit_manager_db`.`audit_attribute_change_tracker` (`attribute_name`, `old_value`, `new_value`, `changed_by`, `audit_object_change_tracker_id`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) 
+VALUES 
+('color-name', 'blue', 'blue', 'user123', '1', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('pattern', 'striped', 'striped', 'user123', '1', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('material', 'cotton', 'cotton', 'user123', '1', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('release-date', '2024-09-01', '2024-09-01', 'user123', '1', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('status', 'pending', 'pending', 'user123', '1', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
+
+INSERT INTO `audit_manager_db`.`audit_attribute_change_tracker` (`attribute_name`, `old_value`, `new_value`, `changed_by`, `audit_object_change_tracker_id`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) 
+VALUES 
+('color-name', 'blue', 'green', 'user123', '2', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('pattern', 'striped', 'solid', 'user123', '2', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('material', 'cotton', 'polyester', 'user123', '2', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('release-date', '2024-09-01', '2024-09-09', 'user123', '2', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('status', 'pending', 'approved', 'user123', '2', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
+
+INSERT INTO `audit_manager_db`.`audit_attribute_change_tracker` (`attribute_name`, `old_value`, `new_value`, `changed_by`, `audit_object_change_tracker_id`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) 
+VALUES 
+('color-name', 'green', 'green', 'user123', '3', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('pattern', 'solid', 'solid', 'user123', '3', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('material', 'polyester', 'lycra', 'user123', '3', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('release-date', '2024-09-09', '2024-09-09', 'user123', '3', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('status', 'approved', 'canceled', 'user123', '3', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
+
+
+INSERT INTO `audit_manager_db`.`audit_attribute_change_tracker` (`attribute_name`, `old_value`, `new_value`, `changed_by`, `audit_object_change_tracker_id`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) 
+VALUES 
+('product-name', 'shirt', 'shirt', 'user456', '4', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('price', '50.00', '50.00', 'user456', '4', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('size', 'M', 'M', 'user456', '4', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('availability', 'in-stock', 'in-stock', 'user456', '4', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('discount', '5%', '5%', 'user456', '4', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
+
+
+
+INSERT INTO `audit_manager_db`.`audit_attribute_change_tracker` (`attribute_name`, `old_value`, `new_value`, `changed_by`, `audit_object_change_tracker_id`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) 
+VALUES 
+('product-name', 'shirt', 'jacket', 'user456', '5', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('price', '50.00', '55.00', 'user456', '5', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('size', 'M', 'L', 'user456', '5', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('availability', 'in-stock', 'out-of-stock', 'user456', '5', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('discount', '5%', '10%', 'user456', '5', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
+
+INSERT INTO `audit_manager_db`.`audit_attribute_change_tracker` (`attribute_name`, `old_value`, `new_value`, `changed_by`, `audit_object_change_tracker_id`, `created_at`, `updated_at`, `created_by`, `updated_by`, `active`) 
+VALUES 
+('product-name', 'jacket', 'Polo-jacket', 'newUser', '6', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('price', '50.00', '55.00', 'user456', '6', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('size', 'M', 'L', 'user456', '6', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('availability', 'in-stock', 'out-of-stock', 'user456', '6', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
+('discount', '5%', '10%', 'user456', '6', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
+
 
 
 

@@ -1,6 +1,7 @@
 package com.acnovate.audit_manager.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +20,7 @@ public class AuditAttributeChangeTracker extends AuditEntity {
 	private String newValue;
 	private String changedBy;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "audit_object_change_tracker_id")
 	private AuditObjectChangeTracker auditObjectChangeTracker;
 

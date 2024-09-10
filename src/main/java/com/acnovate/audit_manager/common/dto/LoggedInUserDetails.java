@@ -3,7 +3,7 @@ package com.acnovate.audit_manager.common.dto;
 import java.time.Instant;
 import java.util.Date;
 
-import com.acnovate.audit_manager.constant.Constant;
+import com.acnovate.audit_manager.constant.MyConstant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class LoggedInUserDetails {
@@ -13,7 +13,7 @@ public class LoggedInUserDetails {
 
 	private String profileImageName;
 
-	@JsonFormat(pattern = Constant.RESPONSE_DATE_FORMAT)
+	@JsonFormat(pattern = MyConstant.RESPONSE_DATE_FORMAT)
 	private Date lastUpdatedDate;
 
 	private String accessToken;
