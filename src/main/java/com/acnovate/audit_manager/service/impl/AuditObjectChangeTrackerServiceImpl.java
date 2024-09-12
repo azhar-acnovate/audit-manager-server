@@ -1,6 +1,5 @@
 package com.acnovate.audit_manager.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +8,12 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.acnovate.audit_manager.common.dto.FilterDto;
 import com.acnovate.audit_manager.common.persistence.service.AbstractRawService;
 import com.acnovate.audit_manager.domain.AuditAttributeChangeTracker;
 import com.acnovate.audit_manager.domain.AuditObjectChangeTracker;
+import com.acnovate.audit_manager.dto.request.AuditObjectChangeRequestDto;
+import com.acnovate.audit_manager.dto.response.AuditLogActivityResponseDto;
 import com.acnovate.audit_manager.repository.AuditObjectChangeTrackerRepository;
-import com.acnovate.audit_manager.response.dto.AuditLogActivityResponseDto;
 import com.acnovate.audit_manager.service.IAuditAttributeChangeTrackerService;
 import com.acnovate.audit_manager.service.IAuditObjectChangeTrackerService;
 
@@ -43,13 +42,24 @@ public class AuditObjectChangeTrackerServiceImpl extends AbstractRawService<Audi
 		auditLogActivityResponseDto.setId(auditObjectChangeTracker.getId());
 		auditLogActivityResponseDto.setEventOccurence(auditObjectChangeTracker.getEventOccurence());
 		auditLogActivityResponseDto.setEventType(auditObjectChangeTracker.getEventType());
-		auditLogActivityResponseDto.setRefObjectId(auditObjectChangeTracker.getObjectId());
+		auditLogActivityResponseDto.setRefObjectId(auditObjectChangeTracker.getRefObjectId());
 		List<AuditAttributeChangeTracker> auditAttributeChangeTrackers = auditAttributeChangeTrackerService
 				.findByAuditObjectChangeTracker(auditObjectChangeTracker);
 		auditLogActivityResponseDto.setAttributeChanges(
 				auditAttributeChangeTrackers.stream().map(auditAttributeChangeTrackerService::domainToDto).toList());
 
 		return auditLogActivityResponseDto;
+	}
+
+	@Override
+	public AuditLogActivityResponseDto createAuditObjectChangeTracker(
+			AuditObjectChangeRequestDto auditObjectChangeRequestDto) {
+		AuditObjectChangeTracker auditObjectChangeTracker = new AuditObjectChangeTracker();
+		auditObjectChangeTracker.setRefObjectId(auditObjectChangeRequestDto.getRefObjectId());
+		auditObjectChangeTracker.setEventType(auditObjectChangeRequestDto.getEventType());
+		auditObjectChangeTracker.setEventOccurence(auditObjectChangeRequestDto.getEventOccurence());
+		auditObjectChangeTracker =  create(auditObjectChangeTracker);
+		return domainToDto(auditObjectChangeTracker);
 	}
 
 }

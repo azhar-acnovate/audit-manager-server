@@ -1,4 +1,4 @@
-package com.acnovate.audit_manager.response.dto;
+package com.acnovate.audit_manager.dto.response;
 
 public class AuditAttributeChangeTrackerResponseDto {
 	private Long id;

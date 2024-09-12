@@ -26,14 +26,6 @@ public class AuditObjectChangeTracker extends AuditEntity {
 		this.id = id;
 	}
 
-	public Long getObjectId() {
-		return refObjectId;
-	}
-
-	public void setObjectId(Long objectId) {
-		this.refObjectId = objectId;
-	}
-
 	public String getEventType() {
 		return eventType;
 	}
@@ -48,6 +40,14 @@ public class AuditObjectChangeTracker extends AuditEntity {
 
 	public void setEventOccurence(Date eventOccurence) {
 		this.eventOccurence = eventOccurence;
+	}
+
+	public Long getRefObjectId() {
+		return refObjectId;
+	}
+
+	public void setRefObjectId(Long refObjectId) {
+		this.refObjectId = refObjectId;
 	}
 
 }

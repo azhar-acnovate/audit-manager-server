@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.acnovate.audit_manager.common.persistence.service.AbstractRawService;
 import com.acnovate.audit_manager.domain.AuditAttributeChangeTracker;
 import com.acnovate.audit_manager.domain.AuditObjectChangeTracker;
+import com.acnovate.audit_manager.dto.response.AuditAttributeChangeTrackerResponseDto;
 import com.acnovate.audit_manager.repository.AuditAttributeChangeTrackerRepository;
-import com.acnovate.audit_manager.response.dto.AuditAttributeChangeTrackerResponseDto;
 import com.acnovate.audit_manager.service.IAuditAttributeChangeTrackerService;
 
 @Service

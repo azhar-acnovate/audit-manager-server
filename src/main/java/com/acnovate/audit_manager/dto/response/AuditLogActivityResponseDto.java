@@ -1,4 +1,4 @@
-package com.acnovate.audit_manager.response.dto;
+package com.acnovate.audit_manager.dto.response;
 
 import java.util.ArrayList;
 import java.util.Date;
