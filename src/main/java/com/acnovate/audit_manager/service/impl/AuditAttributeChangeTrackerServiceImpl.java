@@ -11,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.acnovate.audit_manager.common.persistence.service.AbstractRawService;
 import com.acnovate.audit_manager.domain.AuditAttributeChangeTracker;
 import com.acnovate.audit_manager.domain.AuditObjectChangeTracker;
+import com.acnovate.audit_manager.dto.request.AuditAttributeChangeRequestDto;
 import com.acnovate.audit_manager.dto.response.AuditAttributeChangeTrackerResponseDto;
 import com.acnovate.audit_manager.repository.AuditAttributeChangeTrackerRepository;
 import com.acnovate.audit_manager.service.IAuditAttributeChangeTrackerService;
+import com.acnovate.audit_manager.service.IAuditObjectChangeTrackerService;
 
 @Service
 @Transactional
@@ -21,6 +23,9 @@ public class AuditAttributeChangeTrackerServiceImpl extends AbstractRawService<A
 		implements IAuditAttributeChangeTrackerService {
 	@Autowired
 	private AuditAttributeChangeTrackerRepository repo;
+
+	@Autowired
+	private IAuditObjectChangeTrackerService auditObjectChangeTrackerService;
 
 	@Override
 	protected JpaRepository<AuditAttributeChangeTracker, Long> getDao() {
@@ -50,6 +55,24 @@ public class AuditAttributeChangeTrackerServiceImpl extends AbstractRawService<A
 			AuditObjectChangeTracker auditObjectChangeTracker) {
 
 		return repo.findByAuditObjectChangeTracker(auditObjectChangeTracker);
+	}
+
+	@Override
+	public AuditAttributeChangeTrackerResponseDto createAuditAttributeChangeTracker(
+			AuditAttributeChangeRequestDto auditAttributeChangeRequestDto) {
+		System.out.println(auditAttributeChangeRequestDto);
+		AuditAttributeChangeTracker auditAttributeChangeTracker = new AuditAttributeChangeTracker();
+		if(auditAttributeChangeRequestDto.getId()!=null) {
+			auditAttributeChangeTracker = findOne(auditAttributeChangeRequestDto.getId());
+		}
+		auditAttributeChangeTracker.setAttributeName(auditAttributeChangeRequestDto.getAttributeName());
+		auditAttributeChangeTracker.setChangedBy(auditAttributeChangeRequestDto.getChangedBy());
+		auditAttributeChangeTracker.setOldValue(auditAttributeChangeRequestDto.getOldValue());
+		auditAttributeChangeTracker.setNewValue(auditAttributeChangeRequestDto.getNewValue());
+		auditAttributeChangeTracker.setAuditObjectChangeTracker(auditObjectChangeTrackerService
+				.findOne(auditAttributeChangeRequestDto.getAuditObjectChangeTrackerId()));
+		auditAttributeChangeTracker = create(auditAttributeChangeTracker);
+		return domainToDto(auditAttributeChangeTracker);
 	}
 
 }

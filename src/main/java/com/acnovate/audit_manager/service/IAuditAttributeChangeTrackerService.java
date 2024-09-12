@@ -5,6 +5,7 @@ import java.util.List;
 import com.acnovate.audit_manager.common.interfaces.IService;
 import com.acnovate.audit_manager.domain.AuditAttributeChangeTracker;
 import com.acnovate.audit_manager.domain.AuditObjectChangeTracker;
+import com.acnovate.audit_manager.dto.request.AuditAttributeChangeRequestDto;
 import com.acnovate.audit_manager.dto.response.AuditAttributeChangeTrackerResponseDto;
 
 public interface IAuditAttributeChangeTrackerService extends IService<AuditAttributeChangeTracker> {
@@ -12,4 +13,7 @@ public interface IAuditAttributeChangeTrackerService extends IService<AuditAttri
 	List<AuditAttributeChangeTracker> findByAuditObjectChangeTracker(AuditObjectChangeTracker auditObjectChangeTracker);
 
 	AuditAttributeChangeTrackerResponseDto domainToDto(AuditAttributeChangeTracker auditAttributeChangeTracker);
+
+	AuditAttributeChangeTrackerResponseDto createAuditAttributeChangeTracker(
+			AuditAttributeChangeRequestDto auditAttributeChangeRequestDto);
 }

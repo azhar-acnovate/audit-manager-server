@@ -55,4 +55,11 @@ public class AuditAttributeChangeRequestDto {
 	public void setAuditObjectChangeTrackerId(Long auditObjectChangeTrackerId) {
 		this.auditObjectChangeTrackerId = auditObjectChangeTrackerId;
 	}
+
+	@Override
+	public String toString() {
+		return "AuditAttributeChangeRequestDto [id=" + id + ", attributeName=" + attributeName + ", oldValue="
+				+ oldValue + ", newValue=" + newValue + ", changedBy=" + changedBy + ", auditObjectChangeTrackerId="
+				+ auditObjectChangeTrackerId + "]";
+	}
 }

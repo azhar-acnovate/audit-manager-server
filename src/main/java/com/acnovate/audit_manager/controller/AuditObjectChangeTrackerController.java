@@ -21,9 +21,9 @@ import com.acnovate.audit_manager.dto.request.AuditObjectChangeRequestDto;
 import com.acnovate.audit_manager.service.IAuditObjectChangeTrackerService;
 
 @RestController
-@RequestMapping("audit-module")
+@RequestMapping("audit-object-change-tracker")
 @CrossOrigin("*")
-public class AuditModuleController {
+public class AuditObjectChangeTrackerController {
 
 	@Autowired
 	private IAuditObjectChangeTrackerService auditObjectChangeTrackerService;
@@ -54,9 +54,8 @@ public class AuditModuleController {
 	public ResponseEntity<CommonResponse> createAuditObjectChangeTracker(
 			@RequestBody AuditObjectChangeRequestDto auditObjectChangeRequestDto) {
 		CommonResponse res = new CommonResponse();
-
 		res.setStatus(HttpStatus.OK.value());
-		res.setMessage("Successfully created audit-module Data..");
+		res.setMessage("Successfully Created Audit Object Change Tracker");
 		res.setData(auditObjectChangeTrackerService.createAuditObjectChangeTracker(auditObjectChangeRequestDto));
 		return new ResponseEntity<CommonResponse>(res, HttpStatus.OK);
 
