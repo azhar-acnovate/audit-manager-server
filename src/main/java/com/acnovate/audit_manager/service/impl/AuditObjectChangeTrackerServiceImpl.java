@@ -55,10 +55,13 @@ public class AuditObjectChangeTrackerServiceImpl extends AbstractRawService<Audi
 	public AuditLogActivityResponseDto createAuditObjectChangeTracker(
 			AuditObjectChangeRequestDto auditObjectChangeRequestDto) {
 		AuditObjectChangeTracker auditObjectChangeTracker = new AuditObjectChangeTracker();
+		if (auditObjectChangeRequestDto.getId() != null) {
+			auditObjectChangeTracker = findOne(auditObjectChangeRequestDto.getId());
+		}
 		auditObjectChangeTracker.setRefObjectId(auditObjectChangeRequestDto.getRefObjectId());
 		auditObjectChangeTracker.setEventType(auditObjectChangeRequestDto.getEventType());
 		auditObjectChangeTracker.setEventOccurence(auditObjectChangeRequestDto.getEventOccurence());
-		auditObjectChangeTracker =  create(auditObjectChangeTracker);
+		auditObjectChangeTracker = create(auditObjectChangeTracker);
 		return domainToDto(auditObjectChangeTracker);
 	}
 

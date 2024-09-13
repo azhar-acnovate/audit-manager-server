@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,6 +46,17 @@ public class AuditObjectChangeTrackerController {
 			res.setData(list.stream().map(auditObjectChangeTrackerService::domainToDto).toList());
 
 		}
+		return new ResponseEntity<CommonResponse>(res, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<CommonResponse> findOne(@PathVariable Long id) {
+		CommonResponse res = new CommonResponse();
+		res.setStatus(HttpStatus.OK.value());
+		res.setMessage("Successfully fetched audit-module Data..");
+		res.setData(auditObjectChangeTrackerService.domainToDto(auditObjectChangeTrackerService.findOne(id)));
 		return new ResponseEntity<CommonResponse>(res, HttpStatus.OK);
 
 	}
