@@ -98,6 +98,10 @@ CREATE TABLE audit_attribute_change_tracker (
 );
 GO
 
+-- Alter user_mst adding user_role and user_email - 18-Sep-24
+ALTER TABLE user_mst
+ADD user_role VARCHAR(100) NULL, user_email varchar(255) NULL;
+
 -- Insert the default user
 INSERT INTO user_mst (user_name, password, created_at, updated_at, active, profile_image_name)
 VALUES ('admin', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', 
