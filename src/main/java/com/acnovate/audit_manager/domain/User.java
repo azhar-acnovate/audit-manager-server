@@ -2,9 +2,6 @@ package com.acnovate.audit_manager.domain;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,82 +12,109 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "user_mst")
+@Table(name="AUDITUSER")
 public class User {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String userName;
-	private String password;
-	private Boolean active = true;
+	@Column(nullable=true)
+	private Long ID;
+	
+	@Column(nullable=true)
+	private String USERNAME;
+	
+	@Column(nullable=true)
+	private String PASSWORD;
+	
+	@Column(nullable=true)
+	private int ACTIVE;
 
-	private String profileImageName;
-
+	@Column(nullable=true)
+	private String PROFILEIMAGENAME;
+	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	@CreatedDate
-	private Date createdAt;
-
+	private Date CREATEDON;
+	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	@LastModifiedDate
-	private Date updatedAt;
+	private Date MODIFIEDON;
 
-	public Long getId() {
-		return id;
+	public Long getID() {
+		return ID;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUSERNAME() {
+		return USERNAME;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUSERNAME(String uSERNAME) {
+		USERNAME = uSERNAME;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getPASSWORD() {
+		return PASSWORD;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPASSWORD(String pASSWORD) {
+		PASSWORD = pASSWORD;
 	}
 
-	public Boolean getActive() {
-		return active;
+	public int getACTIVE() {
+		return ACTIVE;
 	}
 
-	public void setActive(Boolean active) {
-		this.active = active;
+	public void setACTIVE(int aCTIVE) {
+		ACTIVE = aCTIVE;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public String getPROFILEIMAGENAME() {
+		return PROFILEIMAGENAME;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setPROFILEIMAGENAME(String pROFILEIMAGENAME) {
+		PROFILEIMAGENAME = pROFILEIMAGENAME;
 	}
 
-	public Date getUpdatedAt() {
-		return updatedAt;
+	public Date getCREATEDON() {
+		return CREATEDON;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
+	public void setCREATEDON(Date cREATEDON) {
+		CREATEDON = cREATEDON;
 	}
 
-	public String getProfileImageName() {
-		return profileImageName;
+	public Date getMODIFIEDON() {
+		return MODIFIEDON;
 	}
 
-	public void setProfileImageName(String profileImageName) {
-		this.profileImageName = profileImageName;
+	public void setMODIFIEDON(Date mODIFIEDON) {
+		MODIFIEDON = mODIFIEDON;
+	}
+	
+	public User() {
+		
+	}
+
+	public User(Long iD, String uSERNAME, String pASSWORD, int aCTIVE, String pROFILEIMAGENAME,
+			Date cREATEDON, Date mODIFIEDON) {
+		super();
+		ID = iD;
+		USERNAME = uSERNAME;
+		PASSWORD = pASSWORD;
+		ACTIVE = aCTIVE;
+		PROFILEIMAGENAME = pROFILEIMAGENAME;
+		CREATEDON = cREATEDON;
+		MODIFIEDON = mODIFIEDON;
+	}
+
+	@Override
+	public String toString() {
+		return "User [ID=" + ID + ", USERNAME=" + USERNAME + ", PASSWORD=" + PASSWORD
+				+ ", ACTIVE=" + ACTIVE + ", PROFILEIMAGENAME=" + PROFILEIMAGENAME + ", CREATEDON=" + CREATEDON
+				+ ", MODIFIEDON=" + MODIFIEDON + "]";
 	}
 
 }
