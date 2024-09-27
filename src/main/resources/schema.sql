@@ -50,6 +50,15 @@ create Table audit_attribute_change_tracker(
 
 );
 
+ALTER TABLE user_mst
+ADD UNIQUE INDEX unique_user_name (user_name);
+
+ALTER TABLE user_mst
+ADD user_role VARCHAR(100) NULL;
+
+ALTER TABLE user_mst
+ADD user_email varchar(255) NULL;
+
 -- Insert the default user
 INSERT INTO user_mst (user_name, password, created_at, updated_at, active, profile_image_name)
 VALUES ('admin', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', 
