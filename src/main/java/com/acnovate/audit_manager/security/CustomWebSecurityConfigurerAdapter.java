@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -37,6 +36,9 @@ public class CustomWebSecurityConfigurerAdapter {//
 
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 //	@Value("${resource.folder}")
 //	private String resourceFolder;
@@ -74,7 +76,7 @@ public class CustomWebSecurityConfigurerAdapter {//
 	public AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 		authenticationProvider.setUserDetailsService(customUserDetailsService);
-		authenticationProvider.setPasswordEncoder(passwordEncoder());
+		authenticationProvider.setPasswordEncoder(passwordEncoder);
 		return authenticationProvider;
 
 	}
@@ -100,10 +102,5 @@ public class CustomWebSecurityConfigurerAdapter {//
 //						.setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS));
 //			}
 		};
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
 	}
 }
