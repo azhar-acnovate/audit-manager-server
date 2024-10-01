@@ -1,33 +1,24 @@
-package com.acnovate.audit_manager.domain;
+package com.acnovate.audit_manager.dto.request;
 
 import java.util.Date;
 import java.util.List;
 
-import com.acnovate.audit_manager.attributeConverter.ListToStringConverter;
+import com.acnovate.audit_manager.constant.MyConstant;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "audit_report")
-public class AuditReport extends AuditEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AuditReportRequestDto {
 	private Long id;
 
 	private Long refObjectId;
 
 	private String reportName;
 
+	@JsonFormat(pattern = MyConstant.REQUEST_DATE_FORMAT)
 	private Date startDateRange;
 
+	@JsonFormat(pattern = MyConstant.REQUEST_DATE_FORMAT)
 	private Date endDateRange;
 
-	@Convert(converter = ListToStringConverter.class)
 	private List<String> changedUserNames;
 
 	public Long getId() {

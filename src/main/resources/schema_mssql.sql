@@ -158,3 +158,19 @@ VALUES
 ('availability', 'in-stock', 'out-of-stock', 'user456', 6, GETDATE(), GETDATE(), 1, 1, 1),
 ('discount', '5%', '10%', 'user456', 6, GETDATE(), GETDATE(), 1, 1, 1);
 GO
+
+CREATE TABLE audit_report (
+    id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    ref_object_id BIGINT NULL,
+    report_name NVARCHAR(255) NULL,
+    start_date_range DATETIME NULL,
+    end_date_range DATETIME NULL,
+    changed_user_names NVARCHAR(MAX) NULL,
+	created_at DATETIME NOT NULL DEFAULT GETDATE(),
+    updated_at DATETIME NOT NULL DEFAULT GETDATE(),
+    created_by BIGINT,
+    updated_by BIGINT,
+    active BIT DEFAULT 1 NOT NULL
+);
+GO
+

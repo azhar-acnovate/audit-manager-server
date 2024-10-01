@@ -130,6 +130,21 @@ VALUES
 ('availability', 'in-stock', 'out-of-stock', 'user456', '6', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1'),
 ('discount', '5%', '10%', 'user456', '6', '2024-09-09 22:48:43', '2024-09-09 22:48:43', '1', '1', '1');
 
+CREATE TABLE audit_report (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ref_object_id BIGINT NULL,
+    report_name VARCHAR(255) NULL,
+    start_date_range DATETIME NULL,
+    end_date_range DATETIME NULL,
+    changed_user_names TEXT NULL,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    created_by BIGINT,
+    updated_by BIGINT,
+    active BOOLEAN DEFAULT TRUE NOT NULL
+);
+
+
 
 
 
