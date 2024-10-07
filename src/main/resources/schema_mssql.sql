@@ -174,3 +174,16 @@ CREATE TABLE audit_report (
 );
 GO
 
+CREATE TABLE source_references (
+    id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    source_reference_name NVARCHAR(255),
+    source_reference_key NVARCHAR(255),
+    additional_info NVARCHAR(MAX), -- Define as NVARCHAR(MAX) for JSON storage
+	created_at DATETIME NOT NULL DEFAULT GETDATE(),
+    updated_at DATETIME NOT NULL DEFAULT GETDATE(),
+    created_by BIGINT,
+    updated_by BIGINT,
+    active BIT DEFAULT 1 NOT NULL
+);
+Go;
+

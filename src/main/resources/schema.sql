@@ -144,6 +144,19 @@ CREATE TABLE audit_report (
     active BOOLEAN DEFAULT TRUE NOT NULL
 );
 
+CREATE TABLE source_reference_object (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    source_reference_name VARCHAR(255),
+    source_reference_key VARCHAR(255),
+    additional_info JSON,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    created_by BIGINT,
+    updated_by BIGINT,
+    active BOOLEAN DEFAULT TRUE NOT NULL
+);
+
+
 
 
 
