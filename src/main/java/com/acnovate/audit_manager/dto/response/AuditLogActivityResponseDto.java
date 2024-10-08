@@ -11,6 +11,7 @@ public class AuditLogActivityResponseDto {
 
 	private Long id;
 	private Long refObjectId;
+	private SourceReferenceObjectResponseDto sourceReference;
 	private String eventType;
 	@JsonFormat(pattern = MyConstant.REQUEST_DATE_FORMAT)
 	private Date eventOccurence;
@@ -55,6 +56,14 @@ public class AuditLogActivityResponseDto {
 
 	public void setAttributeChanges(List<AuditAttributeChangeTrackerResponseDto> attributeChanges) {
 		this.attributeChanges = attributeChanges;
+	}
+
+	public SourceReferenceObjectResponseDto getSourceReference() {
+		return sourceReference;
+	}
+
+	public void setSourceReference(SourceReferenceObjectResponseDto sourceReference) {
+		this.sourceReference = sourceReference;
 	}
 
 }

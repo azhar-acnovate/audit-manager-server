@@ -11,11 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.acnovate.audit_manager.common.persistence.service.AbstractRawService;
 import com.acnovate.audit_manager.domain.AuditAttributeChangeTracker;
 import com.acnovate.audit_manager.domain.AuditObjectChangeTracker;
+import com.acnovate.audit_manager.domain.SourceReferenceObject;
 import com.acnovate.audit_manager.dto.request.AuditObjectChangeRequestDto;
 import com.acnovate.audit_manager.dto.response.AuditLogActivityResponseDto;
 import com.acnovate.audit_manager.repository.AuditObjectChangeTrackerRepository;
 import com.acnovate.audit_manager.service.IAuditAttributeChangeTrackerService;
 import com.acnovate.audit_manager.service.IAuditObjectChangeTrackerService;
+import com.acnovate.audit_manager.service.ISourceReferenceObjectService;
 
 @Service
 @Transactional
@@ -23,6 +25,9 @@ public class AuditObjectChangeTrackerServiceImpl extends AbstractRawService<Audi
 		implements IAuditObjectChangeTrackerService {
 	@Autowired
 	private AuditObjectChangeTrackerRepository repo;
+
+	@Autowired
+	private ISourceReferenceObjectService sourceReferenceObjectService;
 
 	@Autowired
 	private IAuditAttributeChangeTrackerService auditAttributeChangeTrackerService;
@@ -47,7 +52,9 @@ public class AuditObjectChangeTrackerServiceImpl extends AbstractRawService<Audi
 				.findByAuditObjectChangeTracker(auditObjectChangeTracker);
 		auditLogActivityResponseDto.setAttributeChanges(
 				auditAttributeChangeTrackers.stream().map(auditAttributeChangeTrackerService::domainToDto).toList());
-
+		SourceReferenceObject sourceReference = sourceReferenceObjectService
+				.findOne(auditObjectChangeTracker.getRefObjectId());
+		auditLogActivityResponseDto.setSourceReference(sourceReferenceObjectService.domainToDto(sourceReference));
 		return auditLogActivityResponseDto;
 	}
 
