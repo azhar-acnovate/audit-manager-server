@@ -33,13 +33,17 @@ public class SourceReferenceObjectServiceImpl extends AbstractRawService<SourceR
 
 	@Override
 	public SourceReferenceObjectResponseDto domainToDto(SourceReferenceObject resource) {
-		SourceReferenceObjectResponseDto sourceReferenceObjectResponseDto = new SourceReferenceObjectResponseDto();
-		sourceReferenceObjectResponseDto.setId(resource.getId());
-		sourceReferenceObjectResponseDto.setSourceReferenceKey(resource.getSourceReferenceKey());
-		sourceReferenceObjectResponseDto.setSourceReferenceName(resource.getSourceReferenceName());
-		sourceReferenceObjectResponseDto.setAdditionalInfo(resource.getAdditionalInfo());
-		AuditEntityMapper.mapAuditEntityToDto(resource, sourceReferenceObjectResponseDto);
-		return sourceReferenceObjectResponseDto;
+		if (resource != null) {
+			SourceReferenceObjectResponseDto sourceReferenceObjectResponseDto = new SourceReferenceObjectResponseDto();
+			sourceReferenceObjectResponseDto.setId(resource.getId());
+			sourceReferenceObjectResponseDto.setSourceReferenceKey(resource.getSourceReferenceKey());
+			sourceReferenceObjectResponseDto.setSourceReferenceName(resource.getSourceReferenceName());
+			sourceReferenceObjectResponseDto.setAdditionalInfo(resource.getAdditionalInfo());
+			AuditEntityMapper.mapAuditEntityToDto(resource, sourceReferenceObjectResponseDto);
+			return sourceReferenceObjectResponseDto;
+		}
+		return null;
+
 	}
 
 	@Override
