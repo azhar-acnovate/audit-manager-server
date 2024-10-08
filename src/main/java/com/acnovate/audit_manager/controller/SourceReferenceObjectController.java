@@ -1,4 +1,4 @@
-package com.acnovate.audit_manager.controllers;
+package com.acnovate.audit_manager.controller;
 
 import java.util.List;
 
