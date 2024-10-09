@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class AuditReportRequestDto {
 	private Long id;
 
-	private Long refObjectId;
+	private List<Long> refObjectIds;
 
 	private String reportName;
 
@@ -27,14 +27,6 @@ public class AuditReportRequestDto {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getRefObjectId() {
-		return refObjectId;
-	}
-
-	public void setRefObjectId(Long refObjectId) {
-		this.refObjectId = refObjectId;
 	}
 
 	public String getReportName() {
@@ -67,5 +59,13 @@ public class AuditReportRequestDto {
 
 	public void setChangedUserNames(List<String> changedUserNames) {
 		this.changedUserNames = changedUserNames;
+	}
+
+	public List<Long> getRefObjectIds() {
+		return refObjectIds;
+	}
+
+	public void setRefObjectIds(List<Long> refObjectIds) {
+		this.refObjectIds = refObjectIds;
 	}
 }

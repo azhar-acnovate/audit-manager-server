@@ -161,7 +161,7 @@ GO
 
 CREATE TABLE audit_report (
     id BIGINT IDENTITY(1,1) PRIMARY KEY,
-    ref_object_id BIGINT NULL,
+    ref_object_ids VARCHAR(MAX) NULL,
     report_name NVARCHAR(255) NULL,
     start_date_range DATETIME NULL,
     end_date_range DATETIME NULL,
@@ -172,9 +172,10 @@ CREATE TABLE audit_report (
     updated_by BIGINT,
     active BIT DEFAULT 1 NOT NULL
 );
+
 GO
 
-CREATE TABLE source_references (
+CREATE TABLE source_reference_object (
     id BIGINT IDENTITY(1,1) PRIMARY KEY,
     source_reference_name NVARCHAR(255),
     source_reference_key NVARCHAR(255),
@@ -185,5 +186,27 @@ CREATE TABLE source_references (
     updated_by BIGINT,
     active BIT DEFAULT 1 NOT NULL
 );
-Go;
+
+Go
+
+INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
+VALUES ('Product', '123456', '[{\"fieldName\": \"WorkingNo\", \"fieldValue\": \"xyz00001\"}, {\"fieldName\": \"ModelNo\", \"fieldValue\": \"098765\"}]', '2024-10-08 19:34:30', '2024-10-09 12:07:11', 1, 1, 1);
+
+INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
+VALUES ('Color', '3421', '[{\"fieldName\": \"Color Name\", \"fieldValue\": \"Blue\"}, {\"fieldName\": \"Color code\", \"fieldValue\": \"123412\"}]', '2024-10-09 10:19:59', '2024-10-09 12:07:11', 1, 1, 1);
+
+INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
+VALUES ('Material', '12353', '[{\"fieldName\": \"Material Name\", \"fieldValue\": \"Cotton\"}]', '2024-10-09 12:07:01', '2024-10-09 12:07:11', 1, 1, 1);
+
+INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
+VALUES ('Product', '7890', '[{\"fieldName\": \"WorkingNo\", \"fieldValue\": \"xyz00001\"}, {\"fieldName\": \"ModelNo\", \"fieldValue\": \"098765\"}]', '2024-10-08 19:34:30', '2024-10-09 12:07:11', 1, 1, 1);
+
+INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
+VALUES ('Color', '1234', '[{\"fieldName\": \"Color Name\", \"fieldValue\": \"Blue\"}, {\"fieldName\": \"Color code\", \"fieldValue\": \"123412\"}]', '2024-10-09 10:19:59', '2024-10-09 12:07:11', 1, 1, 1);
+
+INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
+VALUES ('Material', '35321', '[{\"fieldName\": \"Material Name\", \"fieldValue\": \"Cotton\"}]', '2024-10-09 12:07:01', '2024-10-09 12:07:11', 1, 1, 1);
+
+GO
+
 

@@ -3,6 +3,7 @@ package com.acnovate.audit_manager.domain;
 import java.util.Date;
 import java.util.List;
 
+import com.acnovate.audit_manager.attributeConverter.ListLongToStringConverter;
 import com.acnovate.audit_manager.attributeConverter.ListToStringConverter;
 
 import jakarta.persistence.Convert;
@@ -19,7 +20,8 @@ public class AuditReport extends AuditEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Long refObjectId;
+	@Convert(converter = ListLongToStringConverter.class)
+	private List<Long> refObjectIds;
 
 	private String reportName;
 
@@ -36,14 +38,6 @@ public class AuditReport extends AuditEntity {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getRefObjectId() {
-		return refObjectId;
-	}
-
-	public void setRefObjectId(Long refObjectId) {
-		this.refObjectId = refObjectId;
 	}
 
 	public String getReportName() {
@@ -76,5 +70,13 @@ public class AuditReport extends AuditEntity {
 
 	public void setChangedUserNames(List<String> changedUserNames) {
 		this.changedUserNames = changedUserNames;
+	}
+
+	public List<Long> getRefObjectIds() {
+		return refObjectIds;
+	}
+
+	public void setRefObjectIds(List<Long> refObjectIds) {
+		this.refObjectIds = refObjectIds;
 	}
 }
