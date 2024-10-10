@@ -4,9 +4,11 @@ import java.util.Date;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +18,7 @@ import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "user_mst")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
 	@Id
@@ -24,8 +27,9 @@ public class User {
 	private String userName;
 	private String password;
 	private Boolean active = true;
-
-	private String profileImageName;
+	private String userRole;
+	private String userEmail;
+//	private String profileImageName;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -85,12 +89,28 @@ public class User {
 		this.updatedAt = updatedAt;
 	}
 
-	public String getProfileImageName() {
-		return profileImageName;
+	public String getUserEmail() {
+		return userEmail;
 	}
 
-	public void setProfileImageName(String profileImageName) {
-		this.profileImageName = profileImageName;
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
+
+//	public String getProfileImageName() {
+//		return profileImageName;
+//	}
+//
+//	public void setProfileImageName(String profileImageName) {
+//		this.profileImageName = profileImageName;
+//	}
 
 }
