@@ -67,7 +67,7 @@ public class UserController {
 		CommonResponse res = new CommonResponse();
 		res.setStatus(HttpStatus.OK.value());
 		res.setMessage("Successfully " + (userRequestDto.getId() != null ? "Updated" : "Create")
-				+ " Audit Object Change Tracker");
+				+ " User");
 		res.setData(userService.createUser(userRequestDto));
 		return new ResponseEntity<CommonResponse>(res, HttpStatus.OK);
 
