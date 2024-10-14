@@ -18,12 +18,15 @@ import com.acnovate.audit_manager.service.IUserService;
 
 import jakarta.transaction.Transactional;
 
+import java.security.SecureRandom;
+
 @Service
 @Transactional
 public class UserServiceImpl extends AbstractRawService<User> implements IUserService {
 	@Autowired
 	private UserRepository repo;
-
+	@Autowired
+private  EmailService emailService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -68,42 +71,59 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 	public UserResponseDto createUser(UserRequestDto userRequestDto) {
 
 		try {
-			// Create a new User object
-			User user = new User();
-
-			// If userRequestDto has an ID, fetch the existing user details by ID
+			User user;
+			String generatedPassword = null;
+			boolean send =false;
+			// If userRequestDto has an ID, fetch the existing user details by ID (update scenario)
 			if (userRequestDto.getId() != null) {
 				user = findOne(userRequestDto.getId());
-			}
 
+				// If a password is provided during an update, encode and set it
+				if (userRequestDto.getPassword() != null && !userRequestDto.getPassword().isEmpty()) {
+					user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
+				}
+			} else {
+				// Create a new user object (create scenario)
+				 user = new User();
+                 send =true;
+				// Generate a random password and encode it
+				 generatedPassword = generateRandomPassword();
+				 user.setPassword(passwordEncoder.encode(generatedPassword));
+
+			}
+			// Common fields for both create and update
 			user.setUserName(userRequestDto.getUserName());
 			user.setUserEmail(userRequestDto.getUserEmail());
 			user.setUserRole(userRequestDto.getUserRole());
-			// Check if it's a new user (no ID) and if the password is null or empty, throw
-			// an exception
-			if (userRequestDto.getId() == null
-					&& (userRequestDto.getPassword() == null || userRequestDto.getPassword().isEmpty())) {
-				throw new CustomErrorHandleException("Password should not be empty");
-			}
-
-			// If password is provided, encode it using passwordEncoder and set it for the
-			// user
-			if (userRequestDto.getPassword() != null) {
-				user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
-			}
 
 			// Save or update the user in the database
-			user = create(user);
-
+			 user = create(user);
+			// Send email only if it's a new user creation and use the generated password
+			if(user!= null && send) {
+				emailService.sendEmail(userRequestDto.getUserEmail(), generatedPassword);
+			}
 			// Convert the user domain object to a DTO and return it
 			return domainToDto(user);
 
 		} catch (DataIntegrityViolationException e) {
-			// If a DataIntegrityViolationException occurs (e.g., unique constraint
-			// violation), throw a custom error
+			// Handle unique constraint violation (e.g., user name is already taken)
 			throw new CustomErrorHandleException("User name " + userRequestDto.getUserName() + " is already taken");
 		}
+	}
 
+
+	private String generateRandomPassword() {
+		int length = 8; // Set the desired password length
+		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+		SecureRandom random = new SecureRandom();
+		StringBuilder password = new StringBuilder(length);
+
+		for (int i = 0; i < length; i++) {
+			int index = random.nextInt(characters.length());
+			password.append(characters.charAt(index));
+		}
+
+		return password.toString();
 	}
 
 }
