@@ -72,4 +72,12 @@ public class UserController {
 		return new ResponseEntity<CommonResponse>(res, HttpStatus.OK);
 
 	}
+
+
+
+
+
+
+
+
 }
