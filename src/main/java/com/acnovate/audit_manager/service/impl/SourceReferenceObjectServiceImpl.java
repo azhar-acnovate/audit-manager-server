@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.acnovate.audit_manager.common.persistence.exception.CustomErrorHandleException;
 import com.acnovate.audit_manager.common.persistence.service.AbstractRawService;
+import com.acnovate.audit_manager.constant.MyConstant;
 import com.acnovate.audit_manager.domain.SourceReferenceObject;
 import com.acnovate.audit_manager.dto.request.SourceReferenceObjectRequestDto;
 import com.acnovate.audit_manager.dto.response.SourceReferenceObjectResponseDto;
@@ -33,16 +35,16 @@ public class SourceReferenceObjectServiceImpl extends AbstractRawService<SourceR
 
 	@Override
 	public SourceReferenceObjectResponseDto domainToDto(SourceReferenceObject resource) {
-		if (resource != null) {
-			SourceReferenceObjectResponseDto sourceReferenceObjectResponseDto = new SourceReferenceObjectResponseDto();
-			sourceReferenceObjectResponseDto.setId(resource.getId());
-			sourceReferenceObjectResponseDto.setSourceReferenceKey(resource.getSourceReferenceKey());
-			sourceReferenceObjectResponseDto.setSourceReferenceName(resource.getSourceReferenceName());
-			sourceReferenceObjectResponseDto.setAdditionalInfo(resource.getAdditionalInfo());
-			AuditEntityMapper.mapAuditEntityToDto(resource, sourceReferenceObjectResponseDto);
-			return sourceReferenceObjectResponseDto;
+		if (resource == null) {
+			throw new CustomErrorHandleException(MyConstant.EXCEPTION_MESSAGE_RESOURCE_NOT_FOUND);
 		}
-		return null;
+		SourceReferenceObjectResponseDto sourceReferenceObjectResponseDto = new SourceReferenceObjectResponseDto();
+		sourceReferenceObjectResponseDto.setId(resource.getId());
+		sourceReferenceObjectResponseDto.setSourceReferenceKey(resource.getSourceReferenceKey());
+		sourceReferenceObjectResponseDto.setSourceReferenceName(resource.getSourceReferenceName());
+		sourceReferenceObjectResponseDto.setAdditionalInfo(resource.getAdditionalInfo());
+		AuditEntityMapper.mapAuditEntityToDto(resource, sourceReferenceObjectResponseDto);
+		return sourceReferenceObjectResponseDto;
 
 	}
 

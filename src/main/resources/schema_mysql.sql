@@ -163,7 +163,15 @@ INSERT INTO `source_reference_object` (`id`,`source_reference_name`,`source_refe
 INSERT INTO `source_reference_object` (`id`,`source_reference_name`,`source_reference_key`,`additional_info`,`created_at`,`updated_at`,`created_by`,`updated_by`,`active`) VALUES (5,'Color','1234','[{\"fieldName\": \"Color Name\", \"fieldValue\": \"Blue\"}, {\"fieldName\": \"Color code\", \"fieldValue\": \"123412\"}]','2024-10-09 10:19:59','2024-10-09 12:07:11',1,1,1);
 INSERT INTO `source_reference_object` (`id`,`source_reference_name`,`source_reference_key`,`additional_info`,`created_at`,`updated_at`,`created_by`,`updated_by`,`active`) VALUES (6,'Material','35321','[{\"fieldName\": \"Material Name\", \"fieldValue\": \"Cotton\"}]','2024-10-09 12:07:01','2024-10-09 12:07:11',1,1,1);
 
-
+CREATE TABLE scheduling_audit_report (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    report_id BIGINT,
+    frequency VARCHAR(255) DEFAULT NULL,
+    scheduling_hour INT,
+    scheduling_minute INT,
+    time_marker CHAR(2) CHECK (time_marker IN ('AM', 'PM')),
+    recipients TEXT DEFAULT NULL
+);
 
 
 

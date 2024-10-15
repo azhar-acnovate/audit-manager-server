@@ -1,6 +1,5 @@
 package com.acnovate.audit_manager.common.dto;
 
-import java.time.Instant;
 import java.util.Date;
 
 import com.acnovate.audit_manager.constant.MyConstant;
@@ -19,10 +18,10 @@ public class LoggedInUserDetails {
 	private String accessToken;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
-	private Instant issuedAt;
+	private Date issuedAt;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
-	private Instant expireAt;
+	private Date expireAt;
 
 	public Long getId() {
 		return id;
@@ -72,19 +71,26 @@ public class LoggedInUserDetails {
 		this.accessToken = accessToken;
 	}
 
-	public Instant getIssuedAt() {
+	public Date getIssuedAt() {
 		return issuedAt;
 	}
 
-	public void setIssuedAt(Instant issuedAt) {
+	public void setIssuedAt(Date issuedAt) {
 		this.issuedAt = issuedAt;
 	}
 
-	public Instant getExpireAt() {
+	public Date getExpireAt() {
 		return expireAt;
 	}
 
-	public void setExpireAt(Instant expireAt) {
+	public void setExpireAt(Date expireAt) {
 		this.expireAt = expireAt;
+	}
+
+	@Override
+	public String toString() {
+		return "LoggedInUserDetails [id=" + id + ", userName=" + userName + ", status=" + status + ", profileImageName="
+				+ profileImageName + ", lastUpdatedDate=" + lastUpdatedDate + ", accessToken=" + accessToken
+				+ ", issuedAt=" + issuedAt + ", expireAt=" + expireAt + "]";
 	}
 }

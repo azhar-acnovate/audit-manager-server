@@ -60,7 +60,6 @@ public class AuditAttributeChangeTrackerServiceImpl extends AbstractRawService<A
 	@Override
 	public AuditAttributeChangeTrackerResponseDto createAuditAttributeChangeTracker(
 			AuditAttributeChangeRequestDto auditAttributeChangeRequestDto) {
-		System.out.println(auditAttributeChangeRequestDto);
 		AuditAttributeChangeTracker auditAttributeChangeTracker = new AuditAttributeChangeTracker();
 		if(auditAttributeChangeRequestDto.getId()!=null) {
 			auditAttributeChangeTracker = findOne(auditAttributeChangeRequestDto.getId());
