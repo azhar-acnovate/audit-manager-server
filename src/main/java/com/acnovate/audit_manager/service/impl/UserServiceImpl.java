@@ -80,7 +80,7 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 
 				// If a password is provided during an update, encode and set it
 
-					//user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
+					user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
 
 			} else {
 				// Create a new user object (create scenario)
