@@ -35,7 +35,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 					throw new UsernameNotFoundException("User : [" + username + "] is not found ");
 
 				} else {
-					System.out.println(user);
 					final List<GrantedAuthority> auths = new ArrayList<>();
 					// For SpringSecurityAuditorAware get userid so we have append userName_userId
 					return new CustomUserDetails(user.getUserName() + "_" + user.getId(), user.getPassword(), auths,
@@ -43,7 +42,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 				}
 			} catch (Exception e) {
-				System.out.println("Exceptrion ::" + ExceptionUtils.getStackTrace(e));
+				logger.info("Exception :: {}", ExceptionUtils.getStackTrace(e));
 				throw new CustomErrorHandleException("Invalid username : [" + username + "]");
 			}
 

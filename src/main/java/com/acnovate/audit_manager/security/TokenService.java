@@ -2,6 +2,7 @@ package com.acnovate.audit_manager.security;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class TokenService {
 		JwtClaimsSet claims = JwtClaimsSet.builder().issuer("self").issuedAt(issuedAt).expiresAt(expireAt)
 				.subject(authentication.getName()).claim("scope", scope).build();
 		loggedInUserDetails.setAccessToken(encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue());
-		loggedInUserDetails.setIssuedAt(issuedAt);
-		loggedInUserDetails.setExpireAt(expireAt);
+		loggedInUserDetails.setIssuedAt(Date.from(issuedAt));
+		loggedInUserDetails.setExpireAt(Date.from(expireAt));
 
 		return loggedInUserDetails;
 	}
