@@ -81,10 +81,10 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 			user.setUserRole(userRequestDto.getUserRole());
 			// Check if it's a new user (no ID) and if the password is null or empty, throw
 			// an exception
-			if (userRequestDto.getId() == null
-					&& (userRequestDto.getPassword() == null || userRequestDto.getPassword().isEmpty())) {
-				throw new CustomErrorHandleException("Password should not be empty");
-			}
+//			if (userRequestDto.getId() == null
+//					&& (userRequestDto.getPassword() == null || userRequestDto.getPassword().isEmpty())) {
+//				throw new CustomErrorHandleException("Password should not be empty");
+//			}
 
 			// If password is provided, encode it using passwordEncoder and set it for the
 			// user
