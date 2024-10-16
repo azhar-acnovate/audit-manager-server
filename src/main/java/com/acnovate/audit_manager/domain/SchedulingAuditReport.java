@@ -1,9 +1,6 @@
 package com.acnovate.audit_manager.domain;
-import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.util.Date;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "scheduling_audit_report")
