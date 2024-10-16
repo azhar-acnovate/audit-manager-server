@@ -4,7 +4,7 @@ import com.acnovate.audit_manager.common.dto.CommonResponse;
 import com.acnovate.audit_manager.dto.request.SchedulingAuditReportRequest;
 import com.acnovate.audit_manager.service.ISchedulingAuditReportService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/scheduling-audit-report")
 @Validated
-@RequiredArgsConstructor
 public class SchedulingAuditReportController {
 
-    private final ISchedulingAuditReportService schedulingAuditReportService;
+    @Autowired
+    private ISchedulingAuditReportService schedulingAuditReportService;
 
     @PostMapping
     @ResponseBody

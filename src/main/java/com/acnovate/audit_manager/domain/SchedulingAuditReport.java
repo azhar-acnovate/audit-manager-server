@@ -1,13 +1,10 @@
 package com.acnovate.audit_manager.domain;
-
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-@Data
-@Getter
-@Setter
+import java.util.Date;
+
 @Entity
 @Table(name = "scheduling_audit_report")
 public class SchedulingAuditReport {
@@ -34,4 +31,74 @@ public class SchedulingAuditReport {
     @Column(name = "recipients", nullable = false)
     private String recipients;  // Comma-separated emails
 
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getReportId() {
+        return reportId;
+    }
+
+    public void setReportId(Integer reportId) {
+        this.reportId = reportId;
+    }
+
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
+    }
+
+    public Integer getSchedulingHour() {
+        return schedulingHour;
+    }
+
+    public void setSchedulingHour(Integer schedulingHour) {
+        this.schedulingHour = schedulingHour;
+    }
+
+    public Integer getSchedulingMinute() {
+        return schedulingMinute;
+    }
+
+    public void setSchedulingMinute(Integer schedulingMinute) {
+        this.schedulingMinute = schedulingMinute;
+    }
+
+    public String getTimeMarker() {
+        return timeMarker;
+    }
+
+    public void setTimeMarker(String timeMarker) {
+        this.timeMarker = timeMarker;
+    }
+
+    public String getRecipients() {
+        return recipients;
+    }
+
+    public void setRecipients(String recipients) {
+        this.recipients = recipients;
+    }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "SchedulingAuditReport{" +
+                "id=" + id +
+                ", reportId=" + reportId +
+                ", frequency='" + frequency + '\'' +
+                ", schedulingHour=" + schedulingHour +
+                ", schedulingMinute=" + schedulingMinute +
+                ", timeMarker='" + timeMarker + '\'' +
+                ", recipients='" + recipients + '\'' +
+                '}';
+    }
 }
