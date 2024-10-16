@@ -154,7 +154,7 @@
 			<version>1.6</version>
 		</dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>
