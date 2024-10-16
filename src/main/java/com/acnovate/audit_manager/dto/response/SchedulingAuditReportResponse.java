@@ -1,8 +1,5 @@
 package com.acnovate.audit_manager.dto.response;
 
-import com.acnovate.audit_manager.domain.SchedulingAuditReport;
-
-import java.util.Arrays;
 import java.util.List;
 
 public class SchedulingAuditReportResponse {
@@ -16,31 +13,6 @@ public class SchedulingAuditReportResponse {
 
   // No-argument constructor
   public SchedulingAuditReportResponse() {}
-
-  // All-argument constructor
-  public SchedulingAuditReportResponse(Long id, Integer reportId, String frequency, Integer schedulingHour, Integer schedulingMinute,
-      String timeMarker, List<String> recipients) {
-    this.id = id;
-    this.reportId = reportId;
-    this.frequency = frequency;
-    this.schedulingHour = schedulingHour;
-    this.schedulingMinute = schedulingMinute;
-    this.timeMarker = timeMarker;
-    this.recipients = recipients;
-  }
-
-  // Constructor that accepts the SchedulingAuditReport entity
-  public SchedulingAuditReportResponse(SchedulingAuditReport schedulingAuditReport) {
-    this.id = schedulingAuditReport.getId();
-    this.reportId = schedulingAuditReport.getReportId();
-    this.frequency = schedulingAuditReport.getFrequency();
-    this.schedulingHour = schedulingAuditReport.getSchedulingHour();
-    this.schedulingMinute = schedulingAuditReport.getSchedulingMinute();
-    this.timeMarker = schedulingAuditReport.getTimeMarker();
-    // Convert the recipients string back to a list
-    this.recipients = Arrays.asList(schedulingAuditReport.getRecipients()
-        .split(","));
-  }
 
   // Getters and Setters
   public Long getId() {

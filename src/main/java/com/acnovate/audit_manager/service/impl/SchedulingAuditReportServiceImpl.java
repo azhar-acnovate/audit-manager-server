@@ -7,6 +7,9 @@ import com.acnovate.audit_manager.dto.request.SchedulingAuditReportRequest;
 import com.acnovate.audit_manager.dto.response.SchedulingAuditReportResponse;
 import com.acnovate.audit_manager.repository.SchedulingAuditReportRepository;
 import com.acnovate.audit_manager.service.ISchedulingAuditReportService;
+
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -19,32 +22,48 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
   private SchedulingAuditReportRepository schedulingAuditReportRepository;
 
   @Override
+  public SchedulingAuditReportResponse domainToDto(SchedulingAuditReport schedulingAuditReport) {
+    SchedulingAuditReportResponse schedulingAuditReportResponse = new SchedulingAuditReportResponse();
+    schedulingAuditReportResponse.setId(schedulingAuditReport.getId());
+    schedulingAuditReportResponse.setReportId(schedulingAuditReport.getReportId());
+    schedulingAuditReportResponse.setFrequency(schedulingAuditReport.getFrequency());
+    schedulingAuditReportResponse.setSchedulingHour(schedulingAuditReport.getSchedulingHour());
+    schedulingAuditReportResponse.setSchedulingMinute(schedulingAuditReport.getSchedulingMinute());
+    schedulingAuditReportResponse.setTimeMarker(schedulingAuditReport.getTimeMarker());
+    // Convert the recipients string back to a list
+    schedulingAuditReportResponse.setRecipients(Arrays.asList(schedulingAuditReport.getRecipients()
+        .split(",")));
+
+    return schedulingAuditReportResponse;
+  }
+
+  @Override
   public SchedulingAuditReportResponse createSchedulingAuditReport(SchedulingAuditReportRequest request) {
-    // Validate that recipients list is not empty
+    // Validate that the recipients list is not empty
     if (request.getRecipients() == null || request.getRecipients()
         .isEmpty()) {
       throw new CustomErrorHandleException("Email Must be Required");
     }
 
-    // Validate each recipient's email
+    // Validate each recipient's email format using regex
     for (String email : request.getRecipients()) {
-      // Basic email structure validation using regex
       if (!email.matches(".+@.+\\..+")) {
         throw new CustomErrorHandleException("Validation failed: " + email + " is not a valid email address.");
       }
     }
 
-    // Proceed with creating and saving the report
+    // Create the SchedulingAuditReport entity
     SchedulingAuditReport report = new SchedulingAuditReport();
     report.setReportId(request.getReportId());
     report.setFrequency(request.getFrequency());
     report.setSchedulingHour(request.getSchedulingHour());
     report.setSchedulingMinute(request.getSchedulingMinute());
     report.setTimeMarker(request.getTimeMarker());
+
+    // Convert the list of recipients into a comma-separated string
     report.setRecipients(String.join(",", request.getRecipients()));
 
-    // Convert the saved entity to a response and return it
-    return new SchedulingAuditReportResponse(schedulingAuditReportRepository.save(report));
+    return domainToDto(schedulingAuditReportRepository.save(report));
   }
 
   @Override

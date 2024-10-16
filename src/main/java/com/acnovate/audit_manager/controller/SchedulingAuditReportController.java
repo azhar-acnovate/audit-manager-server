@@ -1,6 +1,7 @@
 package com.acnovate.audit_manager.controller;
 
 import com.acnovate.audit_manager.common.dto.CommonResponse;
+import com.acnovate.audit_manager.common.dto.FilterDto;
 import com.acnovate.audit_manager.domain.SchedulingAuditReport;
 import com.acnovate.audit_manager.dto.request.SchedulingAuditReportRequest;
 import com.acnovate.audit_manager.service.ISchedulingAuditReportService;
@@ -32,33 +33,34 @@ public class SchedulingAuditReportController {
   @PostMapping
   @ResponseBody
   public ResponseEntity<CommonResponse> createReport(@Valid @RequestBody SchedulingAuditReportRequest request) {
-    CommonResponse res = new CommonResponse();
+    CommonResponse commonResponse = new CommonResponse();
 
-    res.setStatus(HttpStatus.OK.value());
-    res.setMessage("Scheduling report with Report ID " + request.getReportId() + " saved successfully");
-    res.setData(schedulingAuditReportService.createSchedulingAuditReport(request));
-    return new ResponseEntity<>(res, HttpStatus.OK);
+    commonResponse.setStatus(HttpStatus.OK.value());
+    commonResponse.setMessage("Scheduling report with Report ID " + request.getReportId() + " saved successfully");
+    commonResponse.setData(schedulingAuditReportService.createSchedulingAuditReport(request));
+    return new ResponseEntity<>(commonResponse, HttpStatus.OK);
   }
 
   @RequestMapping(method = RequestMethod.GET)
   @ResponseBody
   public ResponseEntity<CommonResponse> findAll(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer pageNo) {
-    CommonResponse response = new CommonResponse();
+    CommonResponse commonResponse = new CommonResponse();
 
-    // If size and pageNo are provided, return paginated results
-    if (size != null && pageNo != null) {
-      Page<SchedulingAuditReport> paginatedReports = schedulingAuditReportService.findAll(size, pageNo);
-      response.setStatus(HttpStatus.OK.value());
-      response.setMessage("Successfully fetched paginated scheduling audit reports.");
-      response.setData(paginatedReports.getContent());
+    commonResponse.setStatus(HttpStatus.OK.value());
+    commonResponse.setMessage("Successfully fetched user Data..");
+    if (size != null & pageNo != null) {
+      FilterDto filter = new FilterDto();
+      Page<SchedulingAuditReport> pages = schedulingAuditReportService.findAll(size, pageNo, filter);
+      commonResponse.setData(pages.map(schedulingAuditReportService::domainToDto));
+
     } else {
-      // If no pagination parameters are provided, return all results
-      List<SchedulingAuditReport> reports = schedulingAuditReportService.findAll();
-      response.setStatus(HttpStatus.OK.value());
-      response.setMessage("Successfully fetched all scheduling audit reports.");
-      response.setData(reports);
-    }
+      List<SchedulingAuditReport> list = schedulingAuditReportService.findAll();
+      commonResponse.setData(list.stream()
+          .map(schedulingAuditReportService::domainToDto)
+          .toList());
 
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    return new ResponseEntity<CommonResponse>(commonResponse, HttpStatus.OK);
+
   }
 }
