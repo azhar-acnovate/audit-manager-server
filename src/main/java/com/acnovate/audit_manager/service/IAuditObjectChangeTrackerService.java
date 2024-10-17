@@ -1,5 +1,6 @@
 package com.acnovate.audit_manager.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.acnovate.audit_manager.common.interfaces.IService;
@@ -13,6 +14,6 @@ public interface IAuditObjectChangeTrackerService extends IService<AuditObjectCh
 
 	AuditLogActivityResponseDto createAuditObjectChangeTracker(AuditObjectChangeRequestDto auditObjectChangeRequestDto);
 
-	List<AuditObjectChangeTracker> findByRefObjectIds(List<Long> refObjectIds);
+	List<AuditObjectChangeTracker> getFilteredReportData(List<Long> refObjectIds, Date startDate, Date endDate);
 
 }
