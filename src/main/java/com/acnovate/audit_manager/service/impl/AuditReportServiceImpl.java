@@ -1,6 +1,8 @@
 package com.acnovate.audit_manager.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -26,7 +28,6 @@ import com.acnovate.audit_manager.service.IFileGenerationService;
 import com.acnovate.audit_manager.service.ISourceReferenceObjectService;
 import com.acnovate.audit_manager.service.IUserService;
 import com.acnovate.audit_manager.utils.AuditEntityMapper;
-import com.google.common.collect.Lists;
 
 @Service
 @Transactional
@@ -106,9 +107,14 @@ public class AuditReportServiceImpl extends AbstractRawService<AuditReport> impl
 		LinkedHashMap<String, String> headerInfo = new LinkedHashMap<>();
 		StringBuilder filterList = new StringBuilder();
 		for (AuditReport report : reports) {
-			list.addAll(auditObjectChangeTrackerService.findByRefObjectIds(report.getRefObjectIds()));
+
+			list.addAll(auditObjectChangeTrackerService.getFilteredReportData(report.getRefObjectIds(),
+					report.getStartDateRange(), report.getEndDateRange()));
 			filterList.append(report.getReportName()).append("|");
 		}
+
+		// Sorting by eventOccurence in ascending order (old to new)
+		Collections.sort(list, Comparator.comparing(AuditObjectChangeTracker::getEventOccurence));
 		User user = userService.findOne(exportedById);
 		String exportedBy = user.getUserEmail();
 
@@ -119,29 +125,6 @@ public class AuditReportServiceImpl extends AbstractRawService<AuditReport> impl
 		}
 		headerInfo.put("Filter Criteria - List", filterList.toString());
 		return fileGenerationService.generateFile(fileType, headerInfo, list);
-	}
-
-	private List<String> getHeader() {
-		return Lists.newArrayList("Source Name", "Source Key", "Event Type", "Event Occurence");
-	}
-
-	private List<List<String>> getReportData(AuditReport auditReport) {
-		List<AuditObjectChangeTracker> data = auditObjectChangeTrackerService
-				.findAllById(auditReport.getRefObjectIds());
-		List<List<String>> rows = new ArrayList<>();
-		for (AuditObjectChangeTracker auditObjectChangeTracker : data) {
-			List<String> row = new ArrayList<>();
-			SourceReferenceObject refObject = sourceReferenceObjectService
-					.findOne(auditObjectChangeTracker.getRefObjectId());
-			row.add(refObject.getSourceReferenceName());
-			row.add(refObject.getSourceReferenceKey());
-			row.add(auditObjectChangeTracker.getEventType());
-
-			row.add(auditObjectChangeTracker.getEventOccurence().toString());
-			rows.add(row);
-		}
-		return rows;
-
 	}
 
 }
