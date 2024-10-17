@@ -72,4 +72,10 @@ public class AuditObjectChangeTrackerServiceImpl extends AbstractRawService<Audi
 		return domainToDto(auditObjectChangeTracker);
 	}
 
+	@Override
+	public List<AuditObjectChangeTracker> findByRefObjectIds(List<Long> refObjectIds) {
+		// TODO Auto-generated method stub
+		return repo.findByRefObjectIdIn(refObjectIds);
+	}
+
 }
