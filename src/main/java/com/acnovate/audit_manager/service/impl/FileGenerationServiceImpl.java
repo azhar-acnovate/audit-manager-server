@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acnovate.audit_manager.common.persistence.exception.CustomErrorHandleException;
+import com.acnovate.audit_manager.constant.MyConstant;
 import com.acnovate.audit_manager.domain.AuditAttributeChangeTracker;
 import com.acnovate.audit_manager.domain.AuditObjectChangeTracker;
 import com.acnovate.audit_manager.domain.SourceReferenceObject;
@@ -65,7 +66,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 				newRow.append(refObject.getSourceReferenceName()).append(",");
 				newRow.append(refObject.getSourceReferenceKey()).append(",");
 				newRow.append(auditObject.getEventType()).append(",");
-				newRow.append(auditObject.getEventOccurence().toString()).append(",");
+				newRow.append(MyConstant.REPORT_DATE_FORMATOR.format(auditObject.getEventOccurence())).append(",");
 				for (AuditAttributeChangeTracker auditAttribute : list) {
 					newRow.append(auditAttribute.getAttributeName().toUpperCase()).append(",");
 					newRow.append(auditAttribute.getOldValue()).append(",");
@@ -123,7 +124,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 			headerFont.setFontName("Arial"); // Set the font to Arial
 			headerFont.setBold(true);
 			headerFont.setFontHeightInPoints((short) 9); // Set the font size to 9
-			headerFont.setColor(fontColor);
+			headerFont.setColor(IndexedColors.BLACK.getIndex());
 
 			setBorderAllSide(headerStyle); // Assuming this is a custom method to set borders
 			headerStyle.setFont(headerFont);
@@ -180,7 +181,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 				cell2.setCellStyle(normalStyle);
 
 				Cell cell3 = row.createCell(3);
-				cell3.setCellValue(auditObject.getEventOccurence().toString());
+				cell3.setCellValue(MyConstant.REPORT_DATE_FORMATOR.format(auditObject.getEventOccurence()));
 				cell3.setCellStyle(normalStyle);
 
 				for (AuditAttributeChangeTracker auditAttribute : list) {
