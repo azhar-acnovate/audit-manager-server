@@ -26,7 +26,7 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 	@Autowired
 	private UserRepository repo;
 	@Autowired
-	private  EmailService emailService;
+	private EmailService emailService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -50,6 +50,7 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 		LoggedInUserDetails response = new LoggedInUserDetails();
 		response.setId(resource.getId());
 		response.setUserName(resource.getUserName());
+		response.setUserRole(resource.getUserRole());
 		// response.setProfileImageName(resource.getProfileImageName());
 		return response;
 	}
@@ -73,19 +74,22 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 		try {
 			User user;
 			String generatedPassword = null;
-			boolean send =false;
-			// If userRequestDto has an ID, fetch the existing user details by ID (update scenario)
+			boolean send = false;
+			// If userRequestDto has an ID, fetch the existing user details by ID (update
+			// scenario)
 			if (userRequestDto.getId() != null) {
 				user = findOne(userRequestDto.getId());
 
 				// If a password is provided during an update, encode and set it
 
+				if (userRequestDto.getPassword() != null) {
 					user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
+				}
 
 			} else {
 				// Create a new user object (create scenario)
 				user = new User();
-				send =true;
+				send = true;
 				// Generate a random password and encode it
 				generatedPassword = generateRandomPassword();
 				user.setPassword(passwordEncoder.encode(generatedPassword));
@@ -99,7 +103,7 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 			// Save or update the user in the database
 			user = create(user);
 			// Send email only if it's a new user creation and use the generated password
-			if(user!= null && send) {
+			if (user != null && send) {
 				emailService.sendEmail(userRequestDto.getUserEmail(), generatedPassword);
 			}
 			// Convert the user domain object to a DTO and return it
@@ -110,7 +114,6 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 			throw new CustomErrorHandleException("User name " + userRequestDto.getUserName() + " is already taken");
 		}
 	}
-
 
 	private String generateRandomPassword() {
 		int length = 8; // Set the desired password length
