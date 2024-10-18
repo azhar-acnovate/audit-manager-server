@@ -35,7 +35,7 @@ public class SchedulingAuditReportController {
   public ResponseEntity<CommonResponse> createReport(@Valid @RequestBody SchedulingAuditReportRequest request) {
     CommonResponse commonResponse = new CommonResponse();
     commonResponse.setStatus(HttpStatus.OK.value());
-    commonResponse.setMessage("Scheduling report with Report ID " + request.getReportIds() + " saved successfully");
+    commonResponse.setMessage("Scheduling report with Report ID " + request.getReportId() + " saved successfully");
     commonResponse.setData(schedulingAuditReportService.createSchedulingAuditReport(request));
     return new ResponseEntity<>(commonResponse, HttpStatus.OK);
   }

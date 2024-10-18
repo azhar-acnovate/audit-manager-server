@@ -37,9 +37,9 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
           .map(String::trim) // Trim any whitespace
           .map(Integer::valueOf) // Convert String to Integer
           .collect(Collectors.toList());
-      schedulingAuditReportResponse.setReportIds(reportIds);
+      schedulingAuditReportResponse.setReportId(reportIds);
     } else {
-      schedulingAuditReportResponse.setReportIds(new ArrayList<>()); // Set empty list if no IDs
+      schedulingAuditReportResponse.setReportId(new ArrayList<>()); // Set empty list if no IDs
     }
 
     schedulingAuditReportResponse.setFrequency(schedulingAuditReport.getFrequency());
@@ -72,7 +72,7 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
     SchedulingAuditReport report = new SchedulingAuditReport();
 
     // Join report IDs into a comma-separated string
-    report.setReportIds(request.getReportIds()
+    report.setReportIds(request.getReportId()
         .stream()
         .map(String::valueOf) // Convert Integer to String
         .collect(Collectors.joining(",")));

@@ -3,7 +3,7 @@ package com.acnovate.audit_manager.dto.request;
 import java.util.List;
 
 public class SchedulingAuditReportRequest {
-  private List<Integer> reportIds; // List of report IDs
+  private List<Integer> reportId; // List of report IDs
   private String frequency;
   private Integer schedulingHour;
   private Integer schedulingMinute;
@@ -12,12 +12,12 @@ public class SchedulingAuditReportRequest {
 
   // Getters and Setters
 
-  public List<Integer> getReportIds() {
-    return reportIds;
+  public List<Integer> getReportId() {
+    return reportId;
   }
 
-  public void setReportIds(List<Integer> reportIds) {
-    this.reportIds = reportIds;
+  public void setReportId(List<Integer> reportId) {
+    this.reportId = reportId;
   }
 
   public String getFrequency() {
