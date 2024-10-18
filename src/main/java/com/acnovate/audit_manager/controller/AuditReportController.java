@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,6 +69,19 @@ public class AuditReportController {
 		res.setData(auditReportService.createAuditReport(req));
 		return new ResponseEntity<CommonResponse>(res, HttpStatus.OK);
 
+	}
+
+	@RequestMapping(value = "/generate-report", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> generateFile(@RequestParam String fileType, @RequestParam List<Long> reportIds) {
+		byte[] fileBytes = auditReportService.genereteReport(auditReportService.getLoggedUserId(), reportIds, fileType);
+		HttpHeaders headersResponse = new HttpHeaders();
+		headersResponse.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + "report." + fileType);
+
+		String mediaType = fileType.equalsIgnoreCase("csv") ? "text/csv"
+				: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+		headersResponse.set(HttpHeaders.CONTENT_TYPE, mediaType);
+
+		return ResponseEntity.ok().headers(headersResponse).body(fileBytes);
 	}
 
 }

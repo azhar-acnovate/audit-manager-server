@@ -17,11 +17,15 @@ public class LoggedInUserDetails {
 
 	private String accessToken;
 
+	private String refreshToken;
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
 	private Date issuedAt;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
 	private Date expireAt;
+
+	private String userRole;
 
 	public Long getId() {
 		return id;
@@ -92,5 +96,21 @@ public class LoggedInUserDetails {
 		return "LoggedInUserDetails [id=" + id + ", userName=" + userName + ", status=" + status + ", profileImageName="
 				+ profileImageName + ", lastUpdatedDate=" + lastUpdatedDate + ", accessToken=" + accessToken
 				+ ", issuedAt=" + issuedAt + ", expireAt=" + expireAt + "]";
+	}
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
+
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 }

@@ -1,5 +1,6 @@
 package com.acnovate.audit_manager.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,12 @@ public class AuditObjectChangeTrackerServiceImpl extends AbstractRawService<Audi
 		auditObjectChangeTracker.setEventOccurence(auditObjectChangeRequestDto.getEventOccurence());
 		auditObjectChangeTracker = create(auditObjectChangeTracker);
 		return domainToDto(auditObjectChangeTracker);
+	}
+
+	@Override
+	public List<AuditObjectChangeTracker> getFilteredReportData(List<Long> refObjectIds, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return repo.findByRefObjectIdInAndEventOccurenceBetween(refObjectIds, startDate, endDate);
 	}
 
 }

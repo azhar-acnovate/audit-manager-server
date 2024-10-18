@@ -209,4 +209,16 @@ VALUES ('Material', '35321', '[{\"fieldName\": \"Material Name\", \"fieldValue\"
 
 GO
 
+CREATE TABLE scheduling_audit_report (
+    id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    report_id BIGINT,
+	frequency NVARCHAR(255) NULL,
+	scheduling_hour INT ,
+    scheduling_minute INT ,
+	time_marker  CHAR(2) CHECK (time_marker IN ('AM', 'PM')),
+	recipients NVARCHAR(MAX) NULL    
+);
+
+GO
+
 
