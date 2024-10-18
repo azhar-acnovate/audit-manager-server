@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SchedulingAuditReportResponse {
   private Long id;
-  private Integer reportId;
+  private List<String> reportIds;
   private String frequency;
   private Integer schedulingHour;
   private Integer schedulingMinute;
@@ -23,12 +23,12 @@ public class SchedulingAuditReportResponse {
     this.id = id;
   }
 
-  public Integer getReportId() {
-    return reportId;
+  public List<String> getReportIds() {
+    return reportIds;
   }
 
-  public void setReportId(Integer reportId) {
-    this.reportId = reportId;
+  public void setReportIds(List<String> reportIds) {
+    this.reportIds = reportIds;
   }
 
   public String getFrequency() {
@@ -71,10 +71,9 @@ public class SchedulingAuditReportResponse {
     this.recipients = recipients;
   }
 
-  // toString method
   @Override
   public String toString() {
-    return "SchedulingAuditReportResponse{" + "id=" + id + ", reportId=" + reportId + ", frequency='" + frequency + '\'' + ", schedulingHour="
+    return "SchedulingAuditReportResponse{" + "id=" + id + ", reportIds=" + reportIds + ", frequency='" + frequency + '\'' + ", schedulingHour="
         + schedulingHour + ", schedulingMinute=" + schedulingMinute + ", timeMarker='" + timeMarker + '\'' + ", recipients=" + recipients + '}';
   }
 }

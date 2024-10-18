@@ -25,7 +25,8 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
   public SchedulingAuditReportResponse domainToDto(SchedulingAuditReport schedulingAuditReport) {
     SchedulingAuditReportResponse schedulingAuditReportResponse = new SchedulingAuditReportResponse();
     schedulingAuditReportResponse.setId(schedulingAuditReport.getId());
-    schedulingAuditReportResponse.setReportId(schedulingAuditReport.getReportId());
+    schedulingAuditReportResponse.setReportIds(Arrays.asList(schedulingAuditReport.getReportIds()
+        .split(",")));
     schedulingAuditReportResponse.setFrequency(schedulingAuditReport.getFrequency());
     schedulingAuditReportResponse.setSchedulingHour(schedulingAuditReport.getSchedulingHour());
     schedulingAuditReportResponse.setSchedulingMinute(schedulingAuditReport.getSchedulingMinute());
@@ -54,7 +55,7 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 
     // Create the SchedulingAuditReport entity
     SchedulingAuditReport report = new SchedulingAuditReport();
-    report.setReportId(request.getReportId());
+    report.setReportIds(String.join(",", request.getReportIds()));
     report.setFrequency(request.getFrequency());
     report.setSchedulingHour(request.getSchedulingHour());
     report.setSchedulingMinute(request.getSchedulingMinute());

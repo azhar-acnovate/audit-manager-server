@@ -15,8 +15,8 @@ public class SchedulingAuditReport {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "report_id", nullable = false)
-  private Integer reportId;
+  @Column(name = "report_ids", nullable = false)
+  private String reportIds;
 
   @Column(name = "frequency", nullable = false)
   private String frequency;
@@ -31,7 +31,7 @@ public class SchedulingAuditReport {
   private String timeMarker;
 
   @Column(name = "recipients", nullable = false)
-  private String recipients; // Comma-separated emails
+  private String recipients;
 
   // Getters and Setters
   public Long getId() {
@@ -42,12 +42,12 @@ public class SchedulingAuditReport {
     this.id = id;
   }
 
-  public Integer getReportId() {
-    return reportId;
+  public String getReportIds() {
+    return reportIds;
   }
 
-  public void setReportId(Integer reportId) {
-    this.reportId = reportId;
+  public void setReportIds(String reportIds) {
+    this.reportIds = reportIds;
   }
 
   public String getFrequency() {
@@ -93,7 +93,7 @@ public class SchedulingAuditReport {
   // toString method
   @Override
   public String toString() {
-    return "SchedulingAuditReport{" + "id=" + id + ", reportId=" + reportId + ", frequency='" + frequency + '\'' + ", schedulingHour="
+    return "SchedulingAuditReport{" + "id=" + id + ", reportIds='" + reportIds + '\'' + ", frequency='" + frequency + '\'' + ", schedulingHour="
         + schedulingHour + ", schedulingMinute=" + schedulingMinute + ", timeMarker='" + timeMarker + '\'' + ", recipients='" + recipients + '\''
         + '}';
   }

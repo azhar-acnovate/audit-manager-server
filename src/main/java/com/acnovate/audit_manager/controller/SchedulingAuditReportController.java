@@ -34,9 +34,8 @@ public class SchedulingAuditReportController {
   @ResponseBody
   public ResponseEntity<CommonResponse> createReport(@Valid @RequestBody SchedulingAuditReportRequest request) {
     CommonResponse commonResponse = new CommonResponse();
-
     commonResponse.setStatus(HttpStatus.OK.value());
-    commonResponse.setMessage("Scheduling report with Report ID " + request.getReportId() + " saved successfully");
+    commonResponse.setMessage("Scheduling report with Report ID " + request.getReportIds() + " saved successfully");
     commonResponse.setData(schedulingAuditReportService.createSchedulingAuditReport(request));
     return new ResponseEntity<>(commonResponse, HttpStatus.OK);
   }
@@ -45,14 +44,10 @@ public class SchedulingAuditReportController {
   @ResponseBody
   public ResponseEntity<CommonResponse> findAll(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer pageNo) {
     CommonResponse commonResponse = new CommonResponse();
-
-    commonResponse.setStatus(HttpStatus.OK.value());
-    commonResponse.setMessage("Successfully fetched user Data..");
-    if (size != null & pageNo != null) {
-      FilterDto filter = new FilterDto();
+    if (size != null && pageNo != null) {
+      FilterDto filter = new FilterDto(); // Make sure this is set correctly
       Page<SchedulingAuditReport> pages = schedulingAuditReportService.findAll(size, pageNo, filter);
       commonResponse.setData(pages.map(schedulingAuditReportService::domainToDto));
-
     } else {
       List<SchedulingAuditReport> list = schedulingAuditReportService.findAll();
       commonResponse.setData(list.stream()
@@ -60,7 +55,8 @@ public class SchedulingAuditReportController {
           .toList());
 
     }
-    return new ResponseEntity<CommonResponse>(commonResponse, HttpStatus.OK);
-
+    commonResponse.setStatus(HttpStatus.OK.value());
+    commonResponse.setMessage("Successfully fetched user data.");
+    return new ResponseEntity<>(commonResponse, HttpStatus.OK);
   }
 }

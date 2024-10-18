@@ -6,8 +6,8 @@ import java.util.List;
 
 public class SchedulingAuditReportRequest {
 
-  @NotNull(message = "Report ID cannot be null")
-  private Integer reportId;
+  @NotNull(message = "Report IDs cannot be null")
+  private List<String> reportIds;
 
   @NotNull(message = "Frequency cannot be null")
   private String frequency;
@@ -24,13 +24,13 @@ public class SchedulingAuditReportRequest {
   @NotNull(message = "Recipients cannot be null")
   private List<String> recipients;
 
-  // Getters and Setters
-  public Integer getReportId() {
-    return reportId;
+
+  public List<String> getReportIds() {
+    return reportIds;
   }
 
-  public void setReportId(Integer reportId) {
-    this.reportId = reportId;
+  public void setReportId(List<String> reportIds) {
+    this.reportIds = reportIds;
   }
 
   public String getFrequency() {
@@ -76,7 +76,7 @@ public class SchedulingAuditReportRequest {
   // toString method
   @Override
   public String toString() {
-    return "SchedulingAuditReportRequest{" + "reportId=" + reportId + ", frequency='" + frequency + '\'' + ", schedulingHour=" + schedulingHour
+    return "SchedulingAuditReportRequest{" + "reportIds=" + reportIds + ", frequency='" + frequency + '\'' + ", schedulingHour=" + schedulingHour
         + ", schedulingMinute=" + schedulingMinute + ", timeMarker='" + timeMarker + '\'' + ", recipients=" + recipients + '}';
   }
 }
