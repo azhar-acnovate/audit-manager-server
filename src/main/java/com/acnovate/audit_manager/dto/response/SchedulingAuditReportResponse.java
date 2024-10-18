@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SchedulingAuditReportResponse {
   private Long id;
-  private List<String> reportIds;
+  private List<Integer> reportIds; // Change to List<Integer>
   private String frequency;
   private Integer schedulingHour;
   private Integer schedulingMinute;
@@ -23,11 +23,11 @@ public class SchedulingAuditReportResponse {
     this.id = id;
   }
 
-  public List<String> getReportIds() {
+  public List<Integer> getReportIds() {
     return reportIds;
   }
 
-  public void setReportIds(List<String> reportIds) {
+  public void setReportIds(List<Integer> reportIds) {
     this.reportIds = reportIds;
   }
 
