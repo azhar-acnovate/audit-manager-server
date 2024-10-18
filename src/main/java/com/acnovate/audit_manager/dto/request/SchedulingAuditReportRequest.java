@@ -1,23 +1,37 @@
 package com.acnovate.audit_manager.dto.request;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 public class SchedulingAuditReportRequest {
-  private List<Integer> reportId; // List of report IDs
+
+  @NotNull(message = "Report IDs cannot be null")
+  private List<Integer> reportIds; // List of report IDs
+
+  @NotNull(message = "Frequency cannot be null")
   private String frequency;
+
+  @NotNull(message = "Scheduling hour cannot be null")
   private Integer schedulingHour;
+
+  @NotNull(message = "Scheduling minute cannot be null")
   private Integer schedulingMinute;
+
+  @NotNull(message = "Time marker cannot be null")
   private String timeMarker;
+
+  @NotNull(message = "Recipients cannot be null")
   private List<String> recipients;
 
   // Getters and Setters
 
-  public List<Integer> getReportId() {
-    return reportId;
+  public List<Integer> getReportIds() {
+    return reportIds;
   }
 
-  public void setReportId(List<Integer> reportId) {
-    this.reportId = reportId;
+  public void setReportIds(List<Integer> reportIds) {
+    this.reportIds = reportIds;
   }
 
   public String getFrequency() {
@@ -58,5 +72,12 @@ public class SchedulingAuditReportRequest {
 
   public void setRecipients(List<String> recipients) {
     this.recipients = recipients;
+  }
+
+  // toString method
+  @Override
+  public String toString() {
+    return "SchedulingAuditReportRequest{" + "reportIds=" + reportIds + ", frequency='" + frequency + '\'' + ", schedulingHour=" + schedulingHour
+        + ", schedulingMinute=" + schedulingMinute + ", timeMarker='" + timeMarker + '\'' + ", recipients=" + recipients + '}';
   }
 }

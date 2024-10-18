@@ -72,7 +72,7 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
     SchedulingAuditReport report = new SchedulingAuditReport();
 
     // Join report IDs into a comma-separated string
-    report.setReportIds(request.getReportId()
+    report.setReportIds(request.getReportIds()
         .stream()
         .map(String::valueOf) // Convert Integer to String
         .collect(Collectors.joining(",")));
