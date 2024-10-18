@@ -7,7 +7,7 @@ import java.util.List;
 public class SchedulingAuditReportRequest {
 
   @NotNull(message = "Report IDs cannot be null")
-  private List<String> reportIds;
+  private List<Integer> reportIds; // List of report IDs
 
   @NotNull(message = "Frequency cannot be null")
   private String frequency;
@@ -24,12 +24,13 @@ public class SchedulingAuditReportRequest {
   @NotNull(message = "Recipients cannot be null")
   private List<String> recipients;
 
+  // Getters and Setters
 
-  public List<String> getReportIds() {
+  public List<Integer> getReportIds() {
     return reportIds;
   }
 
-  public void setReportId(List<String> reportIds) {
+  public void setReportIds(List<Integer> reportIds) {
     this.reportIds = reportIds;
   }
 
