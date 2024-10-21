@@ -127,4 +127,10 @@ public class AuditReportServiceImpl extends AbstractRawService<AuditReport> impl
 		return fileGenerationService.generateFile(fileType, headerInfo, list);
 	}
 
+	@Override
+	public List<String> getReportNamesByIds(List<Long> reportIds) {
+
+		return repo.findReportNamesByIds(reportIds);
+	}
+
 }

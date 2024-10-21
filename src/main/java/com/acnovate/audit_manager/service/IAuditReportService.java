@@ -13,4 +13,6 @@ public interface IAuditReportService extends IService<AuditReport> {
 	AuditReportResponseDto createAuditReport(AuditReportRequestDto req);
 
 	byte[] genereteReport(Long exportedBy, List<Long> reportIds, String fileType);
+
+	List<String> getReportNamesByIds(List<Long> reportIds);
 }
