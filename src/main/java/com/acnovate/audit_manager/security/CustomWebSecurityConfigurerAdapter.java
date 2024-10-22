@@ -68,6 +68,7 @@ public class CustomWebSecurityConfigurerAdapter {//
 			auth.requestMatchers("/error/**",
 					"/audit-manager/api/v1/**",
 					"/resource/**",
+					"/auth/refresh-token",
 					"/v2/api-docs",
 					"/v3/api-docs/**",    // OpenAPI documentation
 					"/swagger-ui/**",     // Swagger UI

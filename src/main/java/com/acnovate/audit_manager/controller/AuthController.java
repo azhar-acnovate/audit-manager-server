@@ -35,6 +35,20 @@ public class AuthController {
 
 	}
 
+	@PostMapping("/refresh-token")
+	public ResponseEntity<?> refreshToken(@RequestBody String refreshToken) {
+		// String refreshToken = request.getRefreshToken();
+
+		try {
+			String newAccessToken = tokenService.generateAccessTokenFromRefresh(refreshToken);
+			// request.setAccessToken(newAccessToken);
+			return ResponseEntity.ok(newAccessToken);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired refresh token");
+		}
+	}
+
 	@PostMapping("/generate-password")
 	public ResponseEntity<String> generatePassword(@RequestBody String rawPassword) {
 		return new ResponseEntity<>(passwordEncoder.encode(rawPassword), HttpStatus.OK);
