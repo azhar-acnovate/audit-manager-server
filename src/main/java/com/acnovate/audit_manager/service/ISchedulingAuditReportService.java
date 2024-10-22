@@ -7,7 +7,9 @@ import com.acnovate.audit_manager.dto.response.SchedulingAuditReportResponse;
 
 public interface ISchedulingAuditReportService extends IService<SchedulingAuditReport> {
 
-  SchedulingAuditReportResponse domainToDto(SchedulingAuditReport schedulingAuditReport);
+	SchedulingAuditReportResponse domainToDto(SchedulingAuditReport schedulingAuditReport);
 
-  SchedulingAuditReportResponse createSchedulingAuditReport(SchedulingAuditReportRequest request);
+	SchedulingAuditReportResponse createSchedulingAuditReport(SchedulingAuditReportRequest request);
+
+	void sendScheduledReport(SchedulingAuditReport schedulingAuditReport);
 }
