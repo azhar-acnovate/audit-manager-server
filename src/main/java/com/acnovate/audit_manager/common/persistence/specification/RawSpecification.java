@@ -48,6 +48,7 @@ public class RawSpecification<T> implements Specification<T> {
 
 		for (Entry<String, Object> entry : filter.getFilter().entrySet()) {
 			String fieldName = entry.getKey();
+
 			if (entry.getKey() != null && entry.getValue() != null) {
 				if (entry.getKey().startsWith(CRITERIA_NOT)) {
 					fieldName = entry.getKey().replaceFirst(CRITERIA_NOT, "");
@@ -85,6 +86,7 @@ public class RawSpecification<T> implements Specification<T> {
 				} else if (entry.getKey().startsWith(CRITERIA_GREATER_THAN_EQUAL)) {
 					fieldName = entry.getKey().replaceFirst(CRITERIA_GREATER_THAN_EQUAL, "");
 					Object value = getValue(root, fieldName, entry.getValue());
+
 					if (value instanceof Date) {
 						predicate = criteriaBuilder.and(predicate, criteriaBuilder
 								.greaterThanOrEqualTo(getRoot(root, fieldName).as(Date.class), (Date) value));
@@ -157,10 +159,42 @@ public class RawSpecification<T> implements Specification<T> {
 		return value.toString();
 	}
 
+//	private Object getFieldValue(Class<?> rootClass, String fieldName, Object value)
+//			throws NoSuchFieldException, SecurityException, ParseException {
+//
+//		Field field = rootClass.getDeclaredField(fieldName);
+//		if (field.getType() == Date.class) {
+//			if (value instanceof Date) {
+//				return value;
+//			} else {
+//				return dateFormat.parse(value.toString());
+//			}
+//		} else if (field.getType() == Boolean.class || field.getType() == boolean.class) {
+//			return Boolean.parseBoolean(value.toString());
+//		}
+//
+//		return value;
+//	}
 	private Object getFieldValue(Class<?> rootClass, String fieldName, Object value)
 			throws NoSuchFieldException, SecurityException, ParseException {
 
-		Field field = rootClass.getDeclaredField(fieldName);
+		Field field = null;
+		Class<?> currentClass = rootClass;
+
+		// Traverse the class hierarchy to find the field
+		while (currentClass != null) {
+			try {
+				field = currentClass.getDeclaredField(fieldName);
+				break; // Field found, break the loop
+			} catch (NoSuchFieldException e) {
+				currentClass = currentClass.getSuperclass(); // Move to the parent class
+			}
+		}
+
+		if (field == null) {
+			throw new NoSuchFieldException(fieldName + " not found in class hierarchy");
+		}
+
 		if (field.getType() == Date.class) {
 			if (value instanceof Date) {
 				return value;

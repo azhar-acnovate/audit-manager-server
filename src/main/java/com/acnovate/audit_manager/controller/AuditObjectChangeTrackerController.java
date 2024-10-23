@@ -72,4 +72,15 @@ public class AuditObjectChangeTrackerController {
 		return new ResponseEntity<CommonResponse>(res, HttpStatus.OK);
 
 	}
+
+	@RequestMapping(value = "/dashborad", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<CommonResponse> getDashboardData() {
+		CommonResponse res = new CommonResponse();
+		res.setStatus(HttpStatus.OK.value());
+		res.setMessage("Successfully fetched audit-module Data..");
+		res.setData(auditObjectChangeTrackerService.getDashboardData());
+		return new ResponseEntity<CommonResponse>(res, HttpStatus.OK);
+
+	}
 }
