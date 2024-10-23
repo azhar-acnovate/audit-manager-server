@@ -16,4 +16,12 @@ public interface IAuditAttributeChangeTrackerService extends IService<AuditAttri
 
 	AuditAttributeChangeTrackerResponseDto createAuditAttributeChangeTracker(
 			AuditAttributeChangeRequestDto auditAttributeChangeRequestDto);
+
+	Long countAttributeChangesYesterday();
+
+	Long countAttributeChangesDayBeforeYesterday();
+
+	Long countUserChangesLastQuarter();
+
+	Long countUserChangesPreviousQuarter();
 }
