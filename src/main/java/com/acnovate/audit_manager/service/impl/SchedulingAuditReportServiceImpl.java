@@ -53,13 +53,16 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		SchedulingAuditReportResponse schedulingAuditReportResponse = new SchedulingAuditReportResponse();
 		schedulingAuditReportResponse.setId(schedulingAuditReport.getId());
 
-		// Convert report IDs from a comma-separated string to a List<Integer>
+		// Convert report IDs from a comma-separated string to a List<Long>
 		if (schedulingAuditReport.getReportIds() != null && !schedulingAuditReport.getReportIds().isEmpty()) {
-			List<Integer> reportIds = Arrays.stream(schedulingAuditReport.getReportIds().split(",")).map(String::trim) // Trim
-																														// any
-																														// whitespace
-					.map(Integer::valueOf) // Convert String to Integer
+			List<Long> reportIds = Arrays.stream(schedulingAuditReport.getReportIds().split(","))
+					.map(String::trim) // Trim any whitespace
+					.map(Long::valueOf) // Convert String to Long
 					.collect(Collectors.toList());
+
+			// Get the report names using the report IDs
+			List<String> reportsName = auditReportService.getReportNamesByIds(reportIds);
+			schedulingAuditReportResponse.setReportsName(reportsName);
 			schedulingAuditReportResponse.setReportId(reportIds);
 		} else {
 			schedulingAuditReportResponse.setReportId(new ArrayList<>()); // Set empty list if no IDs
@@ -69,7 +72,6 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		schedulingAuditReportResponse.setSchedulingHour(schedulingAuditReport.getSchedulingHour());
 		schedulingAuditReportResponse.setSchedulingMinute(schedulingAuditReport.getSchedulingMinute());
 		schedulingAuditReportResponse.setTimeMarker(schedulingAuditReport.getTimeMarker());
-		// Convert the recipients string back to a list
 		schedulingAuditReportResponse.setRecipients(Arrays.asList(schedulingAuditReport.getRecipients().split(",")));
 
 		return schedulingAuditReportResponse;
@@ -93,7 +95,8 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		SchedulingAuditReport report = new SchedulingAuditReport();
 
 		// Join report IDs into a comma-separated string
-		report.setReportIds(request.getReportIds().stream().map(String::valueOf) // Convert Integer to String
+		report.setReportIds(request.getReportIds().stream()
+				.map(String::valueOf) // Convert Long to String
 				.collect(Collectors.joining(",")));
 
 		report.setFrequency(request.getFrequency());
@@ -108,17 +111,13 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		return domainToDto(schedulingAuditReportRepository.save(report));
 	}
 
-	// Email validation method
-	private boolean isValidEmail(String email) {
-		// A more comprehensive regex for email validation
-		return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
-	}
-
 	@Override
 	public void sendScheduledReport(SchedulingAuditReport schedulingAuditReport) {
-		List<Long> reportIds = Arrays.stream(schedulingAuditReport.getReportIds().split(",")) // Split the string
+		List<Long> reportIds = Arrays.stream(schedulingAuditReport.getReportIds().split(","))
 				.map(Long::valueOf) // Convert String to Long
 				.collect(Collectors.toList());
+
+		// Generate the report in XLSX format
 		byte[] reportBytes = auditReportService.genereteReport(1L, reportIds, "xlsx");
 
 		// Path where the XLSX file will be saved
@@ -128,15 +127,22 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
 			fileOutputStream.write(reportBytes);
 			logger.info("XLSX file written successfully to {}", filePath);
+
+			// Send the email with attachment
 			emailService.sendEmailWithAttachment(schedulingAuditReport.getRecipients(),
 					"Audit scheduled report is ready",
 					constructScheduleReportBody(auditReportService.getReportNamesByIds(reportIds)), filePath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			filePath.delete();// remove sent file
+			filePath.delete(); // Remove sent file
 		}
+	}
 
+	// Email validation method
+	private boolean isValidEmail(String email) {
+		// A more comprehensive regex for email validation
+		return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
 	}
 
 	private String constructScheduleReportBody(List<String> reportNames) {
@@ -152,8 +158,7 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		reportListBuilder.append("</head>");
 		reportListBuilder.append("<body>");
 		reportListBuilder.append("    <p>Dear User,</p>");
-		reportListBuilder.append(
-				"    <p>Your scheduled report has been successfully generated. The following reports are available for download:</p>");
+		reportListBuilder.append("    <p>Your scheduled report has been successfully generated. The following reports are available for download:</p>");
 
 		// Build the HTML list items for report names
 		reportListBuilder.append("<ul class='report-list'>");
@@ -162,15 +167,12 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		}
 		reportListBuilder.append("</ul>");
 
-		reportListBuilder
-				.append("    <p>You can download the reports in the attached <strong>xlsx</strong> format.</p>");
+		reportListBuilder.append("    <p>You can download the reports in the attached <strong>xlsx</strong> format.</p>");
 		reportListBuilder.append("    <p>Best regards,</p>");
-
 		reportListBuilder.append("    <p>The Audit Management Team</p>");
 		reportListBuilder.append("</body>");
 		reportListBuilder.append("</html>");
 
 		return reportListBuilder.toString();
 	}
-
 }

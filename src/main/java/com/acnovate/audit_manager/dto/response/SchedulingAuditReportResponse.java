@@ -4,12 +4,23 @@ import java.util.List;
 
 public class SchedulingAuditReportResponse {
   private Long id;
-  private List<Integer> reportId; // Change to List<Integer>
+  private List<Long> reportId; // Change to List<Long>
   private String frequency;
   private Integer schedulingHour;
   private Integer schedulingMinute;
   private String timeMarker;
   private List<String> recipients;
+  private List<String> reportsName;
+
+  public List<String> getReportsName() {
+    return reportsName;
+  }
+
+  public void setReportsName(List<String> reportsName) {
+    this.reportsName = reportsName;
+  }
+
+
 
   // No-argument constructor
   public SchedulingAuditReportResponse() {}
@@ -23,11 +34,11 @@ public class SchedulingAuditReportResponse {
     this.id = id;
   }
 
-  public List<Integer> getReportId() {
+  public List<Long> getReportId() {
     return reportId;
   }
 
-  public void setReportId(List<Integer> reportId) {
+  public void setReportId(List<Long> reportId) {
     this.reportId = reportId;
   }
 
@@ -74,6 +85,6 @@ public class SchedulingAuditReportResponse {
   @Override
   public String toString() {
     return "SchedulingAuditReportResponse{" + "id=" + id + ", reportId=" + reportId + ", frequency='" + frequency + '\'' + ", schedulingHour="
-        + schedulingHour + ", schedulingMinute=" + schedulingMinute + ", timeMarker='" + timeMarker + '\'' + ", recipients=" + recipients + '}';
+            + schedulingHour + ", schedulingMinute=" + schedulingMinute + ", timeMarker='" + timeMarker + '\'' + ", recipients=" + recipients + '}';
   }
 }
