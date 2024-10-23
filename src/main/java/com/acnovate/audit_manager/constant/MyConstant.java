@@ -9,4 +9,5 @@ public class MyConstant {
 	public static final SimpleDateFormat REPORT_DATE_FORMATOR = new SimpleDateFormat(REPORT_DATE_PATTERN);
 	public static final String FILE_NAME_DELIMITER = "----";
 	public static final String EXCEPTION_MESSAGE_RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND";
+	public static final SimpleDateFormat LOCAL_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 }
