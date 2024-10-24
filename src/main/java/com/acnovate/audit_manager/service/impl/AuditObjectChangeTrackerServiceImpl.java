@@ -182,6 +182,10 @@ public class AuditObjectChangeTrackerServiceImpl extends AbstractRawService<Audi
 			responseDto.setEventOccurrencesLastMonth(eventOccurrencesLastMonth);
 			responseDto.setEventOccurrencePercentageSinceLastMonth(eventOccurrencePercentage);
 
+			responseDto.setTop5UserModifyingDataFrequently(
+					auditAttributeChangeTrackerService.top5UserModifyingDataFrequently());
+			responseDto.setTop5ChangedAttributes(auditAttributeChangeTrackerService.top5ChangedAttributes());
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new CustomErrorHandleException(e);

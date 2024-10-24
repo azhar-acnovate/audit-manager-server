@@ -1,5 +1,6 @@
 package com.acnovate.audit_manager.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.acnovate.audit_manager.common.interfaces.IService;
@@ -24,4 +25,8 @@ public interface IAuditAttributeChangeTrackerService extends IService<AuditAttri
 	Long countUserChangesLastQuarter();
 
 	Long countUserChangesPreviousQuarter();
+
+	LinkedHashMap<String, Long> top5UserModifyingDataFrequently();
+
+	LinkedHashMap<String, Long> top5ChangedAttributes();
 }

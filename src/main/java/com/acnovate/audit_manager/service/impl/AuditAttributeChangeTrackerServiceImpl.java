@@ -1,12 +1,13 @@
 package com.acnovate.audit_manager.service.impl;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
@@ -213,6 +214,37 @@ public class AuditAttributeChangeTrackerServiceImpl extends AbstractRawService<A
 												// quarter
 		Date previousQuarterEnd = calendar.getTime();
 		return repo.countAttributeChangesYesterday(previousQuarterStart, previousQuarterEnd);
+	}
+
+	@Override
+	public LinkedHashMap<String, Long> top5UserModifyingDataFrequently() {
+		List<Object[]> list = repo.top5UserModifyingDataFrequently(PageRequest.of(0, 5));
+
+		return list.stream().filter(obj -> obj.length >= 2 && obj[0] instanceof String && obj[1] instanceof Long)
+				.collect(Collectors.toMap(obj -> ((String) obj[0]).isEmpty() ? "Unknown User" : (String) obj[0], // Key:
+																													// obj[0]
+																													// cast
+																													// to
+																													// String
+						obj -> (Long) obj[1], // Value: obj[1] cast to Integer
+						(oldValue, newValue) -> oldValue, // In case of key conflict, keep the old value
+						LinkedHashMap::new // Collect into LinkedHashMap to maintain insertion order
+				));
+	}
+
+	@Override
+	public LinkedHashMap<String, Long> top5ChangedAttributes() {
+		List<Object[]> list = repo.findTopChangedAttributes(PageRequest.of(0, 5));
+		return list.stream().filter(obj -> obj.length >= 2 && obj[0] instanceof String && obj[1] instanceof Long)
+				.collect(Collectors.toMap(obj -> (String) obj[0], // Key:
+																	// obj[0]
+																	// cast
+																	// to
+																	// String
+						obj -> (Long) obj[1], // Value: obj[1] cast to Integer
+						(oldValue, newValue) -> oldValue, // In case of key conflict, keep the old value
+						LinkedHashMap::new // Collect into LinkedHashMap to maintain insertion order
+				));
 	}
 
 }

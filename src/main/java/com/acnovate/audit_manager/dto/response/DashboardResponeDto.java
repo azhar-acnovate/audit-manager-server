@@ -1,5 +1,7 @@
 package com.acnovate.audit_manager.dto.response;
 
+import java.util.LinkedHashMap;
+
 public class DashboardResponeDto {
 	private Double attributeChangePercentageSinceYesterday;
 	private Long attributeChangesYesterday;
@@ -12,6 +14,9 @@ public class DashboardResponeDto {
 
 	private Double eventOccurrencePercentageSinceLastMonth;
 	private Long eventOccurrencesLastMonth;
+
+	private LinkedHashMap<String, Long> top5UserModifyingDataFrequently;
+	private LinkedHashMap<String, Long> top5ChangedAttributes;
 
 	public Double getAttributeChangePercentageSinceYesterday() {
 		return attributeChangePercentageSinceYesterday;
@@ -75,6 +80,22 @@ public class DashboardResponeDto {
 
 	public void setEventOccurrencesLastMonth(Long eventOccurrencesLastMonth) {
 		this.eventOccurrencesLastMonth = eventOccurrencesLastMonth;
+	}
+
+	public LinkedHashMap<String, Long> getTop5UserModifyingDataFrequently() {
+		return top5UserModifyingDataFrequently;
+	}
+
+	public void setTop5UserModifyingDataFrequently(LinkedHashMap<String, Long> top5UserModifyingDataFrequently) {
+		this.top5UserModifyingDataFrequently = top5UserModifyingDataFrequently;
+	}
+
+	public LinkedHashMap<String, Long> getTop5ChangedAttributes() {
+		return top5ChangedAttributes;
+	}
+
+	public void setTop5ChangedAttributes(LinkedHashMap<String, Long> top5ChangedAttributes) {
+		this.top5ChangedAttributes = top5ChangedAttributes;
 	}
 
 }
