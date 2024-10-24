@@ -3,6 +3,7 @@ package com.acnovate.audit_manager.repository;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +23,12 @@ public interface AuditAttributeChangeTrackerRepository extends JpaRepository<Aud
 	@Query("SELECT COUNT(a) FROM AuditAttributeChangeTracker a WHERE a.createdAt >= :yesterdayStart AND a.createdAt <= :yesterdayEnd")
 	Long countAttributeChangesYesterday(@Param("yesterdayStart") Date yesterdayStart,
 			@Param("yesterdayEnd") Date yesterdayEnd);
+
+	@Query("SELECT a.changedBy, COUNT(a) AS changesCount FROM AuditAttributeChangeTracker a GROUP BY a.changedBy ORDER BY changesCount DESC")
+	List<Object[]> top5UserModifyingDataFrequently(Pageable pageable);
+
+	@Query("SELECT a.attributeName, COUNT(a) AS changeCount " + "FROM AuditAttributeChangeTracker a "
+			+ "GROUP BY a.attributeName " + "ORDER BY changeCount DESC")
+	List<Object[]> findTopChangedAttributes(Pageable pageable);
 
 }
