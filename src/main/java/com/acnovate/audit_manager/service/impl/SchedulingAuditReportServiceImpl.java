@@ -1,7 +1,5 @@
 package com.acnovate.audit_manager.service.impl;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.acnovate.audit_manager.common.persistence.exception.CustomErrorHandleException;
 import com.acnovate.audit_manager.common.persistence.service.AbstractRawService;
+import com.acnovate.audit_manager.configuration.SchedulingAuditReportConfiguration;
 import com.acnovate.audit_manager.domain.SchedulingAuditReport;
 import com.acnovate.audit_manager.dto.request.SchedulingAuditReportRequest;
 import com.acnovate.audit_manager.dto.response.SchedulingAuditReportResponse;
@@ -33,10 +32,10 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 	private SchedulingAuditReportRepository schedulingAuditReportRepository;
 
 	@Autowired
-	private IAuditReportService auditReportService;
+	private SchedulingAuditReportConfiguration schedulingAuditReportConfiguration;
 
 	@Autowired
-	private EmailService emailService;
+	private IAuditReportService auditReportService;
 
 	@Override
 	protected JpaRepository<SchedulingAuditReport, Long> getDao() {
@@ -55,8 +54,9 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 
 		// Convert report IDs from a comma-separated string to a List<Long>
 		if (schedulingAuditReport.getReportIds() != null && !schedulingAuditReport.getReportIds().isEmpty()) {
-			List<Long> reportIds = Arrays.stream(schedulingAuditReport.getReportIds().split(","))
-					.map(String::trim) // Trim any whitespace
+			List<Long> reportIds = Arrays.stream(schedulingAuditReport.getReportIds().split(",")).map(String::trim) // Trim
+																													// any
+																													// whitespace
 					.map(Long::valueOf) // Convert String to Long
 					.collect(Collectors.toList());
 
@@ -72,6 +72,7 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		schedulingAuditReportResponse.setSchedulingHour(schedulingAuditReport.getSchedulingHour());
 		schedulingAuditReportResponse.setSchedulingMinute(schedulingAuditReport.getSchedulingMinute());
 		schedulingAuditReportResponse.setTimeMarker(schedulingAuditReport.getTimeMarker());
+		// Convert the recipients string back to a list
 		schedulingAuditReportResponse.setRecipients(Arrays.asList(schedulingAuditReport.getRecipients().split(",")));
 
 		return schedulingAuditReportResponse;
@@ -95,8 +96,7 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		SchedulingAuditReport report = new SchedulingAuditReport();
 
 		// Join report IDs into a comma-separated string
-		report.setReportIds(request.getReportIds().stream()
-				.map(String::valueOf) // Convert Long to String
+		report.setReportIds(request.getReportIds().stream().map(String::valueOf) // Convert Long to String
 				.collect(Collectors.joining(",")));
 
 		report.setFrequency(request.getFrequency());
@@ -106,37 +106,12 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 
 		// Convert the list of recipients into a comma-separated string
 		report.setRecipients(String.join(",", request.getRecipients()));
+		report = schedulingAuditReportRepository.save(report);
 
+		schedulingAuditReportConfiguration.scheduleTask(report);
 		// Save the report and return the corresponding DTO
-		return domainToDto(schedulingAuditReportRepository.save(report));
-	}
+		return domainToDto(report);
 
-	@Override
-	public void sendScheduledReport(SchedulingAuditReport schedulingAuditReport) {
-		List<Long> reportIds = Arrays.stream(schedulingAuditReport.getReportIds().split(","))
-				.map(Long::valueOf) // Convert String to Long
-				.collect(Collectors.toList());
-
-		// Generate the report in XLSX format
-		byte[] reportBytes = auditReportService.genereteReport(1L, reportIds, "xlsx");
-
-		// Path where the XLSX file will be saved
-		File filePath = new File(System.getProperty("java.io.tmpdir"), "report.xlsx");
-
-		// Convert the byte[] to XLSX file
-		try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
-			fileOutputStream.write(reportBytes);
-			logger.info("XLSX file written successfully to {}", filePath);
-
-			// Send the email with attachment
-			emailService.sendEmailWithAttachment(schedulingAuditReport.getRecipients(),
-					"Audit scheduled report is ready",
-					constructScheduleReportBody(auditReportService.getReportNamesByIds(reportIds)), filePath);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			filePath.delete(); // Remove sent file
-		}
 	}
 
 	// Email validation method
@@ -145,34 +120,4 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
 	}
 
-	private String constructScheduleReportBody(List<String> reportNames) {
-		StringBuilder reportListBuilder = new StringBuilder();
-		reportListBuilder.append("<!DOCTYPE html>");
-		reportListBuilder.append("<html>");
-		reportListBuilder.append("<head>");
-		reportListBuilder.append("    <style>");
-		reportListBuilder.append("        body { font-family: Arial, sans-serif; }");
-		reportListBuilder.append("        .report-list { margin-left: 20px; }");
-		reportListBuilder.append("        .report-list li { margin-bottom: 5px; }");
-		reportListBuilder.append("    </style>");
-		reportListBuilder.append("</head>");
-		reportListBuilder.append("<body>");
-		reportListBuilder.append("    <p>Dear User,</p>");
-		reportListBuilder.append("    <p>Your scheduled report has been successfully generated. The following reports are available for download:</p>");
-
-		// Build the HTML list items for report names
-		reportListBuilder.append("<ul class='report-list'>");
-		for (String reportName : reportNames) {
-			reportListBuilder.append("<li>").append(reportName).append("</li>");
-		}
-		reportListBuilder.append("</ul>");
-
-		reportListBuilder.append("    <p>You can download the reports in the attached <strong>xlsx</strong> format.</p>");
-		reportListBuilder.append("    <p>Best regards,</p>");
-		reportListBuilder.append("    <p>The Audit Management Team</p>");
-		reportListBuilder.append("</body>");
-		reportListBuilder.append("</html>");
-
-		return reportListBuilder.toString();
-	}
 }

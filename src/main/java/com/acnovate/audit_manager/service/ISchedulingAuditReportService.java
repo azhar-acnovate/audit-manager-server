@@ -11,5 +11,4 @@ public interface ISchedulingAuditReportService extends IService<SchedulingAuditR
 
 	SchedulingAuditReportResponse createSchedulingAuditReport(SchedulingAuditReportRequest request);
 
-	void sendScheduledReport(SchedulingAuditReport schedulingAuditReport);
 }

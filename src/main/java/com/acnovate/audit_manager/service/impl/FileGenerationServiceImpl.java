@@ -39,7 +39,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 	private ISourceReferenceObjectService sourceReferenceObjectService;
 
 	// Array of header titles
-	private static String[] AUDUIT_REPORT_HEADER = { "Source Name", "Source Key", "Event Type", "Event Occurrence",
+	public static String[] AUDUIT_REPORT_HEADER = { "Source Name", "Source Key", "Event Type", "Event Occurrence",
 			"Attribute Name", "Old Value", "New Value", "Changed By" };
 
 	@Override
