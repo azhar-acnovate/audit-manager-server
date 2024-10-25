@@ -211,7 +211,7 @@ GO
 
 CREATE TABLE scheduling_audit_report (
     id BIGINT IDENTITY(1,1) PRIMARY KEY,
-    report_id BIGINT,
+    report_ids NVARCHAR(MAX),
 	frequency NVARCHAR(255) NULL,
 	scheduling_hour INT ,
     scheduling_minute INT ,
