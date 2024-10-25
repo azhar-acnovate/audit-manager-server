@@ -190,22 +190,22 @@ CREATE TABLE source_reference_object (
 Go
 
 INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Product', '123456', '[{\"fieldName\": \"WorkingNo\", \"fieldValue\": \"xyz00001\"}, {\"fieldName\": \"ModelNo\", \"fieldValue\": \"098765\"}]', '2024-10-08 19:34:30', '2024-10-09 12:07:11', 1, 1, 1);
+VALUES ('Product', '123456', '[{"fieldName": "WorkingNo", "fieldValue": "xyz00001"}, {"fieldName": "ModelNo", "fieldValue": "098765"}]', '2024-10-08 19:34:30', '2024-10-09 12:07:11', 1, 1, 1);
 
 INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Color', '3421', '[{\"fieldName\": \"Color Name\", \"fieldValue\": \"Blue\"}, {\"fieldName\": \"Color code\", \"fieldValue\": \"123412\"}]', '2024-10-09 10:19:59', '2024-10-09 12:07:11', 1, 1, 1);
+VALUES ('Color', '3421', '[{"fieldName": "Color Name", "fieldValue": "Blue"}, {"fieldName": "Color code", "fieldValue": "123412"}]', '2024-10-09 10:19:59', '2024-10-09 12:07:11', 1, 1, 1);
 
 INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Material', '12353', '[{\"fieldName\": \"Material Name\", \"fieldValue\": \"Cotton\"}]', '2024-10-09 12:07:01', '2024-10-09 12:07:11', 1, 1, 1);
+VALUES ('Material', '12353', '[{"fieldName": "Material Name", "fieldValue": "Cotton"}]', '2024-10-09 12:07:01', '2024-10-09 12:07:11', 1, 1, 1);
 
 INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Product', '7890', '[{\"fieldName\": \"WorkingNo\", \"fieldValue\": \"xyz00001\"}, {\"fieldName\": \"ModelNo\", \"fieldValue\": \"098765\"}]', '2024-10-08 19:34:30', '2024-10-09 12:07:11', 1, 1, 1);
+VALUES ('Product', '7890', '[{"fieldName": "WorkingNo", "fieldValue": "xyz00001"}, {"fieldName": "ModelNo", "fieldValue": "098765"}]', '2024-10-08 19:34:30', '2024-10-09 12:07:11', 1, 1, 1);
 
 INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Color', '1234', '[{\"fieldName\": \"Color Name\", \"fieldValue\": \"Blue\"}, {\"fieldName\": \"Color code\", \"fieldValue\": \"123412\"}]', '2024-10-09 10:19:59', '2024-10-09 12:07:11', 1, 1, 1);
+VALUES ('Color', '1234', '[{"fieldName": "Color Name", "fieldValue": "Blue"}, {"fieldName": "Color code", "fieldValue": "123412"}]', '2024-10-09 10:19:59', '2024-10-09 12:07:11', 1, 1, 1);
 
 INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Material', '35321', '[{\"fieldName\": \"Material Name\", \"fieldValue\": \"Cotton\"}]', '2024-10-09 12:07:01', '2024-10-09 12:07:11', 1, 1, 1);
+VALUES ('Material', '35321', '[{"fieldName": "Material Name", "fieldValue": "Cotton"}]', '2024-10-09 12:07:01', '2024-10-09 12:07:11', 1, 1, 1);
 
 GO
 
