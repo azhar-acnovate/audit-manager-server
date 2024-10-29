@@ -1,17 +1,27 @@
 package com.acnovate.audit_manager.data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.acnovate.audit_manager.domain.AuditAttributeChangeTracker;
+import com.acnovate.audit_manager.domain.AuditObjectChangeTracker;
 import com.acnovate.audit_manager.domain.AuditReport;
+import com.acnovate.audit_manager.domain.SchedulingAuditReport;
 import com.acnovate.audit_manager.domain.SourceAdditionalInfo;
 import com.acnovate.audit_manager.domain.SourceReferenceObject;
+import com.acnovate.audit_manager.service.IAuditAttributeChangeTrackerService;
+import com.acnovate.audit_manager.service.IAuditObjectChangeTrackerService;
 import com.acnovate.audit_manager.service.IAuditReportService;
+import com.acnovate.audit_manager.service.IFileGenerationService;
+import com.acnovate.audit_manager.service.ISchedulingAuditReportService;
 import com.acnovate.audit_manager.service.ISourceReferenceObjectService;
 import com.google.common.collect.Lists;
 
@@ -23,6 +33,18 @@ public class PreloadDataUtils {
 
 	@Autowired
 	private ISourceReferenceObjectService sourceReferenceObjectService;
+
+	@Autowired
+	private IAuditObjectChangeTrackerService auditObjectChangeTrackerService;
+
+	@Autowired
+	private IAuditAttributeChangeTrackerService attributeChangeTrackerService;
+
+	@Autowired
+	private ISchedulingAuditReportService schedulingAuditReportService;
+
+	@Autowired
+	private IFileGenerationService fileGenerationService;
 
 	public AuditReport loadAuditReportOne() {
 
@@ -105,6 +127,64 @@ public class PreloadDataUtils {
 			data.add(reference);
 		}
 		return data;
+	}
+
+	public List<SchedulingAuditReport> loadSchedulingAuditReport() {
+		List<SchedulingAuditReport> data = new ArrayList<>();
+		String[] frequencies = { "DAILY,WEEKLY,MONTHLY" };
+		String[] timeMarkers = { "AM,PM" };
+		// Create a Random object
+		Random random = new Random();
+		for (int i = 1; i <= 10; i++) {
+			SchedulingAuditReport schedulingAuditReport = new SchedulingAuditReport();
+			// reference.setId((long) i);
+			schedulingAuditReport.setFrequency(frequencies[random.nextInt(frequencies.length)]);
+			schedulingAuditReport.setTimeMarker(timeMarkers[random.nextInt(timeMarkers.length)]);
+			schedulingAuditReport.setSchedulingHour(random.nextInt(12));
+			schedulingAuditReport.setSchedulingMinute(random.nextInt(59));
+			schedulingAuditReport.setRecipients("test@gmail.com");
+			schedulingAuditReport.setReportIds("1");
+			schedulingAuditReport = schedulingAuditReportService.create(schedulingAuditReport);
+			data.add(schedulingAuditReport);
+		}
+		return data;
+	}
+
+	public List<Long> loadExportReportData() throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		String eventOccurence = "17/10/2024";
+		String startDate = "15/10/2024";
+		String endDate = "18/10/2024";
+
+		SourceReferenceObject sourceReferenceObject = loadSourceReferenceOne();
+		AuditObjectChangeTracker auditObjectChangeTracker = new AuditObjectChangeTracker();
+		auditObjectChangeTracker.setEventOccurence(formatter.parse(eventOccurence));
+		auditObjectChangeTracker.setEventType("create");
+		auditObjectChangeTracker.setRefObjectId(sourceReferenceObject.getId());
+		auditObjectChangeTracker = auditObjectChangeTrackerService.create(auditObjectChangeTracker);
+		String[] attributeNames = { "id", "name", "price" };
+		for (int i = 0; i < 3; i++) {
+			AuditAttributeChangeTracker attributeChangeTracker = new AuditAttributeChangeTracker();
+			attributeChangeTracker.setAttributeName(attributeNames[i]);
+			attributeChangeTracker.setOldValue("oldValue-" + i);
+			attributeChangeTracker.setNewValue("newValue-" + i);
+			attributeChangeTracker.setChangedBy("user" + i);
+			attributeChangeTracker.setAuditObjectChangeTracker(auditObjectChangeTracker);
+			attributeChangeTracker = attributeChangeTrackerService.create(attributeChangeTracker);
+		}
+
+		AuditReport report = new AuditReport();
+		report.setReportName("Audit Report test");
+		report.setStartDateRange(formatter.parse(startDate));
+		report.setEndDateRange(formatter.parse(endDate)); // 1 day ahead
+
+		report.setRefObjectIds(Arrays.asList(1L));
+
+		// Creating full names for changed users
+		List<String> fullUserNames = Lists.newArrayList("Alice Smith", "Bob Johnson");
+		report.setChangedUserNames(fullUserNames);
+		report = auditReportService.create(report);
+		return Lists.newArrayList(report.getId());
 	}
 
 }

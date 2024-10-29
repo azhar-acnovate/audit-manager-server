@@ -23,7 +23,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterChainProxy;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -35,8 +37,8 @@ import com.acnovate.audit_manager.common.dto.LoggedInUserDetails;
 import com.acnovate.audit_manager.constant.MyConstant;
 import com.acnovate.audit_manager.data.PreloadDataUtils;
 import com.acnovate.audit_manager.domain.AuditReport;
+import com.acnovate.audit_manager.domain.User;
 import com.acnovate.audit_manager.dto.request.AuditReportRequestDto;
-import com.acnovate.audit_manager.dto.request.UserRequestDto;
 import com.acnovate.audit_manager.dto.response.AuditReportResponseDto;
 import com.acnovate.audit_manager.service.IUserService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -48,6 +50,7 @@ import jakarta.transaction.Transactional;
 @TestPropertySource(properties = "envTarget=test-case") // Specific test environment configuration
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class) // Test order based on @Order annotation
 @Transactional // Rolls back transactions after tests
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS) // Reloads context after class execution
 public class ReportControllerTest {
 
 	// Logger for reporting test actions and results
@@ -81,23 +84,24 @@ public class ReportControllerTest {
 	 */
 	@BeforeAll // Static method to be called before all tests
 	public static void setupAll(@Autowired IUserService userService, @Autowired WebApplicationContext context,
-			@Autowired FilterChainProxy filterChainProxy, @Value("${spring.profiles.active}") String profile)
-			throws Exception {
+			@Autowired FilterChainProxy filterChainProxy, @Value("${spring.profiles.active}") String profile,
+			@Autowired PasswordEncoder passwordEncoder) throws Exception {
 
 		logger.info("Initial Setup with acivate profile {}", profile);
 		MockMvc mockMvcToken = MockMvcBuilders.webAppContextSetup(context).addFilters(filterChainProxy).build();
 
+		String password = "test@admin";
 		// Create a new admin user for authentication
-		UserRequestDto user = new UserRequestDto();
-		user.setPassword("test@admin");
+		User user = new User();
+		user.setPassword(passwordEncoder.encode(password));
 		user.setUserName("admin");
 		user.setUserEmail("test@gmail.com");
-		userService.createUser(user);
+		userService.create(user);
 		logger.info("Created admin user for token retrieval!");
 
 		// Retrieve access token for authentication
 		ResultActions result = mockMvcToken
-				.perform(get("/auth/token").with(httpBasic(user.getUserName(), user.getPassword()))
+				.perform(get("/auth/token").with(httpBasic(user.getUserName(), password))
 						.accept("application/json;charset=UTF-8"))
 				.andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"));
 

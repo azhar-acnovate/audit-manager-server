@@ -57,7 +57,7 @@ public class AuditAttributeChangeTrackerController {
 			@RequestBody AuditAttributeChangeRequestDto auditAttributeChangeRequestDto) {
 		CommonResponse res = new CommonResponse();
 		res.setStatus(HttpStatus.OK.value());
-		res.setMessage("Successfully Created Audit Object Change Tracker");
+		res.setMessage("Successfully Created Audit Attribute Change Tracker");
 		res.setData(attributeChangeTrackerService.createAuditAttributeChangeTracker(auditAttributeChangeRequestDto));
 		return new ResponseEntity<CommonResponse>(res, HttpStatus.OK);
 

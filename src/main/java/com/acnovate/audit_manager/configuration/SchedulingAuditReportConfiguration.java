@@ -21,6 +21,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
+import com.acnovate.audit_manager.common.persistence.exception.CustomErrorHandleException;
 import com.acnovate.audit_manager.domain.SchedulingAuditReport;
 import com.acnovate.audit_manager.service.IAuditReportService;
 import com.acnovate.audit_manager.service.ISchedulingAuditReportService;
@@ -224,7 +225,7 @@ public class SchedulingAuditReportConfiguration implements ApplicationListener<A
 		default:
 			// Log an error and throw an exception if the frequency is invalid
 			logger.error("Invalid frequency: {} for report: {}", frequency, schedulingAuditReport.getId());
-			throw new IllegalArgumentException("Invalid frequency: " + frequency);
+			throw new CustomErrorHandleException("Invalid frequency: " + frequency);
 		}
 
 		return cronExpression;
