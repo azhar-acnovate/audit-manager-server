@@ -84,6 +84,11 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		if (request.getRecipients() == null || request.getRecipients().isEmpty()) {
 			throw new CustomErrorHandleException("Email list must not be empty.");
 		}
+		
+		// Validate that the report ids list is not empty
+				if (request.getReportIds() == null || request.getReportIds().isEmpty()) {
+					throw new CustomErrorHandleException("Report IDs must not be null or empty");
+				}
 
 		// Validate each recipient's email format using regex
 		for (String email : request.getRecipients()) {
