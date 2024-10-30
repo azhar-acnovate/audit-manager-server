@@ -9,7 +9,7 @@ public class LoggedInUserDetails {
 	private Long id;
 	private String userName;
 	private Boolean status = true;
-
+	private String fullName;
 	private String profileImageName;
 
 	@JsonFormat(pattern = MyConstant.RESPONSE_DATE_FORMAT)
@@ -93,7 +93,7 @@ public class LoggedInUserDetails {
 
 	@Override
 	public String toString() {
-		return "LoggedInUserDetails [id=" + id + ", userName=" + userName + ", status=" + status + ", profileImageName="
+		return "LoggedInUserDetails [id=" + id + ", fullName=" + fullName + ", userName=" + userName + ", status=" + status + ", profileImageName="
 				+ profileImageName + ", lastUpdatedDate=" + lastUpdatedDate + ", accessToken=" + accessToken
 				+ ", issuedAt=" + issuedAt + ", expireAt=" + expireAt + "]";
 	}
@@ -112,5 +112,13 @@ public class LoggedInUserDetails {
 
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 }

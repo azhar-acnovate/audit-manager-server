@@ -11,6 +11,7 @@ public class UserResponseDto {
 	private Boolean active = true;
 	private String userRole;
 	private String userEmail;
+	private String fullName;
 	@JsonFormat(pattern = MyConstant.REQUEST_DATE_FORMAT)
 	private Date createdAt;
 
@@ -73,9 +74,18 @@ public class UserResponseDto {
 		this.userEmail = userEmail;
 	}
 
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	
 	@Override
 	public String toString() {
-		return "UserResponseDto [id=" + id + ", userName=" + userName + ", active=" + active + ", userRole=" + userRole
+		return "UserResponseDto [id=" + id + ", fullName=" + fullName +  ", userName=" + userName + ", active=" + active + ", userRole=" + userRole
 				+ ", userEmail=" + userEmail + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
+
 }

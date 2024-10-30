@@ -49,6 +49,7 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 	public LoggedInUserDetails getLoggedInUserDetails(User resource) {
 		LoggedInUserDetails response = new LoggedInUserDetails();
 		response.setId(resource.getId());
+		response.setFullName(resource.getFullName());
 		response.setUserName(resource.getUserName());
 		response.setUserRole(resource.getUserRole());
 		// response.setProfileImageName(resource.getProfileImageName());
@@ -65,6 +66,7 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 		response.setUserName(user.getUserName());
 		response.setUserRole(user.getUserRole());
 		response.setUserEmail(user.getUserEmail());
+		response.setFullName(user.getFullName());
 		return response;
 	}
 
@@ -99,6 +101,7 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 			user.setUserName(userRequestDto.getUserName());
 			user.setUserEmail(userRequestDto.getUserEmail());
 			user.setUserRole(userRequestDto.getUserRole());
+			user.setFullName(userRequestDto.getFullName());
 
 			// Save or update the user in the database
 			user = create(user);

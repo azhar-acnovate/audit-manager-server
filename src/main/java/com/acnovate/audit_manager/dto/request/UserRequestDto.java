@@ -6,6 +6,7 @@ public class UserRequestDto {
 	private String userRole;
 	private String userEmail;
 	private String password;
+	private String fullName;
 
 	public Long getId() {
 		return id;
@@ -33,7 +34,7 @@ public class UserRequestDto {
 
 	@Override
 	public String toString() {
-		return "UserRequestDto [id=" + id + ", userName=" + userName + ", password=" + password + ", getId()=" + getId()
+		return "UserRequestDto [id=" + id + ", fullName=" + fullName + ", userName=" + userName + ", password=" + password + ", getId()=" + getId()
 				+ ", getUserName()=" + getUserName() + ", getPassword()=" + getPassword() + ", getClass()=" + getClass()
 				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
@@ -52,6 +53,14 @@ public class UserRequestDto {
 
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 }
