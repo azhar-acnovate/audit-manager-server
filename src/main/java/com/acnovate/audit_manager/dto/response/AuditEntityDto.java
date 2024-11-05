@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class AuditEntityDto {
 
-	@JsonFormat(pattern = MyConstant.REQUEST_DATE_FORMAT)
+	@JsonFormat(pattern = MyConstant.RESPONSE_DATE_FORMAT)
 	private Date createdAt;
 
-	@JsonFormat(pattern = MyConstant.REQUEST_DATE_FORMAT)
+	@JsonFormat(pattern = MyConstant.RESPONSE_DATE_FORMAT)
 	private Date updatedAt;
 
 	private Long createdBy;
