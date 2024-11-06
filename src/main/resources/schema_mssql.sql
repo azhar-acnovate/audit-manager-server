@@ -55,6 +55,7 @@ GO
 -- Create the table
 CREATE TABLE user_mst (
     id BIGINT IDENTITY(1,1) NOT NULL,
+    full_name VARCHAR(255),
     user_name VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     active BIT DEFAULT 1, -- BIT type is used for boolean values in MSSQL (1 = true, 0 = false)
