@@ -9,6 +9,7 @@ USE audit_manager_db;
 -- Create the table
 CREATE TABLE user_mst (
     id bigint NOT NULL AUTO_INCREMENT,
+    full_name varchar(255),
     user_name varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
     active BIT DEFAULT 1, -- BIT type is used for boolean values in MSSQL (1 = true, 0 = false)
@@ -61,7 +62,7 @@ ADD user_email varchar(255) NULL;
 
 -- Insert the default user
 INSERT INTO user_mst (user_name, password, created_at, updated_at, active, profile_image_name)
-VALUES ('admin', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', 
+VALUES ('admin', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6',
         '2024-04-18 13:46:12', 
         '2024-04-18 13:46:12', 
         1, NULL);

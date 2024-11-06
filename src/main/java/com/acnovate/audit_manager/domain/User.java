@@ -29,6 +29,9 @@ public class User {
 	private Boolean active = true;
 	private String userRole;
 	private String userEmail;
+
+	private String fullName;
+
 //	private String profileImageName;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -103,6 +106,14 @@ public class User {
 
 	public void setUserRole(String userRole) {
 		this.userRole = userRole;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 //	public String getProfileImageName() {
