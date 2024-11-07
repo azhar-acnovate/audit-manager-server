@@ -46,6 +46,7 @@ public class SchedulingAuditReportController {
     CommonResponse commonResponse = new CommonResponse();
     if (size != null && pageNo != null) {
       FilterDto filter = new FilterDto(); // Make sure this is set correctly
+      filter.getSort().put("updatedAt", "desc");
       Page<SchedulingAuditReport> pages = schedulingAuditReportService.findAll(size, pageNo, filter);
       commonResponse.setData(pages.map(schedulingAuditReportService::domainToDto));
     } else {

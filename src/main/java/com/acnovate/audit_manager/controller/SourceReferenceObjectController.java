@@ -35,6 +35,7 @@ public class SourceReferenceObjectController {
 		res.setStatus(HttpStatus.OK.value());
 		res.setMessage("Successfully fetched Source Reference Object Data..");
 		FilterDto filter = new FilterDto();
+		filter.getSort().put("updatedAt", "desc");
 		if (size != null & pageNo != null) {
 
 			Page<SourceReferenceObject> pages = sourceReferenceObjectService.findAll(size, pageNo, filter);

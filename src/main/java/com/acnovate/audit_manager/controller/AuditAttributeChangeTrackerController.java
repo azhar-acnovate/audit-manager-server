@@ -39,7 +39,7 @@ public class AuditAttributeChangeTrackerController {
 		FilterDto filter = new FilterDto();
 		filter.getFilter().put("auditObjectChangeTracker.id", auditObjectChangeTrackerId);
 		if (size != null & pageNo != null) {
-
+			filter.getSort().put("updatedAt", "desc");
 			Page<AuditAttributeChangeTracker> pages = attributeChangeTrackerService.findAll(size, pageNo, filter);
 			res.setData(pages.map(attributeChangeTrackerService::domainToDto));
 		} else {

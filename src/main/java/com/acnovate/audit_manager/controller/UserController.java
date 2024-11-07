@@ -39,6 +39,7 @@ public class UserController {
 		res.setMessage("Successfully fetched user Data..");
 		if (size != null & pageNo != null) {
 			FilterDto filter = new FilterDto();
+			filter.getSort().put("updatedAt", "desc");
 			Page<User> pages = userService.findAll(size, pageNo, filter);
 			res.setData(pages.map(userService::domainToDto));
 		} else {

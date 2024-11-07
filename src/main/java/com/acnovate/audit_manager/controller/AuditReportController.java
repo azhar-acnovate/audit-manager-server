@@ -37,6 +37,7 @@ public class AuditReportController {
 		res.setMessage("Successfully fetched auditReport Data..");
 		if (size != null & pageNo != null) {
 			FilterDto filter = new FilterDto();
+			filter.getSort().put("updatedAt", "desc");
 			Page<AuditReport> pages = auditReportService.findAll(size, pageNo, filter);
 			res.setData(pages.map(auditReportService::domainToDto));
 		} else {
