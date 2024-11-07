@@ -37,8 +37,9 @@ public class AuditObjectChangeTrackerController {
 
 		res.setStatus(HttpStatus.OK.value());
 		res.setMessage("Successfully fetched audit-module Data..");
+		FilterDto filter = new FilterDto();
 		if (size != null & pageNo != null) {
-			FilterDto filter = new FilterDto();
+			filter.getSort().put("updatedAt", "desc");
 			Page<AuditObjectChangeTracker> pages = auditObjectChangeTrackerService.findAll(size, pageNo, filter);
 			res.setData(pages.map(auditObjectChangeTrackerService::domainToDto));
 		} else {
