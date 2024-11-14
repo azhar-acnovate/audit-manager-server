@@ -58,6 +58,8 @@ CREATE TABLE user_mst (
     full_name VARCHAR(255),
     user_name VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
+	user_role VARCHAR(100) NULL,
+	user_email varchar(255) NULL,
     active BIT DEFAULT 1, -- BIT type is used for boolean values in MSSQL (1 = true, 0 = false)
     profile_image_name VARCHAR(255),
     created_at DATETIME NOT NULL DEFAULT GETDATE(),
@@ -100,64 +102,24 @@ CREATE TABLE audit_attribute_change_tracker (
 GO
 
 -- Alter user_mst adding user_role and user_email - 18-Sep-24
-ALTER TABLE user_mst
-ADD user_role VARCHAR(100) NULL, user_email varchar(255) NULL;
-
 CREATE UNIQUE INDEX unique_user_name
 ON user_mst (user_name);
 
 -- Insert the default user
-INSERT INTO user_mst (user_name, password, created_at, updated_at, active, profile_image_name)
-VALUES ('admin', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', 
-        GETDATE(), 
-        GETDATE(), 
-        1, NULL);
-GO
-
--- Insert records into audit_object_change_tracker
-INSERT INTO audit_object_change_tracker (ref_object_id, event_type, event_occurence, created_at, updated_at, created_by, updated_by, active)
+INSERT INTO user_mst (user_name, password, created_at, updated_at, active, profile_image_name,user_role,user_email)
 VALUES 
-(0001, 'colorway-create', GETDATE(), GETDATE(), GETDATE(), 1, 1, 1),
-(0001, 'colorway-update', GETDATE(), GETDATE(), GETDATE(), 1, 1, 1),
-(0001, 'colorway-update', GETDATE(), GETDATE(), GETDATE(), 1, 1, 1),
-(0002, 'product-create', GETDATE(), GETDATE(), GETDATE(), 1, 1, 1),
-(0002, 'product-update', GETDATE(), GETDATE(), GETDATE(), 1, 1, 1),
-(0002, 'product-update', GETDATE(), GETDATE(), GETDATE(), 1, 1, 1);
-GO
+('admin', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6',GETDATE(),GETDATE(),1, NULL,'admin','admin@gmail.com'), 
+('abhishek', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'abhishek.mali@acnovate.com'),
+('azhar', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'admin', 'azharudeennazeerdeen@acnovate.com'),
+('himanshu', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'himanshu.purohit@acnovate.com'),
+('hitesh', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'hitesh.soni@acnovate.com'),
+('khushboo', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'khushboo.mishra@acnovate.com'),
+('prabhat', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'prabhat.ahirwar@acnovate.com'),
+('praveen', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'praveen.hosamani@acnovate.com');
 
--- Insert records into audit_attribute_change_tracker
-INSERT INTO audit_attribute_change_tracker (attribute_name, old_value, new_value, changed_by, audit_object_change_tracker_id, created_at, updated_at, created_by, updated_by, active)
-VALUES 
-('color-name', 'blue', 'blue', 'user123', 1, GETDATE(), GETDATE(), 1, 1, 1),
-('pattern', 'striped', 'striped', 'user123', 1, GETDATE(), GETDATE(), 1, 1, 1),
-('material', 'cotton', 'cotton', 'user123', 1, GETDATE(), GETDATE(), 1, 1, 1),
-('release-date', '2024-09-01', '2024-09-01', 'user123', 1, GETDATE(), GETDATE(), 1, 1, 1),
-('status', 'pending', 'pending', 'user123', 1, GETDATE(), GETDATE(), 1, 1, 1),
-('color-name', 'blue', 'green', 'user123', 2, GETDATE(), GETDATE(), 1, 1, 1),
-('pattern', 'striped', 'solid', 'user123', 2, GETDATE(), GETDATE(), 1, 1, 1),
-('material', 'cotton', 'polyester', 'user123', 2, GETDATE(), GETDATE(), 1, 1, 1),
-('release-date', '2024-09-01', '2024-09-09', 'user123', 2, GETDATE(), GETDATE(), 1, 1, 1),
-('status', 'pending', 'approved', 'user123', 2, GETDATE(), GETDATE(), 1, 1, 1),
-('color-name', 'green', 'green', 'user123', 3, GETDATE(), GETDATE(), 1, 1, 1),
-('pattern', 'solid', 'solid', 'user123', 3, GETDATE(), GETDATE(), 1, 1, 1),
-('material', 'polyester', 'lycra', 'user123', 3, GETDATE(), GETDATE(), 1, 1, 1),
-('release-date', '2024-09-09', '2024-09-09', 'user123', 3, GETDATE(), GETDATE(), 1, 1, 1),
-('status', 'approved', 'canceled', 'user123', 3, GETDATE(), GETDATE(), 1, 1, 1),
-('product-name', 'shirt', 'shirt', 'user456', 4, GETDATE(), GETDATE(), 1, 1, 1),
-('price', '50.00', '50.00', 'user456', 4, GETDATE(), GETDATE(), 1, 1, 1),
-('size', 'M', 'M', 'user456', 4, GETDATE(), GETDATE(), 1, 1, 1),
-('availability', 'in-stock', 'in-stock', 'user456', 4, GETDATE(), GETDATE(), 1, 1, 1),
-('discount', '5%', '5%', 'user456', 4, GETDATE(), GETDATE(), 1, 1, 1),
-('product-name', 'shirt', 'jacket', 'user456', 5, GETDATE(), GETDATE(), 1, 1, 1),
-('price', '50.00', '55.00', 'user456', 5, GETDATE(), GETDATE(), 1, 1, 1),
-('size', 'M', 'L', 'user456', 5, GETDATE(), GETDATE(), 1, 1, 1),
-('availability', 'in-stock', 'out-of-stock', 'user456', 5, GETDATE(), GETDATE(), 1, 1, 1),
-('discount', '5%', '10%', 'user456', 5, GETDATE(), GETDATE(), 1, 1, 1),
-('product-name', 'jacket', 'Polo-jacket', 'newUser', 6, GETDATE(), GETDATE(), 1, 1, 1),
-('price', '50.00', '55.00', 'user456', 6, GETDATE(), GETDATE(), 1, 1, 1),
-('size', 'M', 'L', 'user456', 6, GETDATE(), GETDATE(), 1, 1, 1),
-('availability', 'in-stock', 'out-of-stock', 'user456', 6, GETDATE(), GETDATE(), 1, 1, 1),
-('discount', '5%', '10%', 'user456', 6, GETDATE(), GETDATE(), 1, 1, 1);
+
+
+;
 GO
 
 CREATE TABLE audit_report (
@@ -189,26 +151,6 @@ CREATE TABLE source_reference_object (
 );
 
 Go
-
-INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Product', '123456', '[{"fieldName": "WorkingNo", "fieldValue": "xyz00001"}, {"fieldName": "ModelNo", "fieldValue": "098765"}]', '2024-10-08 19:34:30', '2024-10-09 12:07:11', 1, 1, 1);
-
-INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Color', '3421', '[{"fieldName": "Color Name", "fieldValue": "Blue"}, {"fieldName": "Color code", "fieldValue": "123412"}]', '2024-10-09 10:19:59', '2024-10-09 12:07:11', 1, 1, 1);
-
-INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Material', '12353', '[{"fieldName": "Material Name", "fieldValue": "Cotton"}]', '2024-10-09 12:07:01', '2024-10-09 12:07:11', 1, 1, 1);
-
-INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Product', '7890', '[{"fieldName": "WorkingNo", "fieldValue": "xyz00001"}, {"fieldName": "ModelNo", "fieldValue": "098765"}]', '2024-10-08 19:34:30', '2024-10-09 12:07:11', 1, 1, 1);
-
-INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Color', '1234', '[{"fieldName": "Color Name", "fieldValue": "Blue"}, {"fieldName": "Color code", "fieldValue": "123412"}]', '2024-10-09 10:19:59', '2024-10-09 12:07:11', 1, 1, 1);
-
-INSERT INTO source_reference_object (source_reference_name, source_reference_key, additional_info, created_at, updated_at, created_by, updated_by, active) 
-VALUES ('Material', '35321', '[{"fieldName": "Material Name", "fieldValue": "Cotton"}]', '2024-10-09 12:07:01', '2024-10-09 12:07:11', 1, 1, 1);
-
-GO
 
 CREATE TABLE scheduling_audit_report (
     id BIGINT IDENTITY(1,1) PRIMARY KEY,
