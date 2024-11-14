@@ -106,16 +106,16 @@ CREATE UNIQUE INDEX unique_user_name
 ON user_mst (user_name);
 
 -- Insert the default user
-INSERT INTO user_mst (user_name, password, created_at, updated_at, active, profile_image_name,user_role,user_email)
+INSERT INTO user_mst (full_name,user_name, password, created_at, updated_at, active, profile_image_name,user_role,user_email)
 VALUES 
-('admin', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6',GETDATE(),GETDATE(),1, NULL,'admin','admin@gmail.com'), 
-('abhishek', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'abhishek.mali@acnovate.com'),
-('azhar', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'admin', 'azharudeennazeerdeen@acnovate.com'),
-('himanshu', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'himanshu.purohit@acnovate.com'),
-('hitesh', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'hitesh.soni@acnovate.com'),
-('khushboo', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'khushboo.mishra@acnovate.com'),
-('prabhat', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'prabhat.ahirwar@acnovate.com'),
-('praveen', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'praveen.hosamani@acnovate.com');
+('Admin','admin', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6',GETDATE(),GETDATE(),1, NULL,'admin','admin@gmail.com'), 
+('Abhishek Mali','abhishek', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'abhishek.mali@acnovate.com'),
+('Azharudeen Nazeerdeen','azhar', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'admin', 'azharudeennazeerdeen@acnovate.com'),
+('Himanshu Purohit','himanshu', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'himanshu.purohit@acnovate.com'),
+('Hitesh Soni','hitesh', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'hitesh.soni@acnovate.com'),
+('Khushboo Mishra','khushboo', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'khushboo.mishra@acnovate.com'),
+('Prabhat Ahirwar','prabhat', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'prabhat.ahirwar@acnovate.com'),
+('Praveen Hosamani','praveen', '$2a$10$bgR4EcS6I.nIT48XQSj.uO3epcGgWdfl.SbVIIK62FFV3./4KEcu6', GETDATE(), GETDATE(), 1, NULL, 'auditor', 'praveen.hosamani@acnovate.com');
 
 
 
