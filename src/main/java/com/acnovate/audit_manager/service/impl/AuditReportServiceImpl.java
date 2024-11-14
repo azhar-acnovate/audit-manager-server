@@ -1,10 +1,13 @@
 package com.acnovate.audit_manager.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -91,10 +94,30 @@ public class AuditReportServiceImpl extends AbstractRawService<AuditReport> impl
 		}
 
 		auditReport.setChangedUserNames(req.getChangedUserNames());
-		auditReport.setEndDateRange(req.getEndDateRange());
+
 		auditReport.setRefObjectIds(req.getRefObjectIds());
 		auditReport.setReportName(req.getReportName());
-		auditReport.setStartDateRange(req.getStartDateRange());
+		String startDate = req.getStartDateRange();
+		if (startDate != null && startDate.contains(" ")) {
+			startDate = startDate.split(" ")[0];
+			startDate += " 00:00:00";
+		}
+
+		String endDate = req.getEndDateRange();
+		if (endDate != null && endDate.contains(" ")) {
+			endDate = endDate.split(" ")[0];
+			endDate += " 23:59:59";
+		}
+
+		try {
+			SimpleDateFormat utcFormatter = new SimpleDateFormat(MyConstant.REQUEST_DATE_FORMAT);
+			utcFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+			auditReport.setStartDateRange(utcFormatter.parse(startDate));
+			auditReport.setEndDateRange(utcFormatter.parse(endDate));
+		} catch (ParseException e) {
+			throw new CustomErrorHandleException("Format date issue: " + e.getMessage());
+		}
 		auditReport = create(auditReport);
 		return domainToDto(auditReport);
 	}

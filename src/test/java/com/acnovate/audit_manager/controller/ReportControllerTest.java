@@ -127,8 +127,8 @@ public class ReportControllerTest {
 		AuditReportRequestDto request = new AuditReportRequestDto();
 		request.setRefObjectIds(Arrays.asList(1L)); // Example reference object ID
 		request.setReportName("New Audit Report");
-		request.setStartDateRange(new Date());
-		request.setEndDateRange(new Date());
+		request.setStartDateRange(MyConstant.REQUEST_DATE_FORMATOR.format(new Date()));
+		request.setEndDateRange(MyConstant.REQUEST_DATE_FORMATOR.format(new Date()));
 		request.setChangedUserNames(List.of("user1", "user2"));
 
 		// Send POST request to create the report
@@ -259,8 +259,8 @@ public class ReportControllerTest {
 		request.setId(existsReport.getId());
 		request.setRefObjectIds(Arrays.asList((1L)));
 		request.setReportName("New Audit Report");
-		request.setStartDateRange(new Date());
-		request.setEndDateRange(new Date());
+		request.setStartDateRange(MyConstant.REQUEST_DATE_FORMATOR.format(new Date()));
+		request.setEndDateRange(MyConstant.REQUEST_DATE_FORMATOR.format(new Date()));
 		request.setChangedUserNames(List.of("user1", "user2"));
 
 		ResultActions result = mockMvc

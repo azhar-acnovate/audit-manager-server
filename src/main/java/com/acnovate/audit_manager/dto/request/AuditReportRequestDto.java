@@ -1,10 +1,6 @@
 package com.acnovate.audit_manager.dto.request;
 
-import java.util.Date;
 import java.util.List;
-
-import com.acnovate.audit_manager.constant.MyConstant;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class AuditReportRequestDto {
 	private Long id;
@@ -13,11 +9,11 @@ public class AuditReportRequestDto {
 
 	private String reportName;
 
-	@JsonFormat(pattern = MyConstant.REQUEST_DATE_FORMAT)
-	private Date startDateRange;
+	// @JsonFormat(pattern = MyConstant.REQUEST_DATE_FORMAT)
+	private String startDateRange;
 
-	@JsonFormat(pattern = MyConstant.REQUEST_DATE_FORMAT)
-	private Date endDateRange;
+	// @JsonFormat(pattern = MyConstant.REQUEST_DATE_FORMAT)
+	private String endDateRange;
 
 	private List<String> changedUserNames;
 
@@ -37,22 +33,6 @@ public class AuditReportRequestDto {
 		this.reportName = reportName;
 	}
 
-	public Date getStartDateRange() {
-		return startDateRange;
-	}
-
-	public void setStartDateRange(Date startDateRange) {
-		this.startDateRange = startDateRange;
-	}
-
-	public Date getEndDateRange() {
-		return endDateRange;
-	}
-
-	public void setEndDateRange(Date endDateRange) {
-		this.endDateRange = endDateRange;
-	}
-
 	public List<String> getChangedUserNames() {
 		return changedUserNames;
 	}
@@ -67,5 +47,21 @@ public class AuditReportRequestDto {
 
 	public void setRefObjectIds(List<Long> refObjectIds) {
 		this.refObjectIds = refObjectIds;
+	}
+
+	public String getStartDateRange() {
+		return startDateRange;
+	}
+
+	public void setStartDateRange(String startDateRange) {
+		this.startDateRange = startDateRange;
+	}
+
+	public String getEndDateRange() {
+		return endDateRange;
+	}
+
+	public void setEndDateRange(String endDateRange) {
+		this.endDateRange = endDateRange;
 	}
 }
