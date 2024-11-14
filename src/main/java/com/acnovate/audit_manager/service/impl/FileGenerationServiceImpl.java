@@ -191,9 +191,12 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 					Cell cell4 = row.createCell(4);
 					cell4.setCellValue(auditAttribute.getAttributeName().toUpperCase());
 					cell4.setCellStyle(normalStyle);
-
 					Cell oldValueCell = row.createCell(5);
-					oldValueCell.setCellValue(auditAttribute.getOldValue().toString());
+//					if (!auditAttribute.getOldValue().equals(auditAttribute.getNewValue())) {
+//						oldValueCell.setCellValue(auditAttribute.getOldValue().toString());
+//					} else {
+//						oldValueCell.setCellValue("");
+//					}
 
 					Cell newValueCell = row.createCell(6);
 					newValueCell.setCellValue(auditAttribute.getNewValue().toString());
@@ -207,9 +210,11 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 					if (auditAttribute.getOldValue().equals(auditAttribute.getNewValue())) {
 						oldValueCell.setCellStyle(normalStyle);
 						newValueCell.setCellStyle(normalStyle);
+						oldValueCell.setCellValue("");
 					} else {
 						oldValueCell.setCellStyle(redStyle);
 						newValueCell.setCellStyle(greenStyle);
+						oldValueCell.setCellValue(auditAttribute.getOldValue().toString());
 					}
 					row = sheet.createRow(rowIndex++);
 					cell0 = row.createCell(0);

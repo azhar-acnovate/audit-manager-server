@@ -50,7 +50,9 @@ public class AuditAttributeChangeTrackerServiceImpl extends AbstractRawService<A
 		auditAttributeChangeTrackerResponseDto.setChangedBy(auditAttributeChangeTracker.getChangedBy());
 		auditAttributeChangeTrackerResponseDto.setId(auditAttributeChangeTracker.getId());
 		auditAttributeChangeTrackerResponseDto.setNewValue(auditAttributeChangeTracker.getNewValue());
-		auditAttributeChangeTrackerResponseDto.setOldValue(auditAttributeChangeTracker.getOldValue());
+		if (!auditAttributeChangeTracker.getNewValue().equals(auditAttributeChangeTracker.getOldValue())) {
+			auditAttributeChangeTrackerResponseDto.setOldValue(auditAttributeChangeTracker.getOldValue());
+		}
 
 		return auditAttributeChangeTrackerResponseDto;
 	}

@@ -222,4 +222,14 @@ CREATE TABLE scheduling_audit_report (
 
 GO
 
+ALTER TABLE scheduling_audit_report
+ADD 
+    created_at DATETIME NOT NULL DEFAULT GETDATE(),
+    updated_at DATETIME NOT NULL DEFAULT GETDATE(),
+    created_by BIGINT NOT NULL DEFAULT 1,
+    updated_by BIGINT NOT NULL DEFAULT 1,
+    active BIT NOT NULL DEFAULT 1;
+	
 
+ALTER TABLE source_reference_object
+ADD CONSTRAINT unique_name_key UNIQUE (source_reference_name,source_reference_key);

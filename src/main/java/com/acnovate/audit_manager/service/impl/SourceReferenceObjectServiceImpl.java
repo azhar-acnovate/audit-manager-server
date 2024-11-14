@@ -50,16 +50,25 @@ public class SourceReferenceObjectServiceImpl extends AbstractRawService<SourceR
 
 	@Override
 	public SourceReferenceObjectResponseDto createSourceReferenceObject(SourceReferenceObjectRequestDto req) {
-		SourceReferenceObject sourceReferenceObject = new SourceReferenceObject();
-		if (req.getId() != null) {
-			sourceReferenceObject = findOne(req.getId());
-		}
+		try {
+			SourceReferenceObject sourceReferenceObject = new SourceReferenceObject();
+			if (req.getId() != null) {
+				sourceReferenceObject = findOne(req.getId());
+			}
 
-		sourceReferenceObject.setSourceReferenceKey(req.getSourceReferenceKey());
-		sourceReferenceObject.setSourceReferenceName(req.getSourceReferenceName());
-		sourceReferenceObject.setAdditionalInfo(req.getAdditionalInfo());
-		sourceReferenceObject = create(sourceReferenceObject);
-		return domainToDto(sourceReferenceObject);
+			sourceReferenceObject.setSourceReferenceKey(req.getSourceReferenceKey());
+			sourceReferenceObject.setSourceReferenceName(req.getSourceReferenceName());
+			sourceReferenceObject.setAdditionalInfo(req.getAdditionalInfo());
+			sourceReferenceObject = create(sourceReferenceObject);
+			return domainToDto(sourceReferenceObject);
+		} catch (Exception e) {
+			if (e.getMessage().contains("unique_name_key")) {
+				throw new CustomErrorHandleException("Same " + req.getSourceReferenceName() + " and "
+						+ req.getSourceReferenceKey() + " is already exists");
+			} else {
+				throw new CustomErrorHandleException(e);
+			}
+		}
 	}
 
 }

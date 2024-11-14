@@ -173,8 +173,16 @@ CREATE TABLE scheduling_audit_report (
     time_marker CHAR(2) CHECK (time_marker IN ('AM', 'PM')),
     recipients TEXT DEFAULT NULL
 );
+ALTER TABLE scheduling_audit_report
+ADD 
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by BIGINT NOT NULL DEFAULT 1,
+    updated_by BIGINT NOT NULL DEFAULT 1,
+    active BIT NOT NULL DEFAULT 1;
 
 
-
+ALTER TABLE source_reference_object
+ADD CONSTRAINT unique_name_key UNIQUE (source_reference_name, source_reference_key);
 
 

@@ -3,7 +3,7 @@ package com.acnovate.audit_manager.dto.response;
 public class AuditAttributeChangeTrackerResponseDto {
 	private Long id;
 	private String attributeName;
-	private String oldValue;
+	private String oldValue="";
 	private String newValue;
 	private String changedBy;
 

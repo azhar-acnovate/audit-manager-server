@@ -44,13 +44,14 @@ public class SchedulingAuditReportController {
   @ResponseBody
   public ResponseEntity<CommonResponse> findAll(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer pageNo) {
     CommonResponse commonResponse = new CommonResponse();
+    FilterDto filter = new FilterDto(); // Make sure this is set correctly
+    filter.getSort().put("updatedAt", "desc");
     if (size != null && pageNo != null) {
-      FilterDto filter = new FilterDto(); // Make sure this is set correctly
-      filter.getSort().put("updatedAt", "desc");
+     
       Page<SchedulingAuditReport> pages = schedulingAuditReportService.findAll(size, pageNo, filter);
       commonResponse.setData(pages.map(schedulingAuditReportService::domainToDto));
     } else {
-      List<SchedulingAuditReport> list = schedulingAuditReportService.findAll();
+      List<SchedulingAuditReport> list = schedulingAuditReportService.findAll(filter,true);
       commonResponse.setData(list.stream()
           .map(schedulingAuditReportService::domainToDto)
           .toList());
