@@ -166,7 +166,7 @@ INSERT INTO `source_reference_object` (`id`,`source_reference_name`,`source_refe
 
 CREATE TABLE scheduling_audit_report (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    report_id BIGINT,
+    report_ids VARCHAR(255),
     frequency VARCHAR(255) DEFAULT NULL,
     scheduling_hour INT,
     scheduling_minute INT,
@@ -174,24 +174,18 @@ CREATE TABLE scheduling_audit_report (
     recipients TEXT DEFAULT NULL
 );
 ALTER TABLE scheduling_audit_report
-ADD 
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    created_by BIGINT NOT NULL DEFAULT 1,
-    updated_by BIGINT NOT NULL DEFAULT 1,
-    active BIT NOT NULL DEFAULT 1;
+ADD COLUMN created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ADD COLUMN created_by BIGINT NOT NULL DEFAULT 1,
+ADD COLUMN updated_by BIGINT NOT NULL DEFAULT 1,
+ADD COLUMN active TINYINT(1) NOT NULL DEFAULT 1;
 
 
 ALTER TABLE source_reference_object
 ADD CONSTRAINT unique_name_key UNIQUE (source_reference_name, source_reference_key);
 
 
-ALTER TABLE audit_object_change_tracker CONSTRAINT fk_source_reference_object
-    FOREIGN KEY (ref_object_id)
-    REFERENCES source_reference_object(id),
-	
 ALTER TABLE audit_object_change_tracker add CONSTRAINT fk_source_reference_object
     FOREIGN KEY (ref_object_id)
     REFERENCES source_reference_object(id);
-
 
