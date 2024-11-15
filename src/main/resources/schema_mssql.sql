@@ -175,3 +175,8 @@ ADD
 
 ALTER TABLE source_reference_object
 ADD CONSTRAINT unique_name_key UNIQUE (source_reference_name,source_reference_key);
+
+
+ALTER TABLE audit_object_change_tracker add CONSTRAINT fk_source_reference_object
+    FOREIGN KEY (ref_object_id)
+    REFERENCES source_reference_object(id);

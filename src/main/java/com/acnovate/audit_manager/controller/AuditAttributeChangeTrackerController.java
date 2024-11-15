@@ -40,11 +40,12 @@ public class AuditAttributeChangeTrackerController {
 		filter.getFilter().put("auditObjectChangeTracker.id", auditObjectChangeTrackerId);
 		filter.getSort().put("updatedAt", "desc");
 		if (size != null & pageNo != null) {
-			
+
 			Page<AuditAttributeChangeTracker> pages = attributeChangeTrackerService.findAll(size, pageNo, filter);
 			res.setData(pages.map(attributeChangeTrackerService::domainToDto));
 		} else {
-			List<AuditAttributeChangeTracker> list = attributeChangeTrackerService.findAll(filter);
+
+			List<AuditAttributeChangeTracker> list = attributeChangeTrackerService.findAll(filter, true);
 			res.setData(list.stream().map(attributeChangeTrackerService::domainToDto).toList());
 
 		}

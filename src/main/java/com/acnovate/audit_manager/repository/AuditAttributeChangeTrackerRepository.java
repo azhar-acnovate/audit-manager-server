@@ -31,4 +31,7 @@ public interface AuditAttributeChangeTrackerRepository extends JpaRepository<Aud
 			+ "GROUP BY a.attributeName " + "ORDER BY changeCount DESC")
 	List<Object[]> findTopChangedAttributes(Pageable pageable);
 
+	List<AuditAttributeChangeTracker> findByAuditObjectChangeTrackerOrderByUpdatedAtDesc(
+			AuditObjectChangeTracker auditObjectChangeTracker);
+
 }

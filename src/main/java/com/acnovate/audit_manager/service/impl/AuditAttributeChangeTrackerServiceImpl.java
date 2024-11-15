@@ -61,7 +61,7 @@ public class AuditAttributeChangeTrackerServiceImpl extends AbstractRawService<A
 	public List<AuditAttributeChangeTracker> findByAuditObjectChangeTracker(
 			AuditObjectChangeTracker auditObjectChangeTracker) {
 
-		return repo.findByAuditObjectChangeTracker(auditObjectChangeTracker);
+		return repo.findByAuditObjectChangeTrackerOrderByUpdatedAtDesc(auditObjectChangeTracker);
 	}
 
 	@Override
