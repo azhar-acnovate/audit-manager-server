@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -336,6 +338,10 @@ public class SchedulingAuditReportTest {
 		// Check that both lists (fetched and preloaded) have the same size
 		assertEquals(resData.size(), schedulingAuditReports.size(), "The sizes of both lists should be equal");
 
+		//sorting by updatedAt desc order
+		Comparator<SchedulingAuditReport> comparator = Comparator.comparing(SchedulingAuditReport::getCreatedAt)
+				.reversed();
+		Collections.sort(schedulingAuditReports, comparator);
 		// Iterate over both lists and compare individual fields
 		for (int i = 0; i < resData.size(); i++) {
 			SchedulingAuditReportResponse dto = resData.get(i);

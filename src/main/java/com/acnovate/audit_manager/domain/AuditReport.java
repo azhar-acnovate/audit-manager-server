@@ -79,4 +79,17 @@ public class AuditReport extends AuditEntity {
 	public void setRefObjectIds(List<Long> refObjectIds) {
 		this.refObjectIds = refObjectIds;
 	}
+
+	@Override
+	public String toString() {
+		return "AuditReport [id=" + id + ", refObjectIds=" + refObjectIds + ", reportName=" + reportName
+				+ ", startDateRange=" + startDateRange + ", endDateRange=" + endDateRange + ", changedUserNames="
+				+ changedUserNames + ", getId()=" + getId() + ", getReportName()=" + getReportName()
+				+ ", getStartDateRange()=" + getStartDateRange() + ", getEndDateRange()=" + getEndDateRange()
+				+ ", getChangedUserNames()=" + getChangedUserNames() + ", getRefObjectIds()=" + getRefObjectIds()
+				+ ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()=" + getUpdatedAt() + ", getCreatedBy()="
+				+ getCreatedBy() + ", getUpdatedBy()=" + getUpdatedBy() + ", getActive()=" + getActive()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
+	}
 }

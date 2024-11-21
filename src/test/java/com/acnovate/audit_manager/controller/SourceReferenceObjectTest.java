@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import com.acnovate.audit_manager.common.dto.CommonResponse;
 import com.acnovate.audit_manager.common.dto.LoggedInUserDetails;
 import com.acnovate.audit_manager.constant.MyConstant;
 import com.acnovate.audit_manager.data.PreloadDataUtils;
+import com.acnovate.audit_manager.domain.SchedulingAuditReport;
 import com.acnovate.audit_manager.domain.SourceAdditionalInfo;
 import com.acnovate.audit_manager.domain.SourceReferenceObject;
 import com.acnovate.audit_manager.domain.User;
@@ -178,7 +181,10 @@ public class SourceReferenceObjectTest {
 
 		// Check that both lists (fetched and preloaded) have the same size
 		assertEquals(resData.size(), sourceReferenceList.size(), "The sizes of both lists should be equal");
-
+		// sorting by updatedAt desc order
+		Comparator<SourceReferenceObject> comparator = Comparator.comparing(SourceReferenceObject::getCreatedAt)
+				.reversed();
+		Collections.sort(sourceReferenceList, comparator);
 		// Iterate over both lists and compare individual fields
 		for (int i = 0; i < resData.size(); i++) {
 			SourceReferenceObjectResponseDto dto = resData.get(i);

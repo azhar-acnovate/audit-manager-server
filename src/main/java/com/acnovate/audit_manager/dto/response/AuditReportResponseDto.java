@@ -79,4 +79,11 @@ public class AuditReportResponseDto extends AuditEntityDto {
 		this.sourceReferences = sourceReferences;
 	}
 
+	@Override
+	public String toString() {
+		return "AuditReportResponseDto [id=" + id + ", refObjectIds=" + refObjectIds + ", sourceReferences="
+				+ sourceReferences + ", reportName=" + reportName + ", startDateRange=" + startDateRange
+				+ ", endDateRange=" + endDateRange + ", changedUserNames=" + changedUserNames + "]";
+	}
+
 }

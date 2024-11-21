@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -159,6 +161,7 @@ public class ReportControllerTest {
 	public void test_findAllReports() throws Exception {
 		// Preload some audit report data for the test
 		preloadDataUtils.loadSourceReferenceObjectData();
+
 		List<AuditReport> reportList = preloadDataUtils.loadAuditReportData();
 
 		// Send GET request to fetch all reports
@@ -180,6 +183,9 @@ public class ReportControllerTest {
 		// Check that both lists (fetched and preloaded) have the same size
 		assertEquals(resData.size(), reportList.size(), "The sizes of both lists should be equal");
 
+		// sorting by updatedAt desc order
+		Comparator<AuditReport> comparator = Comparator.comparing(AuditReport::getUpdatedAt).reversed();
+		Collections.sort(reportList, comparator);
 		// Iterate over both lists and compare individual fields
 		for (int i = 0; i < resData.size(); i++) {
 			AuditReportResponseDto dto = resData.get(i);

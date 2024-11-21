@@ -102,6 +102,7 @@ public class PreloadDataUtils {
 			}
 			report.setChangedUserNames(fullUserNames);
 			report = auditReportService.create(report);
+			System.out.println(report);
 			data.add(report);
 
 		}

@@ -185,15 +185,16 @@ class AuditAttributeChangeTrackerTest {
 		// Prepare the FilterDto
 		FilterDto filter = new FilterDto();
 		filter.getFilter().put("auditObjectChangeTracker.id", 1L); // Sample ID for filtering
-
+		filter.getSort().put("updatedAt", "desc");
 		// Mocking the service for the case with no pagination (just a list)
-		when(auditAttributeChangeTrackerService.findAll(any(FilterDto.class))).thenReturn(Arrays.asList(audit)); // Return
-																													// a
-																													// list
-																													// with
-																													// the
-																													// mock
-																													// audit
+		when(auditAttributeChangeTrackerService.findAll(any(FilterDto.class), any(Boolean.class)))
+				.thenReturn(Arrays.asList(audit)); // Return
+		// a
+		// list
+		// with
+		// the
+		// mock
+		// audit
 
 		// Mock the DTO conversion
 		when(auditAttributeChangeTrackerService.domainToDto(any(AuditAttributeChangeTracker.class)))
