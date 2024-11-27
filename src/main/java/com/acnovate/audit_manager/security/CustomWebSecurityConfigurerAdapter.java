@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -37,6 +36,9 @@ public class CustomWebSecurityConfigurerAdapter {//
 
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 //	@Value("${resource.folder}")
 //	private String resourceFolder;
@@ -63,7 +65,14 @@ public class CustomWebSecurityConfigurerAdapter {//
 		return http.csrf(csrf -> {
 			csrf.disable();
 		}).cors(cors -> cors.disable()).authorizeHttpRequests(auth -> {
-			auth.requestMatchers("/error/**", "/audit-manager/api/v1/token", "/resource/**").permitAll();
+			auth.requestMatchers("/error/**",
+					"/audit-manager/api/v1/**",
+					"/resource/**",
+					"/auth/refresh-token",
+					"/v2/api-docs",
+					"/v3/api-docs/**",    // OpenAPI documentation
+					"/swagger-ui/**",     // Swagger UI
+					"/swagger-ui.html" ).permitAll();
 			auth.anyRequest().authenticated();
 		}).sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.oauth2ResourceServer((oauth2) -> oauth2.jwt((jwt) -> jwt.decoder(jwtDecoder())))
@@ -74,7 +83,7 @@ public class CustomWebSecurityConfigurerAdapter {//
 	public AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 		authenticationProvider.setUserDetailsService(customUserDetailsService);
-		authenticationProvider.setPasswordEncoder(passwordEncoder());
+		authenticationProvider.setPasswordEncoder(passwordEncoder);
 		return authenticationProvider;
 
 	}
@@ -100,10 +109,5 @@ public class CustomWebSecurityConfigurerAdapter {//
 //						.setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS));
 //			}
 		};
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
 	}
 }

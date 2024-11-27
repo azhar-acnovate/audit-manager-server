@@ -1,5 +1,7 @@
 package com.acnovate.audit_manager;
 
+
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -11,7 +13,9 @@ import com.acnovate.audit_manager.security.RsaKeyProperties;
 @SpringBootApplication
 @EnableConfigurationProperties(RsaKeyProperties.class)
 @EnableJpaAuditing
+@EnableEncryptableProperties
 @PropertySource({ "classpath:${envTarget:dev}.properties" })
+
 public class AuditManagerServerApplication {
 
 	public static void main(String[] args) {
