@@ -85,7 +85,12 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 				// If a password is provided during an update, encode and set it
 
 				if (userRequestDto.getPassword() != null) {
+
+					if (passwordEncoder.matches(userRequestDto.getPassword(), user.getPassword())) {
+						throw new CustomErrorHandleException("Your new password cannot be same as old password");
+					}
 					user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
+
 				}
 
 			} else {
@@ -102,7 +107,6 @@ public class UserServiceImpl extends AbstractRawService<User> implements IUserSe
 			user.setUserEmail(userRequestDto.getUserEmail());
 			user.setUserRole(userRequestDto.getUserRole());
 			user.setFullName(userRequestDto.getFullName());
-
 
 			// Save or update the user in the database
 			user = create(user);
