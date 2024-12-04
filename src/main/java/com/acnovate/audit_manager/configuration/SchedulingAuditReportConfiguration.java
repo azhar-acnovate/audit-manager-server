@@ -2,7 +2,10 @@ package com.acnovate.audit_manager.configuration;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -21,6 +24,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
+import com.acnovate.audit_manager.common.dto.FilterDto;
 import com.acnovate.audit_manager.common.persistence.exception.CustomErrorHandleException;
 import com.acnovate.audit_manager.domain.SchedulingAuditReport;
 import com.acnovate.audit_manager.service.IAuditReportService;
@@ -51,6 +55,18 @@ public class SchedulingAuditReportConfiguration implements ApplicationListener<A
 	@Autowired
 	private EmailService emailService;
 
+	// Mapping abbreviated days to full names
+	private static Map<String, String> dayMap = new HashMap<>();
+	static {
+		dayMap.put("MON", "Monday");
+		dayMap.put("TUE", "Tuesday");
+		dayMap.put("WED", "Wednesday");
+		dayMap.put("THU", "Thursday");
+		dayMap.put("FRI", "Friday");
+		dayMap.put("SAT", "Saturday");
+		dayMap.put("SUN", "Sunday");
+	}
+
 	/**
 	 * This method is executed when the application is ready to service requests. It
 	 * retrieves all scheduling audit reports and schedules each one based on its
@@ -59,8 +75,10 @@ public class SchedulingAuditReportConfiguration implements ApplicationListener<A
 	@Override
 	public void onApplicationEvent(final ApplicationReadyEvent event) {
 		logger.info("Application started, scheduling audit reports...");
+		FilterDto filterDto = new FilterDto();
+		filterDto.getFilter().put("active", true);
 		// Loop through all the reports and schedule them
-		for (SchedulingAuditReport schedulingAuditReport : schedulingAuditReportService.findAll()) {
+		for (SchedulingAuditReport schedulingAuditReport : schedulingAuditReportService.findAll(filterDto)) {
 			logger.info("Scheduling report with IDs: {}", schedulingAuditReport.getReportIds());
 			try {
 				scheduleTask(schedulingAuditReport);
@@ -69,7 +87,7 @@ public class SchedulingAuditReportConfiguration implements ApplicationListener<A
 			}
 		}
 		logger.info("All audit reports have been scheduled.");
-		return;
+
 	}
 
 	// Schedule a new task
@@ -86,8 +104,10 @@ public class SchedulingAuditReportConfiguration implements ApplicationListener<A
 		// Schedule the task and store it
 		ScheduledFuture<?> scheduledTask = taskScheduler.schedule(task, cronTrigger);
 		logger.info("New Scheduling report added to scheduler with id {} and cron trigger {}",
-				schedulingAuditReport.getId(), getReadableCron(cronTrigger.getExpression()));
+				schedulingAuditReport.getId(), getReadableCron(schedulingAuditReport));
 		scheduledTasks.put(schedulingAuditReport.getId(), scheduledTask);
+
+		schedulingAuditReport.setActive(true);
 	}
 
 	public void sendScheduledReport(SchedulingAuditReport schedulingAuditReport) {
@@ -114,8 +134,9 @@ public class SchedulingAuditReportConfiguration implements ApplicationListener<A
 
 	}
 
-	public String getReadableCron(String cronExpression) {
-
+	public String getReadableCron(SchedulingAuditReport schedulingAuditReport) {
+		CronTrigger cronTrigger = new CronTrigger(generateCronExpression(schedulingAuditReport), TimeZone.getDefault());
+		String cronExpression = cronTrigger.getExpression();
 		// Define a cron definition for UNIX cron expressions
 		CronDefinition cronDefinition = CronDefinitionBuilder.instanceDefinitionFor(CronType.SPRING);
 
@@ -129,13 +150,31 @@ public class SchedulingAuditReportConfiguration implements ApplicationListener<A
 		CronDescriptor descriptor = CronDescriptor.instance(Locale.ENGLISH);
 		String readableDescription = descriptor.describe(cron);
 
-		// Additional logic to handle common cron patterns
-		if (cronExpression.endsWith("* * *")) {
-			readableDescription = "every day at " + readableDescription.split("at")[1].trim();
-		} else if (cronExpression.endsWith(" * * MON")) {
-			readableDescription = "every week on Monday at " + readableDescription.split("at")[1].trim();
-		} else if (cronExpression.endsWith(" 1 * *")) {
-			readableDescription = "on the 1st of every month at " + readableDescription.split("at")[1].trim();
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HH:mm");
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+
+		LocalTime time = LocalTime.parse(readableDescription.split("at")[1].trim(), inputFormatter);
+		String time12Hour = time.format(outputFormatter);
+		switch (schedulingAuditReport.getFrequencyType()) {
+		case "DAILY":
+			readableDescription = "every day at " + time12Hour;
+			break;
+
+		case "WEEKLY":
+			readableDescription = "every week on "
+					+ dayMap.getOrDefault(schedulingAuditReport.getFrequency(), schedulingAuditReport.getFrequency())
+					+ " at " + time12Hour;
+			break;
+
+		case "MONTHLY":
+			readableDescription = "on the " + schedulingAuditReport.getFrequency() + " of every month at " + time12Hour;
+			break;
+
+		default:
+			// Log an error and throw an exception if the frequency is invalid
+			logger.error("Invalid frequency: {} for report: {}", schedulingAuditReport.getFrequencyType(),
+					schedulingAuditReport.getId());
+			throw new CustomErrorHandleException("Invalid frequency: " + schedulingAuditReport.getFrequencyType());
 		}
 
 		return readableDescription;
@@ -178,9 +217,13 @@ public class SchedulingAuditReportConfiguration implements ApplicationListener<A
 	// Cancel an existing task
 	public void cancelTask(Long reportId) {
 		ScheduledFuture<?> scheduledTask = scheduledTasks.get(reportId);
+
 		if (scheduledTask != null && !scheduledTask.isCancelled()) {
+			logger.info("Report id {} is cancalled..!", reportId);
 			scheduledTask.cancel(true);
 		}
+		SchedulingAuditReport schedulingAuditReport = schedulingAuditReportService.findOne(reportId);
+		schedulingAuditReport.setActive(false);
 	}
 
 	// Reschedule a task (cancel and schedule again)
@@ -205,7 +248,7 @@ public class SchedulingAuditReportConfiguration implements ApplicationListener<A
 		}
 
 		// Get the frequency (daily, weekly, or monthly)
-		String frequency = schedulingAuditReport.getFrequency();
+		String frequency = schedulingAuditReport.getFrequencyType();
 
 		// Build the cron expression based on the frequency
 		String cronExpression = "0 " + minute + " " + hour;
@@ -215,11 +258,12 @@ public class SchedulingAuditReportConfiguration implements ApplicationListener<A
 			break;
 
 		case "WEEKLY":
-			cronExpression += " * * MON"; // Every Monday at the specified time
+			cronExpression += " * * " + schedulingAuditReport.getFrequency();
 			break;
 
 		case "MONTHLY":
-			cronExpression += " 1 * *"; // On the 1st of each month at the specified time
+			cronExpression += " " + schedulingAuditReport.getFrequency() + " * *"; // On the 1st of each month at the
+																					// specified time
 			break;
 
 		default:

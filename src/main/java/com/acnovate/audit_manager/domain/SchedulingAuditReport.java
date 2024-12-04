@@ -20,6 +20,9 @@ public class SchedulingAuditReport extends AuditEntity {
 
   @Column(name = "frequency", nullable = false)
   private String frequency;
+  
+  @Column(name = "frequency_type", nullable = false)
+  private String frequencyType;
 
   @Column(name = "scheduling_hour", nullable = false)
   private Integer schedulingHour;
@@ -97,4 +100,12 @@ public class SchedulingAuditReport extends AuditEntity {
         + schedulingHour + ", schedulingMinute=" + schedulingMinute + ", timeMarker='" + timeMarker + '\'' + ", recipients='" + recipients + '\''
         + '}';
   }
+
+public String getFrequencyType() {
+	return frequencyType;
+}
+
+public void setFrequencyType(String frequencyType) {
+	this.frequencyType = frequencyType;
+}
 }

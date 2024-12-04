@@ -124,7 +124,7 @@ public class SchedulingAuditReportTest {
 	@Order(1) // Run this test first
 	public void test_createSchedulingAuditReportDailyTest() throws Exception {
 		SchedulingAuditReportRequest request = new SchedulingAuditReportRequest();
-		request.setFrequency("DAILY");
+		request.setFrequencyType("DAILY");
 		request.setRecipients(Lists.newArrayList("Azhar@gmail.com"));
 		request.setReportIds(Lists.newArrayList(1L, 2L));
 		request.setSchedulingHour(12);
@@ -147,7 +147,7 @@ public class SchedulingAuditReportTest {
 		// Validate response data matches request data
 		assertEquals(1L, resData.getId().longValue());
 
-		assertEquals(request.getFrequency(), resData.getFrequency());
+		assertEquals(request.getFrequencyType(), resData.getFrequency());
 		assertEquals(request.getRecipients(), resData.getRecipients());
 		assertEquals(request.getReportIds(), resData.getReportId());
 		assertEquals(request.getSchedulingHour(), resData.getSchedulingHour());
@@ -163,7 +163,7 @@ public class SchedulingAuditReportTest {
 	@Order(2) // Run this test first
 	public void test_createSchedulingAuditReportMonthlyTest() throws Exception {
 		SchedulingAuditReportRequest request = new SchedulingAuditReportRequest();
-		request.setFrequency("MONTHLY");
+		request.setFrequencyType("MONTHLY");
 		request.setRecipients(Lists.newArrayList("Azhar@gmail.com"));
 		request.setReportIds(Lists.newArrayList(1L, 2L));
 		request.setSchedulingHour(12);
@@ -186,7 +186,7 @@ public class SchedulingAuditReportTest {
 		// Validate response data matches request data
 		assertEquals(2L, resData.getId().longValue());
 
-		assertEquals(request.getFrequency(), resData.getFrequency());
+		assertEquals(request.getFrequencyType(), resData.getFrequency());
 		assertEquals(request.getRecipients(), resData.getRecipients());
 		assertEquals(request.getReportIds(), resData.getReportId());
 		assertEquals(request.getSchedulingHour(), resData.getSchedulingHour());
@@ -202,7 +202,7 @@ public class SchedulingAuditReportTest {
 	@Order(3) // Run this test first
 	public void test_createSchedulingAuditReportWeeklyTest() throws Exception {
 		SchedulingAuditReportRequest request = new SchedulingAuditReportRequest();
-		request.setFrequency("WEEKLY");
+		request.setFrequencyType("WEEKLY");
 		request.setRecipients(Lists.newArrayList("Azhar@gmail.com"));
 		request.setReportIds(Lists.newArrayList(1L, 2L));
 		request.setSchedulingHour(12);
@@ -225,7 +225,7 @@ public class SchedulingAuditReportTest {
 		// Validate response data matches request data
 		assertEquals(3L, resData.getId().longValue());
 
-		assertEquals(request.getFrequency(), resData.getFrequency());
+		assertEquals(request.getFrequencyType(), resData.getFrequency());
 		assertEquals(request.getRecipients(), resData.getRecipients());
 		assertEquals(request.getReportIds(), resData.getReportId());
 		assertEquals(request.getSchedulingHour(), resData.getSchedulingHour());
@@ -237,7 +237,7 @@ public class SchedulingAuditReportTest {
 	@Order(4)
 	public void test_createSchedulingAuditReportWithEmptyRecipients() throws Exception {
 		SchedulingAuditReportRequest request = new SchedulingAuditReportRequest();
-		request.setFrequency("WEEKLY");
+		request.setFrequencyType("WEEKLY");
 		request.setRecipients(new ArrayList<>()); // Empty list
 		request.setReportIds(Lists.newArrayList(1L, 2L));
 		request.setSchedulingHour(12);
@@ -256,7 +256,7 @@ public class SchedulingAuditReportTest {
 	@Order(5)
 	public void test_createSchedulingAuditReportWithInvalidEmail() throws Exception {
 		SchedulingAuditReportRequest request = new SchedulingAuditReportRequest();
-		request.setFrequency("WEEKLY");
+		request.setFrequencyType("WEEKLY");
 		request.setRecipients(Lists.newArrayList("invalid-email", "Azhar@gmail.com")); // Invalid email format
 		request.setReportIds(Lists.newArrayList(1L, 2L));
 		request.setSchedulingHour(12);
@@ -275,7 +275,7 @@ public class SchedulingAuditReportTest {
 	@Order(6)
 	public void test_createSchedulingAuditReportWithInvalidFrequency() throws Exception {
 		SchedulingAuditReportRequest request = new SchedulingAuditReportRequest();
-		request.setFrequency("BIWEEKLY"); // Invalid frequency
+		request.setFrequencyType("BIWEEKLY"); // Invalid frequency
 		request.setRecipients(Lists.newArrayList("Azhar@gmail.com"));
 		request.setReportIds(Lists.newArrayList(1L, 2L));
 		request.setSchedulingHour(12);
@@ -286,7 +286,7 @@ public class SchedulingAuditReportTest {
 		mockMvc.perform(post(BASE_URL).header("Authorization", getAccessToken()).contentType("application/json")
 				.content(mapper.writeValueAsString(request))).andExpect(status().isOk())
 				.andExpect(result -> assertTrue(result.getResolvedException() instanceof CustomErrorHandleException))
-				.andExpect(result -> assertEquals("Invalid frequency: " + request.getFrequency(),
+				.andExpect(result -> assertEquals("Invalid frequency: " + request.getFrequencyType(),
 						result.getResolvedException().getMessage()));
 	}
 
@@ -294,7 +294,7 @@ public class SchedulingAuditReportTest {
 	@Order(7)
 	public void test_createSchedulingAuditReportWithMissingReportIds() throws Exception {
 		SchedulingAuditReportRequest request = new SchedulingAuditReportRequest();
-		request.setFrequency("WEEKLY");
+		request.setFrequencyType("WEEKLY");
 		request.setRecipients(Lists.newArrayList("Azhar@gmail.com"));
 		request.setReportIds(null); // Missing report IDs
 		request.setSchedulingHour(12);
@@ -338,7 +338,7 @@ public class SchedulingAuditReportTest {
 		// Check that both lists (fetched and preloaded) have the same size
 		assertEquals(resData.size(), schedulingAuditReports.size(), "The sizes of both lists should be equal");
 
-		//sorting by updatedAt desc order
+		// sorting by updatedAt desc order
 		Comparator<SchedulingAuditReport> comparator = Comparator.comparing(SchedulingAuditReport::getCreatedAt)
 				.reversed();
 		Collections.sort(schedulingAuditReports, comparator);

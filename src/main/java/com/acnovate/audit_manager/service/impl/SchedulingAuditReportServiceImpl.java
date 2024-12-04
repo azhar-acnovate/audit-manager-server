@@ -21,6 +21,7 @@ import com.acnovate.audit_manager.dto.response.SchedulingAuditReportResponse;
 import com.acnovate.audit_manager.repository.SchedulingAuditReportRepository;
 import com.acnovate.audit_manager.service.IAuditReportService;
 import com.acnovate.audit_manager.service.ISchedulingAuditReportService;
+import com.acnovate.audit_manager.utils.AuditEntityMapper;
 
 @Service
 public class SchedulingAuditReportServiceImpl extends AbstractRawService<SchedulingAuditReport>
@@ -69,12 +70,15 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		}
 
 		schedulingAuditReportResponse.setFrequency(schedulingAuditReport.getFrequency());
+		schedulingAuditReportResponse.setFrequencyType(schedulingAuditReport.getFrequencyType());
 		schedulingAuditReportResponse.setSchedulingHour(schedulingAuditReport.getSchedulingHour());
 		schedulingAuditReportResponse.setSchedulingMinute(schedulingAuditReport.getSchedulingMinute());
 		schedulingAuditReportResponse.setTimeMarker(schedulingAuditReport.getTimeMarker());
 		// Convert the recipients string back to a list
 		schedulingAuditReportResponse.setRecipients(Arrays.asList(schedulingAuditReport.getRecipients().split(",")));
-
+		schedulingAuditReportResponse
+				.setReadableCron(schedulingAuditReportConfiguration.getReadableCron(schedulingAuditReport));
+		AuditEntityMapper.mapAuditEntityToDto(schedulingAuditReport, schedulingAuditReportResponse);
 		return schedulingAuditReportResponse;
 	}
 
@@ -84,11 +88,11 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		if (request.getRecipients() == null || request.getRecipients().isEmpty()) {
 			throw new CustomErrorHandleException("Email list must not be empty.");
 		}
-		
+
 		// Validate that the report ids list is not empty
-				if (request.getReportIds() == null || request.getReportIds().isEmpty()) {
-					throw new CustomErrorHandleException("Report IDs must not be null or empty");
-				}
+		if (request.getReportIds() == null || request.getReportIds().isEmpty()) {
+			throw new CustomErrorHandleException("Report IDs must not be null or empty");
+		}
 
 		// Validate each recipient's email format using regex
 		for (String email : request.getRecipients()) {
@@ -103,7 +107,7 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 		// Join report IDs into a comma-separated string
 		report.setReportIds(request.getReportIds().stream().map(String::valueOf) // Convert Long to String
 				.collect(Collectors.joining(",")));
-
+		report.setFrequencyType(request.getFrequencyType());
 		report.setFrequency(request.getFrequency());
 		report.setSchedulingHour(request.getSchedulingHour());
 		report.setSchedulingMinute(request.getSchedulingMinute());
@@ -123,6 +127,18 @@ public class SchedulingAuditReportServiceImpl extends AbstractRawService<Schedul
 	private boolean isValidEmail(String email) {
 		// A more comprehensive regex for email validation
 		return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
+	}
+
+	@Override
+	public void cancelReport(Long id) {
+		schedulingAuditReportConfiguration.cancelTask(id);
+
+	}
+
+	@Override
+	public void reschduleReport(Long id) {
+		schedulingAuditReportConfiguration.rescheduleTask(findOne(id));
+
 	}
 
 }
