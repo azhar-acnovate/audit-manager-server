@@ -147,7 +147,7 @@ public class SchedulingAuditReportTest {
 		// Validate response data matches request data
 		assertEquals(1L, resData.getId().longValue());
 
-		assertEquals(request.getFrequencyType(), resData.getFrequency());
+		assertEquals(request.getFrequencyType(), resData.getFrequencyType());
 		assertEquals(request.getRecipients(), resData.getRecipients());
 		assertEquals(request.getReportIds(), resData.getReportId());
 		assertEquals(request.getSchedulingHour(), resData.getSchedulingHour());
@@ -164,6 +164,7 @@ public class SchedulingAuditReportTest {
 	public void test_createSchedulingAuditReportMonthlyTest() throws Exception {
 		SchedulingAuditReportRequest request = new SchedulingAuditReportRequest();
 		request.setFrequencyType("MONTHLY");
+		request.setFrequency("1");
 		request.setRecipients(Lists.newArrayList("Azhar@gmail.com"));
 		request.setReportIds(Lists.newArrayList(1L, 2L));
 		request.setSchedulingHour(12);
@@ -186,7 +187,7 @@ public class SchedulingAuditReportTest {
 		// Validate response data matches request data
 		assertEquals(2L, resData.getId().longValue());
 
-		assertEquals(request.getFrequencyType(), resData.getFrequency());
+		assertEquals(request.getFrequencyType(), resData.getFrequencyType());
 		assertEquals(request.getRecipients(), resData.getRecipients());
 		assertEquals(request.getReportIds(), resData.getReportId());
 		assertEquals(request.getSchedulingHour(), resData.getSchedulingHour());
@@ -203,6 +204,7 @@ public class SchedulingAuditReportTest {
 	public void test_createSchedulingAuditReportWeeklyTest() throws Exception {
 		SchedulingAuditReportRequest request = new SchedulingAuditReportRequest();
 		request.setFrequencyType("WEEKLY");
+		request.setFrequency("MON");
 		request.setRecipients(Lists.newArrayList("Azhar@gmail.com"));
 		request.setReportIds(Lists.newArrayList(1L, 2L));
 		request.setSchedulingHour(12);
@@ -225,7 +227,7 @@ public class SchedulingAuditReportTest {
 		// Validate response data matches request data
 		assertEquals(3L, resData.getId().longValue());
 
-		assertEquals(request.getFrequencyType(), resData.getFrequency());
+		assertEquals(request.getFrequencyType(), resData.getFrequencyType());
 		assertEquals(request.getRecipients(), resData.getRecipients());
 		assertEquals(request.getReportIds(), resData.getReportId());
 		assertEquals(request.getSchedulingHour(), resData.getSchedulingHour());

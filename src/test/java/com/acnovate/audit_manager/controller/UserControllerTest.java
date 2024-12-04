@@ -1,30 +1,32 @@
 package com.acnovate.audit_manager.controller;
 
-import com.acnovate.audit_manager.common.dto.CommonResponse;
-import com.acnovate.audit_manager.common.dto.LoggedInUserDetails;
-import com.acnovate.audit_manager.controller.UserController;
-import com.acnovate.audit_manager.domain.User;
-import com.acnovate.audit_manager.dto.request.UserRequestDto;
-import com.acnovate.audit_manager.dto.response.UserResponseDto;
-import com.acnovate.audit_manager.service.IUserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.TestPropertySource;
@@ -33,23 +35,14 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.acnovate.audit_manager.common.dto.CommonResponse;
+import com.acnovate.audit_manager.common.dto.LoggedInUserDetails;
+import com.acnovate.audit_manager.domain.User;
+import com.acnovate.audit_manager.dto.request.UserRequestDto;
+import com.acnovate.audit_manager.dto.response.UserResponseDto;
+import com.acnovate.audit_manager.service.IUserService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -263,6 +256,7 @@ public class UserControllerTest {
  	    userResponseDto.setUserEmail("updated@example.com");
  	    userResponseDto.setActive(true); // Assume the user is active
  	    userResponseDto.setUserRole("ADMIN");
+ 	   userRequestDto.setPassword("test@admin1");
 
  	    // Mock the service call to return the expected DTO
  	    when(userService.createUser(any(UserRequestDto.class))).thenReturn(userResponseDto);

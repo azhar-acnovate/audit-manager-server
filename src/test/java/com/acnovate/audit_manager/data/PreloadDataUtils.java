@@ -132,15 +132,18 @@ public class PreloadDataUtils {
 
 	public List<SchedulingAuditReport> loadSchedulingAuditReport() {
 		List<SchedulingAuditReport> data = new ArrayList<>();
-		String[] frequencies = { "DAILY,WEEKLY,MONTHLY" };
-		String[] timeMarkers = { "AM,PM" };
+		String[] frequencyTypies = { "DAILY", "WEEKLY", "MONTHLY" };
+		String[] frequency = { "", "MON", "1" };
+		String[] timeMarkers = { "AM","PM","AM" };
 		// Create a Random object
 		Random random = new Random();
 		for (int i = 1; i <= 10; i++) {
 			SchedulingAuditReport schedulingAuditReport = new SchedulingAuditReport();
 			// reference.setId((long) i);
-			schedulingAuditReport.setFrequency(frequencies[random.nextInt(frequencies.length)]);
-			schedulingAuditReport.setTimeMarker(timeMarkers[random.nextInt(timeMarkers.length)]);
+			int randomInt = random.nextInt(frequencyTypies.length);
+			schedulingAuditReport.setFrequencyType(frequencyTypies[randomInt]);
+			schedulingAuditReport.setFrequency(frequency[randomInt]);
+			schedulingAuditReport.setTimeMarker(timeMarkers[randomInt]);
 			schedulingAuditReport.setSchedulingHour(random.nextInt(12));
 			schedulingAuditReport.setSchedulingMinute(random.nextInt(59));
 			schedulingAuditReport.setRecipients("test@gmail.com");

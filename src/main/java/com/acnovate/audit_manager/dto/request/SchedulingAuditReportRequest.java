@@ -13,7 +13,7 @@ public class SchedulingAuditReportRequest {
 	private String frequencyType;
 
 	@NotNull(message = "Frequency cannot be null")
-	private String frequency;
+	private String frequency="";
 
 	@NotNull(message = "Scheduling hour cannot be null")
 	private Integer schedulingHour;
