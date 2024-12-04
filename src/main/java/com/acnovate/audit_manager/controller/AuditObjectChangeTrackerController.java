@@ -32,12 +32,15 @@ public class AuditObjectChangeTrackerController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<CommonResponse> findAll(@RequestParam(required = false) Integer size,
-			@RequestParam(required = false) Integer pageNo) {
+			@RequestParam(required = false) Integer pageNo, @RequestParam(required = false) Long sourceRefereceId) {
 		CommonResponse res = new CommonResponse();
 
 		res.setStatus(HttpStatus.OK.value());
 		res.setMessage("Successfully fetched audit-module Data..");
 		FilterDto filter = new FilterDto();
+		if (sourceRefereceId != null && sourceRefereceId != 0L) {
+			filter.getFilter().put("refObjectId", sourceRefereceId);
+		}
 		if (size != null & pageNo != null) {
 			filter.getSort().put("updatedAt", "desc");
 			Page<AuditObjectChangeTracker> pages = auditObjectChangeTrackerService.findAll(size, pageNo, filter);

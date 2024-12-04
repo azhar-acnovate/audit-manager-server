@@ -42,7 +42,7 @@ public class SourceReferenceObjectController {
 			res.setData(pages.map(sourceReferenceObjectService::domainToDto));
 		} else {
 			List<SourceReferenceObject> list = sourceReferenceObjectService.findAll(filter);
-			res.setData(list.stream().map(sourceReferenceObjectService::domainToDto).toList());
+			res.setData(list);
 		}
 		return new ResponseEntity<CommonResponse>(res, HttpStatus.OK);
 
