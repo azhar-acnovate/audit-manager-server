@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.acnovate.audit_manager.common.dto.CommonResponse;
 import com.acnovate.audit_manager.common.dto.FilterDto;
+import com.acnovate.audit_manager.common.persistence.specification.RawSpecification;
 import com.acnovate.audit_manager.domain.SourceReferenceObject;
 import com.acnovate.audit_manager.dto.request.SourceReferenceObjectRequestDto;
 import com.acnovate.audit_manager.service.ISourceReferenceObjectService;
@@ -30,12 +31,16 @@ public class SourceReferenceObjectController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<CommonResponse> findAll(@RequestParam(required = false) Integer size,
-			@RequestParam(required = false) Integer pageNo) {
+			@RequestParam(required = false) Integer pageNo, @RequestParam(required = false) String inputValue) {
 		CommonResponse res = new CommonResponse();
 		res.setStatus(HttpStatus.OK.value());
 		res.setMessage("Successfully fetched Source Reference Object Data..");
 		FilterDto filter = new FilterDto();
 		filter.getSort().put("updatedAt", "desc");
+		if (inputValue != null && !inputValue.equals("null")) {
+			filter.getFilter().put("sourceReferenceName", inputValue + RawSpecification.CRITERIA_LIKE);
+			filter.getFilter().put("sourceReferenceKey", inputValue + RawSpecification.CRITERIA_LIKE);
+		}
 		if (size != null & pageNo != null) {
 
 			Page<SourceReferenceObject> pages = sourceReferenceObjectService.findAll(size, pageNo, filter);
