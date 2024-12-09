@@ -35,6 +35,7 @@ public class RawSpecification<T> implements Specification<T> {
 	public final static String CRITERIA_GREATER_THAN = ">";
 	public final static String CRITERIA_IN = "INCLAUSE-";
 	public final static String CRITERIA_NOT_IN = "NOT-INCLAUSE-";
+	public final static String CRITERIA_OR = "-OR";
 
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -48,92 +49,149 @@ public class RawSpecification<T> implements Specification<T> {
 
 		for (Entry<String, Object> entry : filter.getFilter().entrySet()) {
 			String fieldName = entry.getKey();
-
+			boolean isOrContition = fieldName.contains(CRITERIA_OR);
+			fieldName = fieldName.replace(CRITERIA_OR, "");
 			if (entry.getKey() != null && entry.getValue() != null) {
-				if (entry.getKey().startsWith(CRITERIA_NOT)) {
-					fieldName = entry.getKey().replaceFirst(CRITERIA_NOT, "");
+				if (fieldName.startsWith(CRITERIA_NOT)) {
+					fieldName = fieldName.replaceFirst(CRITERIA_NOT, "");
 					Object value = getValue(root, fieldName, entry.getValue());
 					if (value instanceof String && value.toString().contains(CRITERIA_LIKE)) {
-						predicate = criteriaBuilder.and(predicate, criteriaBuilder.notLike(getRoot(root, fieldName),
-								value.toString().replace(CRITERIA_LIKE, "%")));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate, criteriaBuilder.notLike(getRoot(root, fieldName),
+									value.toString().replace(CRITERIA_LIKE, "%")));
+						} else
+							predicate = criteriaBuilder.and(predicate, criteriaBuilder.notLike(getRoot(root, fieldName),
+									value.toString().replace(CRITERIA_LIKE, "%")));
 					} else {
-						predicate = criteriaBuilder.and(predicate, criteriaBuilder
-								.notEqual(getRoot(root, entry.getKey().replaceFirst(CRITERIA_NOT, "")), value));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate, criteriaBuilder
+									.notEqual(getRoot(root, fieldName.replaceFirst(CRITERIA_NOT, "")), value));
+						} else
+							predicate = criteriaBuilder.and(predicate, criteriaBuilder
+									.notEqual(getRoot(root, fieldName.replaceFirst(CRITERIA_NOT, "")), value));
 					}
 
-				} else if (entry.getKey().startsWith(CRITERIA_LESS_THAN_EQUAL)) {
-					fieldName = entry.getKey().replaceFirst(CRITERIA_LESS_THAN_EQUAL, "");
+				} else if (fieldName.startsWith(CRITERIA_LESS_THAN_EQUAL)) {
+					fieldName = fieldName.replaceFirst(CRITERIA_LESS_THAN_EQUAL, "");
 					Object value = getValue(root, fieldName, entry.getValue());
 					if (value instanceof Date) {
-						predicate = criteriaBuilder.and(predicate, criteriaBuilder
-								.lessThanOrEqualTo(getRoot(root, fieldName).as(Date.class), (Date) value));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate, criteriaBuilder
+									.lessThanOrEqualTo(getRoot(root, fieldName).as(Date.class), (Date) value));
+						} else
+							predicate = criteriaBuilder.and(predicate, criteriaBuilder
+									.lessThanOrEqualTo(getRoot(root, fieldName).as(Date.class), (Date) value));
 					} else if (value instanceof String) {
-						predicate = criteriaBuilder.and(predicate,
-								criteriaBuilder.lessThanOrEqualTo(getRoot(root, fieldName), (String) value));
+
+						if (isOrContition) {
+							predicate = criteriaBuilder.and(predicate,
+									criteriaBuilder.lessThanOrEqualTo(getRoot(root, fieldName), (String) value));
+						} else
+							predicate = criteriaBuilder.and(predicate,
+									criteriaBuilder.lessThanOrEqualTo(getRoot(root, fieldName), (String) value));
 					}
 
-				} else if (entry.getKey().startsWith(CRITERIA_LESS_THAN)) {
-					fieldName = entry.getKey().replaceFirst(CRITERIA_LESS_THAN, "");
+				} else if (fieldName.startsWith(CRITERIA_LESS_THAN)) {
+					fieldName = fieldName.replaceFirst(CRITERIA_LESS_THAN, "");
 					Object value = getValue(root, fieldName, entry.getValue());
 					if (value instanceof Date) {
-						predicate = criteriaBuilder.and(predicate,
-								criteriaBuilder.lessThan(getRoot(root, fieldName).as(Date.class), (Date) value));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate,
+									criteriaBuilder.lessThan(getRoot(root, fieldName).as(Date.class), (Date) value));
+						} else
+							predicate = criteriaBuilder.and(predicate,
+									criteriaBuilder.lessThan(getRoot(root, fieldName).as(Date.class), (Date) value));
 					} else if (value instanceof String) {
-						predicate = criteriaBuilder.and(predicate,
-								criteriaBuilder.lessThan(getRoot(root, fieldName), (String) value));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate,
+									criteriaBuilder.lessThan(getRoot(root, fieldName), (String) value));
+						} else
+							predicate = criteriaBuilder.and(predicate,
+									criteriaBuilder.lessThan(getRoot(root, fieldName), (String) value));
 					}
 
-				} else if (entry.getKey().startsWith(CRITERIA_GREATER_THAN_EQUAL)) {
-					fieldName = entry.getKey().replaceFirst(CRITERIA_GREATER_THAN_EQUAL, "");
+				} else if (fieldName.startsWith(CRITERIA_GREATER_THAN_EQUAL)) {
+					fieldName = fieldName.replaceFirst(CRITERIA_GREATER_THAN_EQUAL, "");
 					Object value = getValue(root, fieldName, entry.getValue());
 
 					if (value instanceof Date) {
-						predicate = criteriaBuilder.and(predicate, criteriaBuilder
-								.greaterThanOrEqualTo(getRoot(root, fieldName).as(Date.class), (Date) value));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate, criteriaBuilder
+									.greaterThanOrEqualTo(getRoot(root, fieldName).as(Date.class), (Date) value));
+						} else
+							predicate = criteriaBuilder.and(predicate, criteriaBuilder
+									.greaterThanOrEqualTo(getRoot(root, fieldName).as(Date.class), (Date) value));
 					} else if (value instanceof String) {
-						predicate = criteriaBuilder.and(predicate,
-								criteriaBuilder.greaterThanOrEqualTo(getRoot(root, fieldName), (String) value));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate,
+									criteriaBuilder.greaterThanOrEqualTo(getRoot(root, fieldName), (String) value));
+						} else
+							predicate = criteriaBuilder.and(predicate,
+									criteriaBuilder.greaterThanOrEqualTo(getRoot(root, fieldName), (String) value));
 					}
 
-				} else if (entry.getKey().startsWith(CRITERIA_GREATER_THAN)) {
-					fieldName = entry.getKey().replaceFirst(CRITERIA_GREATER_THAN, "");
+				} else if (fieldName.startsWith(CRITERIA_GREATER_THAN)) {
+					fieldName = fieldName.replaceFirst(CRITERIA_GREATER_THAN, "");
 					Object value = getValue(root, fieldName, entry.getValue());
 					if (value instanceof Date) {
-						predicate = criteriaBuilder.and(predicate,
-								criteriaBuilder.greaterThan(getRoot(root, fieldName).as(Date.class), (Date) value));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate,
+									criteriaBuilder.greaterThan(getRoot(root, fieldName).as(Date.class), (Date) value));
+						} else
+							predicate = criteriaBuilder.and(predicate,
+									criteriaBuilder.greaterThan(getRoot(root, fieldName).as(Date.class), (Date) value));
 					} else if (value instanceof String) {
-						predicate = criteriaBuilder.and(predicate,
-								criteriaBuilder.greaterThan(getRoot(root, fieldName), (String) value));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate,
+									criteriaBuilder.greaterThan(getRoot(root, fieldName), (String) value));
+						} else
+							predicate = criteriaBuilder.and(predicate,
+									criteriaBuilder.greaterThan(getRoot(root, fieldName), (String) value));
 					}
 
-				} else if (entry.getKey().startsWith(CRITERIA_IN)) {
-					fieldName = entry.getKey().replaceFirst(CRITERIA_IN, "");
+				} else if (fieldName.startsWith(CRITERIA_IN)) {
+					fieldName = fieldName.replaceFirst(CRITERIA_IN, "");
 					Object value = getValue(root, fieldName, entry.getValue());
 					if (value instanceof List<?>) {
 						List<?> valueList = (List<?>) value;
 						Expression<String> inExpression = getRoot(root, fieldName);
-						predicate = criteriaBuilder.and(predicate, inExpression.in(valueList));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate, inExpression.in(valueList));
+						} else {
+							predicate = criteriaBuilder.and(predicate, inExpression.in(valueList));
+						}
 					}
 
-				} else if (entry.getKey().startsWith(CRITERIA_NOT_IN)) {
-					fieldName = entry.getKey().replaceFirst(CRITERIA_NOT_IN, "");
+				} else if (fieldName.startsWith(CRITERIA_NOT_IN)) {
+					fieldName = fieldName.replaceFirst(CRITERIA_NOT_IN, "");
 					Object value = getValue(root, fieldName, entry.getValue());
 					if (value instanceof List<?>) {
 						List<?> valueList = (List<?>) value;
 						Expression<String> inExpression = getRoot(root, fieldName);
-						predicate = criteriaBuilder.and(predicate, inExpression.in(valueList).not());
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate, inExpression.in(valueList).not());
+						} else
+							predicate = criteriaBuilder.and(predicate, inExpression.in(valueList).not());
 					}
 
 				} else {
-					fieldName = entry.getKey();
+//					
 					Object value = getValue(root, fieldName, entry.getValue());
 
 					if (value instanceof String && value.toString().contains(CRITERIA_LIKE)) {
-						predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(getRoot(root, entry.getKey()),
-								value.toString().replace(CRITERIA_LIKE, "%")));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate, criteriaBuilder.like(getRoot(root, fieldName),
+									value.toString().replace(CRITERIA_LIKE, "%")));
+						} else
+							predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(getRoot(root, fieldName),
+									value.toString().replace(CRITERIA_LIKE, "%")));
 					} else {
-						predicate = criteriaBuilder.and(predicate,
-								criteriaBuilder.equal(getRoot(root, fieldName), value));
+						if (isOrContition) {
+							predicate = criteriaBuilder.or(predicate,
+									criteriaBuilder.equal(getRoot(root, fieldName), value));
+						} else
+							predicate = criteriaBuilder.and(predicate,
+									criteriaBuilder.equal(getRoot(root, fieldName), value));
 					}
 				}
 			}

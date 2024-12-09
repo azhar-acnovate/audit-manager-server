@@ -38,10 +38,19 @@ public class SourceReferenceObjectController {
 		FilterDto filter = new FilterDto();
 		filter.getSort().put("updatedAt", "desc");
 		if (inputValue != null && !inputValue.equals("null")) {
-			filter.getFilter().put("sourceReferenceName", inputValue + RawSpecification.CRITERIA_LIKE);
-			filter.getFilter().put("sourceReferenceKey", inputValue + RawSpecification.CRITERIA_LIKE);
+			if (inputValue.contains("-")) {
+				String[] inputValueArg = inputValue.split("-");
+				filter.getFilter().put("sourceReferenceName", inputValueArg[0] + RawSpecification.CRITERIA_LIKE);
+				if (inputValueArg.length > 1) {
+					filter.getFilter().put("sourceReferenceKey", inputValueArg[1] + RawSpecification.CRITERIA_LIKE);
+				}
+			} else {
+				filter.getFilter().put("sourceReferenceName" + RawSpecification.CRITERIA_OR,
+						inputValue + RawSpecification.CRITERIA_LIKE);
+				filter.getFilter().put("sourceReferenceKey", inputValue + RawSpecification.CRITERIA_LIKE);
+			}
 		}
-		if (size != null & pageNo != null) {
+		if (size != null && pageNo != null) {
 
 			Page<SourceReferenceObject> pages = sourceReferenceObjectService.findAll(size, pageNo, filter);
 			res.setData(pages.map(sourceReferenceObjectService::domainToDto));
