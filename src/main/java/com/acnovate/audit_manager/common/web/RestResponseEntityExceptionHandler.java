@@ -1,6 +1,8 @@
 package com.acnovate.audit_manager.common.web;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.dao.DataAccessException;
@@ -59,6 +61,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		logger.info("Bad Request: ", ex);
 
 		if (ExceptionUtils.getRootCauseMessage(ex).contains("duplicate")) {
+			if(ex.getLocalizedMessage().contains("unique_user_name")) {
+				final CommonResponse apiError = message(HttpStatus.CONFLICT, ex);
+				Pattern pattern = Pattern.compile("\\((.*?)\\)"); // Regex to match text within parentheses
+				Matcher matcher = pattern.matcher(ex.getLocalizedMessage());
+				if (matcher.find()) {
+				    String key = matcher.group(1); // Extract the first group
+				    apiError.setMessage("User name " + key + " is already taken");
+					return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.OK, request);
+				}
+				
+			}
 			final CommonResponse apiError = message(HttpStatus.CONFLICT, ex);
 			return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.OK, request);
 		}
