@@ -118,6 +118,15 @@ class AuditAttributeChangeTrackerTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).addFilters(filterChainProxy).build();
 	}
 
+	@Test
+	@Order(1)
+	void testGetLastAttribute() throws Exception {
+		AuditAttributeChangeTracker lastChanges = attRepository
+				.findTop1ByAttributeNameAndAuditObjectChangeTrackerRefObjectIdOrderByAuditObjectChangeTrackerUpdatedAtDesc(
+						"colorCode", 39L);
+		System.out.println(lastChanges);
+	}
+
 	// TEST FAILED
 	@Test
 	@Order(1)

@@ -34,4 +34,7 @@ public interface AuditAttributeChangeTrackerRepository extends JpaRepository<Aud
 	List<AuditAttributeChangeTracker> findByAuditObjectChangeTrackerOrderByUpdatedAtDesc(
 			AuditObjectChangeTracker auditObjectChangeTracker);
 
+	AuditAttributeChangeTracker findTop1ByAttributeNameAndAuditObjectChangeTrackerRefObjectIdOrderByAuditObjectChangeTrackerUpdatedAtDesc(
+			String attributeName, Long refObjectId);
+
 }

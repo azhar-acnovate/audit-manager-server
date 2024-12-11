@@ -71,4 +71,11 @@ public class AuditAttributeChangeTracker extends AuditEntity {
 	public void setAuditObjectChangeTracker(AuditObjectChangeTracker auditObjectChangeTracker) {
 		this.auditObjectChangeTracker = auditObjectChangeTracker;
 	}
+
+	@Override
+	public String toString() {
+		return "AuditAttributeChangeTracker [id=" + id + ", attributeName=" + attributeName + ", oldValue=" + oldValue
+				+ ", newValue=" + newValue + ", changedBy=" + changedBy + ", auditObjectChangeTracker="
+				+ auditObjectChangeTracker + "]";
+	}
 }
